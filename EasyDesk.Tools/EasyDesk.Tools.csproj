@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Authors>Francesco Dente, Luca Deluigi</Authors>
+    <Company>EasyDesk</Company>
+    <Product>EasyDesk Tools library</Product>
+    <Description>A library containing a series of common utilities and extensions built on top of the C# standard library.</Description>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageTags>EasyDesk Core Common Utilities Option Collections Extensions</PackageTags>
+    <Version>1.0.1</Version>
+    <RepositoryUrl>https://github.com/EasyDesk/easydesk-tools</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>

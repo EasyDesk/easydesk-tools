@@ -1,0 +1,35 @@
+env:
+  BUILD_CONFIGURATION: Release
+  PROJECT_DIR: EasyDesk.Tools
+  OUTPUT_DIR: publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "*"
+      - "**/*"
+
+jobs:
+  build_and_test:
+    name: Build and Test
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        dotnet-version:
+          - 5.x
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup .NET Core SDK v${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore -c ${{ env.BUILD_CONFIGURATION }}
+      - name: Run unit tests
+        run: dotnet test --no-build -c ${{ env.BUILD_CONFIGURATION }}
+      - name: Create Nuget package
+        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }}

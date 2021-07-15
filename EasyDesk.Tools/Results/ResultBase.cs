@@ -1,0 +1,57 @@
+﻿using EasyDesk.Core.Options;
+using System;
+using System.Threading.Tasks;
+using static EasyDesk.Core.Functions;
+using static EasyDesk.Core.Options.OptionImports;
+
+namespace EasyDesk.Core.Results
+{
+    public abstract record ResultBase<T, E>
+    {
+        private readonly T _value;
+        private readonly E _error;
+
+        protected ResultBase(T value)
+        {
+            _value = value;
+            IsFailure = false;
+        }
+
+        protected ResultBase(E error)
+        {
+            _error = error;
+            IsFailure = true;
+        }
+
+        public bool IsSuccess => !IsFailure;
+
+        public bool IsFailure { get; }
+
+        public Option<T> Value => Match(
+            success: t => Some(t),
+            failure: _ => None);
+
+        public Option<E> Error => Match(
+            success: _ => None,
+            failure: e => Some(e));
+
+        public R Match<R>(Func<T, R> success, Func<E, R> failure) => IsFailure ? failure(_error) : success(_value);
+
+        public void Match(Action<T> success = null, Action<E> failure = null)
+        {
+            Match(
+                success: t => JustDoIt(() => success?.Invoke(t)),
+                failure: e => JustDoIt(() => failure?.Invoke(e)));
+        }
+
+        public Task<R> MatchAsync<R>(AsyncFunc<T, R> success, AsyncFunc<E, R> failure) =>
+            Match(
+                success: a => success(a),
+                failure: e => failure(e));
+
+        public Task MatchAsync(AsyncAction<T> success = null, AsyncAction<E> failure = null) =>
+            Match(
+                success: a => success is null ? Task.CompletedTask : success(a),
+                failure: e => failure is null ? Task.CompletedTask : failure(e));
+    }
+}

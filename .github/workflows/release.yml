@@ -1,0 +1,33 @@
+env:
+  DOTNET_VERSION: 5.x
+  BUILD_CONFIGURATION: Release
+  PROJECT_DIR: EasyDesk.Tools
+  OUTPUT_DIR: publish
+  NUGET_URL: https://api.nuget.org/v3/index.json
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build_and_test:
+    name: Release
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup .NET Core SDK v${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore -c ${{ env.BUILD_CONFIGURATION }}
+      - name: Run unit tests
+        run: dotnet test --no-build -c ${{ env.BUILD_CONFIGURATION }}
+      - name: Create Nuget package
+        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} /p:Version=${{ github.event.release.tag_name }}
+      - name: Push nuget package to nuget.org
+        run: dotnet nuget push ${{ env.OUTPUT_DIR }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_URL }}

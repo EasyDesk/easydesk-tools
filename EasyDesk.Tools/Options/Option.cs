@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using static EasyDesk.Core.Options.OptionImports;
+
+namespace EasyDesk.Core.Options
+{
+    public readonly struct NoneOption
+    {
+        public static NoneOption Value { get; } = new();
+    }
+
+    public readonly struct Option<T> : IEnumerable<T>
+    {
+        private readonly T _value;
+
+        internal Option(T value)
+        {
+            IsPresent = true;
+            _value = value;
+        }
+
+        public T Value => IsPresent ? _value : throw new InvalidOperationException("Cannot access the value of an empty Option");
+
+        public bool IsPresent { get; }
+
+        public bool IsAbsent => !IsPresent;
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            if (IsPresent)
+            {
+                yield return Value;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public R Match<R>(Func<T, R> some, Func<R> none) =>
+           IsPresent ? some(_value) : none();
+
+        public Task<R> MatchAsync<R>(AsyncFunc<T, R> some, AsyncFunc<R> none) =>
+           Match(some: t => some(t), none: () => none());
+
+        public void Match(Action<T> some, Action none)
+        {
+            if (IsPresent)
+            {
+                some(_value);
+            }
+            else
+            {
+                none();
+            }
+        }
+
+        public async Task MatchAsync(AsyncAction<T> some, AsyncAction none)
+        {
+            if (IsPresent)
+            {
+                await some(_value);
+            }
+            else
+            {
+                await none();
+            }
+        }
+
+        public static implicit operator Option<T>(NoneOption _) => new();
+
+        public static implicit operator Option<T>(T value) => Some(value);
+
+        public static T operator |(Option<T> a, T b) => a.OrElse(b);
+
+        public static T operator |(Option<T> a, Func<T> b) => a.OrElseGet(b);
+
+        public static Option<T> operator |(Option<T> a, Option<T> b) => a.Match(some: _ => a, none: () => b);
+
+        public static Option<T> operator &(Option<T> a, Option<T> b) => a.Match(some: _ => b, none: () => a);
+
+        public static Option<T> operator ^(Option<T> a, Option<T> b) => a.Match(
+            some: _ => b.Match(some: _ => None, none: () => a),
+            none: () => b);
+
+        public override string ToString() => Match(
+            some: t => $"Some({t})",
+            none: () => "None");
+    }
+}
