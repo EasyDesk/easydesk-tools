@@ -27,7 +27,12 @@ jobs:
         run: dotnet build --no-restore -c ${{ env.BUILD_CONFIGURATION }}
       - name: Run unit tests
         run: dotnet test --no-build -c ${{ env.BUILD_CONFIGURATION }}
+      - name: Get package version
+        id: get-version
+        run: |
+          VERSION=$(echo ${{github.event.client_payload.value}} | cut -c 2-)
+          echo "::set-output name=version::$VERSION"
       - name: Create Nuget package
-        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} /p:Version=${{ github.event.release.tag_name }}
+        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} /p:Version=${{ steps.get-version.outputs.version }}
       - name: Push nuget package to nuget.org
         run: dotnet nuget push ${{ env.OUTPUT_DIR }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_URL }}
