@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using static EasyDesk.Tools.Collections.EnumerableUtils;
 
-namespace EasyDesk.Testing.Utils
+namespace EasyDesk.Tools.Testing
 {
     public static class Matrix
     {
@@ -91,7 +91,7 @@ namespace EasyDesk.Testing.Utils
             }
         }
     }
-    
+
     public class MatrixBuilder<T1> : MatrixBuilderBase<T1, MatrixBuilder<T1>>
     {
         public MatrixBuilder(IEnumerable<T1> axis) : base(ImmutableStack.Create<Expansion>(_ => axis.Cast<object>()))

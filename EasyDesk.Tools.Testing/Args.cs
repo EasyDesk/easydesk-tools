@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EasyDesk.Testing.Utils
+namespace EasyDesk.Tools.Testing
 {
     public static class Args
     {
