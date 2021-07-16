@@ -31,6 +31,7 @@ jobs:
           echo Should release: ${{ startsWith(github.ref, 'refs/tags/v') && steps.get_version.outputs.is_semver == 'true' }}
           echo Is prerelease: ${{ steps.get_version.outputs.prerelease != '' || startsWith(steps.get_version.outputs.version-without-v, '0.') }}
           echo Version: ${{ steps.get_version.outputs.version-without-v }}
+          echo Is Semantic Version: ${{ steps.get_version.outputs.is_semver }}
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-20.04
