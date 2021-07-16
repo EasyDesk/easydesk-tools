@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using static EasyDesk.Tools.Collections.EnumerableUtils;
 
 namespace EasyDesk.Tools.Testing
 {
@@ -13,7 +12,7 @@ namespace EasyDesk.Tools.Testing
 
         public static MatrixBuilder<T> Axis<T>(params T[] axis) => Axis(axis.AsEnumerable());
 
-        public static MatrixBuilder<T> Fixed<T>(T value) => new(Items(value));
+        public static MatrixBuilder<T> Fixed<T>(T value) => new(new T[] { value });
     }
 
     public delegate IEnumerable Expansion(IImmutableList<object> currentParams);
@@ -105,7 +104,7 @@ namespace EasyDesk.Tools.Testing
 
         public MatrixBuilder<T1, T2> GeneratedAxis<T2>(Func<T1, IEnumerable<T2>> axis) => new(AddExpansion(axis));
 
-        public MatrixBuilder<T1, T2> GeneratedValue<T2>(Func<T1, T2> value) => GeneratedAxis(x => Items(value(x)));
+        public MatrixBuilder<T1, T2> GeneratedValue<T2>(Func<T1, T2> value) => GeneratedAxis(x => new T2[] { value(x) });
 
         public MatrixBuilder<T1, T2> Fixed<T2>(T2 value) => GeneratedValue(_ => value);
 
@@ -125,7 +124,7 @@ namespace EasyDesk.Tools.Testing
 
         public MatrixBuilder<T1, T2, T3> GeneratedAxis<T3>(Func<(T1, T2), IEnumerable<T3>> axis) => new(AddExpansion(axis));
 
-        public MatrixBuilder<T1, T2, T3> GeneratedValue<T3>(Func<(T1, T2), T3> value) => GeneratedAxis(x => Items(value(x)));
+        public MatrixBuilder<T1, T2, T3> GeneratedValue<T3>(Func<(T1, T2), T3> value) => GeneratedAxis(x => new T3[] { value(x) });
 
         public MatrixBuilder<T1, T2, T3> Fixed<T3>(T3 value) => GeneratedValue(_ => value);
 
@@ -145,7 +144,7 @@ namespace EasyDesk.Tools.Testing
 
         public MatrixBuilder<T1, T2, T3, T4> GeneratedAxis<T4>(Func<(T1, T2, T3), IEnumerable<T4>> axis) => new(AddExpansion(axis));
 
-        public MatrixBuilder<T1, T2, T3, T4> GeneratedValue<T4>(Func<(T1, T2, T3), T4> value) => GeneratedAxis(x => Items(value(x)));
+        public MatrixBuilder<T1, T2, T3, T4> GeneratedValue<T4>(Func<(T1, T2, T3), T4> value) => GeneratedAxis(x => new T4[] { value(x) });
 
         public MatrixBuilder<T1, T2, T3, T4> Fixed<T4>(T4 value) => GeneratedValue(_ => value);
 
