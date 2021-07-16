@@ -19,7 +19,7 @@ jobs:
     name: Pre-release Checks
     runs-on: ubuntu-20.04
     outputs:
-      should-release: ${{ startsWith(github.ref, 'refs/tags/v') && steps.get_version.outputs.is_semver }}
+      should-release: ${{ startsWith(github.ref, 'refs/tags/v') && steps.get_version.outputs.is_semver == 'true' }}
       is-prerelease: ${{ steps.get_version.outputs.prerelease != '' || startsWith(steps.get_version.outputs.version-without-v, '0.') }}
       version: ${{ steps.get_version.outputs.version-without-v }}
     steps:
