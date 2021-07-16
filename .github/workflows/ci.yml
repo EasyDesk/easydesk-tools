@@ -2,29 +2,48 @@ env:
   BUILD_CONFIGURATION: Release
   PROJECT_DIR: EasyDesk.Tools
   OUTPUT_DIR: publish
+  RELEASE_PREFIX: EasyDesk Tools
+  DOTNET_VERSION: 5.x
+  NUGET_URL: https://api.nuget.org/v3/index.json
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - "*"
       - "**/*"
+    tags: 
+      - "v*"
 
 jobs:
+  release-checks:
+    if: startsWith(github.ref, 'refs/tags/v')
+    name: Pre-release Checks
+    runs-on: ubuntu-20.04
+    outputs:
+      should-release: ${{ steps.get_version.outputs.is_semver }}
+      version: ${{ steps.get_version.outputs.version-without-v }}
+      is-prerelease: ${{ steps.get_version.outputs.prerelease != "" || startsWith(steps.get_version.outputs.version-without-v, "0.") }}
+    steps:
+      - id: get_version
+        name: Get Semantic Version
+        uses: battila7/get-version-action@v2
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        dotnet-version:
-          - 5.x
+    needs: [release-checks]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup .NET Core SDK v${{ matrix.dotnet-version }}
+      - name: Setup .NET Core SDK v${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
       - name: Install dependencies
         run: dotnet restore
       - name: Build
@@ -32,4 +51,41 @@ jobs:
       - name: Run unit tests
         run: dotnet test --no-build -c ${{ env.BUILD_CONFIGURATION }}
       - name: Create Nuget package
-        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }}
+        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} /p:Version=${{ jobs.release-checks.version }}
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuget-package
+          path: ${{ env.OUTPUT_DIR }}
+  release:
+    if: jobs.release-checks.outputs.should-release
+    name: Release
+    environment: release
+    concurrency: release
+    needs: [release-checks, build_and_test]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: nuget-package
+          path: ${{ env.OUTPUT_DIR }}
+      - name: GitHub Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: ${{ jobs.release-checks.outputs.is-prerelease }}
+          files: |
+            LICENSE
+            ${{ env.OUTPUT_DIR }}/*.nupkg
+          title: ${{ env.RELEASE_PREFIX }} ${{ jobs.release-checks.outputs.version }}
+          draft: false
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: NuGet Release
+        run: dotnet nuget push ${{ env.OUTPUT_DIR }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_URL }}
+
