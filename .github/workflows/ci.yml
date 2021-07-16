@@ -19,13 +19,29 @@ jobs:
     name: Pre-release Checks
     runs-on: ubuntu-20.04
     outputs:
-      should-release: ${{ startsWith(github.ref, 'refs/tags/v') && steps.get_version.outputs.is-semver == 'true' }}
-      is-prerelease: ${{ steps.get_version.outputs.prerelease != '' || startsWith(steps.get_version.outputs.version-without-v, '0.') }}
-      version: ${{ steps.get_version.outputs.version-without-v }}
+      should-release: ${{ steps.release-info.outputs.should-release }}
+      is-prerelease: ${{ steps.release-info.outputs.is-prerelease }}
+      version: ${{ steps.adapt-version.outputs.version }}
     steps:
-      - id: get_version
-        name: Get Semantic Version
+      - id: get-version
+        name: Get semantic version
         uses: battila7/get-version-action@v2
+      - id: release-info
+        name: Get release info
+        run: |
+          SHOULD_RELEASE=${{ startsWith(github.ref, 'refs/tags/v') && steps.get-version.outputs.is-semver == 'true' }}
+          PRERELEASE=${{ steps.get-version.outputs.prerelease != '' || startsWith(steps.get-version.outputs.version-without-v, '0.') }}
+          echo "::set-output name=should-release::${SHOULD_RELEASE}"
+          echo "::set-output name=is-prerelease::${PRERELEASE}"
+      - id: adapt-version
+        name: Adapt semantic version
+        run: |
+          if [ ${{ steps.release-info.outputs.should-release }} == "true" ]; then
+            ADAPTED_VERSION=${{ steps.get-version.outputs.version-without-v }}
+          else
+            ADAPTED_VERSION=0.0.0
+          fi
+          echo "::set-output name=version::${ADAPTED_VERSION}"
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-20.04
@@ -49,12 +65,8 @@ jobs:
         run: dotnet build --no-restore -c ${{ env.BUILD_CONFIGURATION }}
       - name: Run unit tests
         run: dotnet test --no-build -c ${{ env.BUILD_CONFIGURATION }}
-      - name: Create Nuget package
-        if: ${{ needs.release-checks.outputs.should-release == 'false' }}
-        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }}
       - name: Create Nuget package for release
-        if: ${{ needs.release-checks.outputs.should-release == 'true' }}
-        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} /p:Version=${{ needs.release-checks.outputs.version }}
+        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} -p:Version=${{ needs.release-checks.outputs.version }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
