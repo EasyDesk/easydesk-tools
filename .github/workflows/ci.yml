@@ -22,7 +22,7 @@ jobs:
     outputs:
       should-release: ${{ steps.get_version.outputs.is_semver }}
       version: ${{ steps.get_version.outputs.version-without-v }}
-      is-prerelease: ${{ steps.get_version.outputs.prerelease != "" || startsWith(steps.get_version.outputs.version-without-v, "0.") }}
+      is-prerelease: ${{ steps.get_version.outputs.prerelease != '' || startsWith(steps.get_version.outputs.version-without-v, '0.') }}
     steps:
       - id: get_version
         name: Get Semantic Version
