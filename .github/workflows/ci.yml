@@ -16,11 +16,10 @@ on:
 
 jobs:
   release-checks:
-    if: startsWith(github.ref, 'refs/tags/v')
     name: Pre-release Checks
     runs-on: ubuntu-20.04
     outputs:
-      should-release: ${{ steps.get_version.outputs.is_semver }}
+      should-release: ${{ startsWith(github.ref, 'refs/tags/v') && steps.get_version.outputs.is_semver }}
       version: ${{ steps.get_version.outputs.version-without-v }}
       is-prerelease: ${{ steps.get_version.outputs.prerelease != '' || startsWith(steps.get_version.outputs.version-without-v, '0.') }}
     steps:
@@ -51,14 +50,14 @@ jobs:
       - name: Run unit tests
         run: dotnet test --no-build -c ${{ env.BUILD_CONFIGURATION }}
       - name: Create Nuget package
-        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} /p:Version=${{ jobs.release-checks.version }}
+        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} /p:Version=${{ needs.release-checks.outputs.version }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: nuget-package
           path: ${{ env.OUTPUT_DIR }}
   release:
-    if: jobs.release-checks.outputs.should-release
+    if: needs.release-checks.outputs.should-release
     name: Release
     environment: release
     concurrency: release
@@ -67,6 +66,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # All history
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
@@ -76,11 +77,11 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: ${{ jobs.release-checks.outputs.is-prerelease }}
+          prerelease: ${{ needs.release-checks.outputs.is-prerelease }}
           files: |
             LICENSE
             ${{ env.OUTPUT_DIR }}/*.nupkg
-          title: ${{ env.RELEASE_PREFIX }} ${{ jobs.release-checks.outputs.version }}
+          title: ${{ env.RELEASE_PREFIX }} ${{ needs.release-checks.outputs.version }}
           draft: false
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
