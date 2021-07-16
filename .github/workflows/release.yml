@@ -6,9 +6,8 @@ env:
   NUGET_URL: https://api.nuget.org/v3/index.json
 
 on:
-  release:
-    types:
-      - published
+  workflow_dispatch:
+    
 
 jobs:
   build_and_test:
