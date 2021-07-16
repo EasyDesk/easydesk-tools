@@ -1,10 +1,10 @@
-﻿using EasyDesk.Core.Options;
+﻿using EasyDesk.Tools.Options;
 using Shouldly;
 using System;
 using Xunit;
-using static EasyDesk.Core.Options.OptionImports;
+using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Core.UnitTests.Options
+namespace EasyDesk.Tools.UnitTests.Options
 {
     public class OptionFactoriesTests
     {

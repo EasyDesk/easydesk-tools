@@ -1,4 +1,4 @@
-﻿namespace EasyDesk.Core.PrimitiveTypes.Intervals
+﻿namespace EasyDesk.Tools.PrimitiveTypes.Intervals
 {
     public interface IMetric<T, D>
     {

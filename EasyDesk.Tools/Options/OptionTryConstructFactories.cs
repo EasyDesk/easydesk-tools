@@ -1,4 +1,4 @@
-﻿namespace EasyDesk.Core.Options
+﻿namespace EasyDesk.Tools.Options
 {
     public static partial class OptionImports
     {

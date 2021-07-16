@@ -1,4 +1,4 @@
-﻿namespace EasyDesk.Core.PrimitiveTypes.Intervals.Metrics
+﻿namespace EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics
 {
     public class RealMetric : UniformContinuousMetric<double, double>
     {

@@ -1,5 +1,5 @@
-﻿using EasyDesk.Core.Collections;
-using EasyDesk.Core.Observables;
+﻿using EasyDesk.Tools.Collections;
+using EasyDesk.Tools.Observables;
 using NSubstitute;
 using Shouldly;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDesk.Core.UnitTests.Observables
+namespace EasyDesk.Tools.UnitTests.Observables
 {
     public class SimpleAsyncEventTests
     {

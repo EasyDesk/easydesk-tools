@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace EasyDesk.Core
+namespace EasyDesk.Tools
 {
     public static class TaskUtils
     {

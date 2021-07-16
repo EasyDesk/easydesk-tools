@@ -1,9 +1,9 @@
-﻿using EasyDesk.Core.Options;
+﻿using EasyDesk.Tools.Options;
 using System;
 using System.Collections.Immutable;
-using static EasyDesk.Core.Options.OptionImports;
+using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Core.Collections
+namespace EasyDesk.Tools.Collections
 {
     public static class ImmutableDictionaryUtils
     {

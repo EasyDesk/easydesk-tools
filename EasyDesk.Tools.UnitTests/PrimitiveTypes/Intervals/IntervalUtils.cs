@@ -1,7 +1,7 @@
-﻿using EasyDesk.Core.PrimitiveTypes.Intervals;
+﻿using EasyDesk.Tools.PrimitiveTypes.Intervals;
 using System.Collections.Generic;
 
-namespace EasyDesk.Core.UnitTests.PrimitiveTypes.Intervals
+namespace EasyDesk.Tools.UnitTests.PrimitiveTypes.Intervals
 {
     public static class IntervalUtils
     {

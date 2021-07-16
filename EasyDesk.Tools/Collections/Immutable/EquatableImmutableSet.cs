@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace EasyDesk.Core.Collections.Immutable
+namespace EasyDesk.Tools.Collections.Immutable
 {
     public class EquatableImmutableSet<T> : IImmutableSet<T>
     {

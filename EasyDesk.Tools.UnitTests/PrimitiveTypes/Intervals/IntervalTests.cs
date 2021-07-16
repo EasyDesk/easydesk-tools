@@ -3,11 +3,11 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using IntegerEndpoint = EasyDesk.Core.PrimitiveTypes.Intervals.IntervalEndpoint<int>;
-using IntegerInterval = EasyDesk.Core.PrimitiveTypes.Intervals.Interval<int, int,
-    EasyDesk.Core.PrimitiveTypes.Intervals.Metrics.IntegerMetric>;
+using IntegerEndpoint = EasyDesk.Tools.PrimitiveTypes.Intervals.IntervalEndpoint<int>;
+using IntegerInterval = EasyDesk.Tools.PrimitiveTypes.Intervals.Interval<int, int,
+    EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics.IntegerMetric>;
 
-namespace EasyDesk.Core.UnitTests.PrimitiveTypes.Intervals
+namespace EasyDesk.Tools.UnitTests.PrimitiveTypes.Intervals
 {
     public class IntervalTests
     {

@@ -1,4 +1,4 @@
-﻿namespace EasyDesk.Core.PrimitiveTypes.DateAndTime
+﻿namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 {
     public static class DateTimeFormats
     {

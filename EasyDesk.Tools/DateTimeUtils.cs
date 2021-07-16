@@ -1,10 +1,10 @@
-﻿using EasyDesk.Core.Options;
-using EasyDesk.Core.PrimitiveTypes.DateAndTime;
+﻿using EasyDesk.Tools.Options;
+using EasyDesk.Tools.PrimitiveTypes.DateAndTime;
 using System.Collections.Generic;
 using System.Linq;
-using static EasyDesk.Core.Options.OptionImports;
+using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Core
+namespace EasyDesk.Tools
 {
     public struct TimeInterval
     {

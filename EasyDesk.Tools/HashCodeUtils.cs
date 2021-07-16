@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EasyDesk.Core
+namespace EasyDesk.Tools
 {
     public static class HashCodeUtils
     {

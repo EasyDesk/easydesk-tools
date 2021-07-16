@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyDesk.Core
+namespace EasyDesk.Tools
 {
     public static class Functions
     {

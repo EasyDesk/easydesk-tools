@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace EasyDesk.Core.Collections.Immutable
+namespace EasyDesk.Tools.Collections.Immutable
 {
     public class EquatableImmutableDictionary<K, V> : IImmutableDictionary<K, V>
     {

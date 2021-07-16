@@ -1,12 +1,12 @@
-﻿using EasyDesk.Core.Options;
+﻿using EasyDesk.Tools.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using static EasyDesk.Core.Functions;
-using static EasyDesk.Core.Options.OptionImports;
+using static EasyDesk.Tools.Functions;
+using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Core.Collections
+namespace EasyDesk.Tools.Collections
 {
     public static class EnumerableUtils
     {

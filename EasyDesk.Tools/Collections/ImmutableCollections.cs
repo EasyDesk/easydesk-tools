@@ -1,9 +1,9 @@
-﻿using EasyDesk.Core.Collections.Immutable;
+﻿using EasyDesk.Tools.Collections.Immutable;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace EasyDesk.Core.Collections
+namespace EasyDesk.Tools.Collections
 {
     public static class ImmutableCollections
     {

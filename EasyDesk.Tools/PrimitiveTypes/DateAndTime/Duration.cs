@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace EasyDesk.Core.PrimitiveTypes.DateAndTime
+namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 {
     public record Duration : IComparable<Duration>, IFormattable
     {

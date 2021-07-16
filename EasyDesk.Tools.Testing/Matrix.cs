@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using static EasyDesk.Core.Collections.EnumerableUtils;
+using static EasyDesk.Tools.Collections.EnumerableUtils;
 
 namespace EasyDesk.Testing.Utils
 {

@@ -1,8 +1,8 @@
-﻿using EasyDesk.Core.PrimitiveTypes.Intervals.Metrics;
+﻿using EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics;
 using System;
 using System.Globalization;
 
-namespace EasyDesk.Core.PrimitiveTypes.DateAndTime
+namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 {
     public record Date : IComparable<Date>, IFormattable
     {

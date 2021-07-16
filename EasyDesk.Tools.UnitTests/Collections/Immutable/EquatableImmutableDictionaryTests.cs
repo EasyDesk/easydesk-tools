@@ -1,10 +1,10 @@
-﻿using EasyDesk.Core.Collections.Immutable;
+﻿using EasyDesk.Tools.Collections.Immutable;
 using Shouldly;
 using System.Collections.Generic;
 using Xunit;
-using static EasyDesk.Core.Collections.ImmutableCollections;
+using static EasyDesk.Tools.Collections.ImmutableCollections;
 
-namespace EasyDesk.Core.UnitTests.Collections.Immutable
+namespace EasyDesk.Tools.UnitTests.Collections.Immutable
 {
     public class EquatableImmutableDictionaryTests
     {

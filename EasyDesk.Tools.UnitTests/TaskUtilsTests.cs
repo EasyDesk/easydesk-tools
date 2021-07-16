@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDesk.Core.UnitTests
+namespace EasyDesk.Tools.UnitTests
 {
     public class TaskUtilsTests
     {

@@ -1,12 +1,12 @@
-﻿using EasyDesk.Core.Collections;
+﻿using EasyDesk.Tools.Collections;
 using NSubstitute;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using Xunit;
-using static EasyDesk.Core.Options.OptionImports;
+using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Core.UnitTests.Collections
+namespace EasyDesk.Tools.UnitTests.Collections
 {
     public class DictionaryUtilsTests
     {

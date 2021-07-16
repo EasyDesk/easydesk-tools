@@ -1,10 +1,10 @@
-﻿using EasyDesk.Core.Collections;
+﻿using EasyDesk.Tools.Collections;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace EasyDesk.Core.UnitTests.Collections
+namespace EasyDesk.Tools.UnitTests.Collections
 {
     public class CollectionUtilsTests
     {

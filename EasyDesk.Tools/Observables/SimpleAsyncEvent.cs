@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EasyDesk.Core.Observables
+namespace EasyDesk.Tools.Observables
 {
     public class SimpleAsyncEvent<T> : IAsyncObservable<T>, IAsyncEmitter<T>
     {

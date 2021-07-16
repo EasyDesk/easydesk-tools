@@ -1,9 +1,9 @@
-﻿using EasyDesk.Core.Options;
+﻿using EasyDesk.Tools.Options;
 using System;
 using System.Linq;
-using static EasyDesk.Core.Functions;
+using static EasyDesk.Tools.Functions;
 
-namespace EasyDesk.Core.PrimitiveTypes.Intervals
+namespace EasyDesk.Tools.PrimitiveTypes.Intervals
 {
     public record Interval<T, D, M>
         where T : IComparable<T>

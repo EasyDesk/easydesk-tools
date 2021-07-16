@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static EasyDesk.Core.Options.OptionImports;
+using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Core.Options
+namespace EasyDesk.Tools.Options
 {
     public readonly struct NoneOption
     {

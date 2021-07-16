@@ -1,10 +1,10 @@
-﻿using EasyDesk.Core.Options;
+﻿using EasyDesk.Tools.Options;
 using System;
 using System.Threading.Tasks;
-using static EasyDesk.Core.Functions;
-using static EasyDesk.Core.Options.OptionImports;
+using static EasyDesk.Tools.Functions;
+using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Core.Results
+namespace EasyDesk.Tools.Results
 {
     public abstract record ResultBase<T, E>
     {

@@ -1,6 +1,6 @@
-﻿using EasyDesk.Core.Results;
+﻿using EasyDesk.Tools.Results;
 
-namespace EasyDesk.Core
+namespace EasyDesk.Tools
 {
     public delegate T Mapper<T>(T arg);
 

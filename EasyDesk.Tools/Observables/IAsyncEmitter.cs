@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace EasyDesk.Core.Observables
+namespace EasyDesk.Tools.Observables
 {
     public interface IAsyncEmitter<in T>
     {

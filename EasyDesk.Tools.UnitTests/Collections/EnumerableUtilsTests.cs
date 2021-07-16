@@ -1,15 +1,15 @@
-﻿using EasyDesk.Core.Options;
+﻿using EasyDesk.Tools.Options;
 using NSubstitute;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using static EasyDesk.Core.Collections.EnumerableUtils;
-using static EasyDesk.Core.Options.OptionImports;
+using static EasyDesk.Tools.Collections.EnumerableUtils;
+using static EasyDesk.Tools.Options.OptionImports;
 using static System.Linq.Enumerable;
 
-namespace EasyDesk.Core.UnitTests.Collections
+namespace EasyDesk.Tools.UnitTests.Collections
 {
     public class EnumerableUtilsTests
     {

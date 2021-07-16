@@ -1,7 +1,7 @@
-﻿using EasyDesk.Core.Options;
-using static EasyDesk.Core.Options.OptionImports;
+﻿using EasyDesk.Tools.Options;
+using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Core.PrimitiveTypes.Intervals
+namespace EasyDesk.Tools.PrimitiveTypes.Intervals
 {
     public record IntervalEndpoint<T>
     {
