@@ -21,7 +21,7 @@ jobs:
     outputs:
       should-release: ${{ steps.release-info.outputs.should-release }}
       is-prerelease: ${{ steps.release-info.outputs.is-prerelease }}
-      version: ${{ steps.adapt-version.outputs.version }}
+      version: ${{ steps.release-info.outputs.version }}
     steps:
       - id: get-version
         name: Get semantic version
@@ -29,19 +29,17 @@ jobs:
       - id: release-info
         name: Get release info
         run: |
-          SHOULD_RELEASE=${{ startsWith(github.ref, 'refs/tags/v') && steps.get-version.outputs.is-semver == 'true' }}
+          SHOULD_RELEASE=${{ startsWith(github.ref, 'refs/tags/v') && steps.get-version.outputs.is-semver == true }}
           PRERELEASE=${{ steps.get-version.outputs.prerelease != '' || startsWith(steps.get-version.outputs.version-without-v, '0.') }}
-          echo "::set-output name=should-release::${SHOULD_RELEASE}"
-          echo "::set-output name=is-prerelease::${PRERELEASE}"
-      - id: adapt-version
-        name: Adapt semantic version
-        run: |
-          if [ ${{ steps.release-info.outputs.should-release }} == "true" ]; then
+          if [ ${SHOULD_RELEASE} == true ]; then
             ADAPTED_VERSION=${{ steps.get-version.outputs.version-without-v }}
           else
             ADAPTED_VERSION=0.0.0
           fi
+          echo "::set-output name=should-release::${SHOULD_RELEASE}"
+          echo "::set-output name=is-prerelease::${PRERELEASE}"
           echo "::set-output name=version::${ADAPTED_VERSION}"
+          
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-20.04
@@ -73,7 +71,7 @@ jobs:
           name: nuget-package
           path: ${{ env.OUTPUT_DIR }}
   release:
-    if: ${{ needs.release-checks.outputs.should-release == 'true' }}
+    if: ${{ needs.release-checks.outputs.should-release == true }}
     name: Release
     environment: release
     concurrency: release
