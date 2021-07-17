@@ -1,4 +1,5 @@
-﻿using EasyDesk.Tools.PrimitiveTypes.Intervals;
+﻿using EasyDesk.Testing.MatrixExpansion;
+using EasyDesk.Tools.PrimitiveTypes.Intervals;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using IntegerEndpoint = EasyDesk.Tools.PrimitiveTypes.Intervals.IntervalEndpoint
 using IntegerExtension = EasyDesk.Tools.PrimitiveTypes.Intervals.IntervalExtension<int>;
 using IntegerInterval = EasyDesk.Tools.PrimitiveTypes.Intervals.Interval<int, int,
     EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics.IntegerMetric>;
-using EasyDesk.Tools.Testing;
 
 namespace EasyDesk.Tools.UnitTests.PrimitiveTypes.Intervals
 {
