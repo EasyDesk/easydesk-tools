@@ -15,9 +15,11 @@ namespace EasyDesk.Tools.Collections
 
         public static IImmutableSet<T> Set<T>(params T[] items) => Set(items as IEnumerable<T>);
 
-        public static IImmutableSet<T> Set<T>(IEnumerable<T> items)
+        public static IImmutableSet<T> Set<T>(IEnumerable<T> items) => Set(items, EqualityComparer<T>.Default);
+
+        public static IImmutableSet<T> Set<T>(IEnumerable<T> items, IEqualityComparer<T> comparer)
         {
-            var set = ImmutableHashSet.CreateRange(items);
+            var set = ImmutableHashSet.CreateRange(comparer, items);
             return EquatableImmutableSet<T>.FromHashSet(set);
         }
 
