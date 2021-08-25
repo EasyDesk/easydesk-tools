@@ -35,6 +35,14 @@ namespace EasyDesk.Tools.Results
             success: _ => None,
             failure: e => Some(e));
 
+        public T ReadValue() => Match(
+            success: t => t,
+            failure: _ => throw new InvalidOperationException("Cannot read value from an error result"));
+
+        public E ReadError() => Match(
+            success: _ => throw new InvalidOperationException("Cannot read error from a successful result"),
+            failure: e => e);
+
         public R Match<R>(Func<T, R> success, Func<E, R> failure) => IsFailure ? failure(_error) : success(_value);
 
         public void Match(Action<T> success = null, Action<E> failure = null)
