@@ -13,6 +13,11 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
