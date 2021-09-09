@@ -70,6 +70,7 @@ jobs:
         with:
           project-names: ${{ env.PROJECT_DIR }}
           package-version: ${{ needs.release-checks.outputs.version }}
+          output-dir: ${{ env.OUTPUT_DIR }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
