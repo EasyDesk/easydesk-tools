@@ -66,7 +66,10 @@ jobs:
       - name: Run unit tests
         run: dotnet test --no-build -c ${{ env.BUILD_CONFIGURATION }}
       - name: Create Nuget package for release
-        run: dotnet pack ${{ env.PROJECT_DIR }} --no-build -o ${{ env.OUTPUT_DIR }} -c ${{ env.BUILD_CONFIGURATION }} -p:Version=${{ needs.release-checks.outputs.version }}
+        uses: EasyDesk/action-dotnet-pack@v0.1.1
+        with:
+          project-names: ${{ env.PROJECT_DIR }}
+          package-version: ${{ needs.release-checks.outputs.version }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
