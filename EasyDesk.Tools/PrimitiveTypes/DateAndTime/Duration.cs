@@ -7,9 +7,9 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
     {
         private Duration(TimeSpan timeSpan)
         {
-            if (timeSpan <= TimeSpan.Zero)
+            if (timeSpan < TimeSpan.Zero)
             {
-                throw new ArgumentException("Durations must be positive", nameof(timeSpan));
+                throw new ArgumentException("Durations must be positive or zero", nameof(timeSpan));
             }
 
             AsTimeSpan = timeSpan;
@@ -17,6 +17,8 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 
         #region Factories
         public static Duration FromTimeSpan(TimeSpan timeSpan) => new(timeSpan);
+
+        public static Duration FromTimeOffset(TimeOffset timeOffset) => FromTimeSpan(timeOffset.AsTimeSpan);
 
         public static Duration Parse(string duration) => FromTimeSpan(TimeSpan.Parse(duration, CultureInfo.InvariantCulture));
 
@@ -29,8 +31,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static Duration FromSeconds(double seconds) => FromTimeSpan(TimeSpan.FromSeconds(seconds));
 
         public static Duration FromMilliseconds(double ms) => FromTimeSpan(TimeSpan.FromMilliseconds(ms));
-
-        public static Duration Since(DateTime time) => FromTimeSpan(DateTime.Now - time);
         #endregion
 
         public TimeSpan AsTimeSpan { get; }
