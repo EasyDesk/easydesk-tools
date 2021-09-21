@@ -1,8 +1,6 @@
 name: Continuous Integration
 
 env:
-  PROJECT_DIR: EasyDesk.Tools
-  OUTPUT_DIR: publish
   DOTNET_VERSION: 5.x
 
 on:
@@ -16,6 +14,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-20.04
+    env:
+      PROJECT_DIR: EasyDesk.Tools
+      OUTPUT_DIR: publish
     outputs:
       version: ${{ steps.semver.outputs.version }}
       should-release: ${{ steps.semver.outputs.should-release }}
@@ -61,8 +62,7 @@ jobs:
         with:
           version: ${{ needs.build.outputs.version }}
           prerelease: ${{ needs.build.outputs.is-prerelease }}
-          files: |
-            ${{ env.OUTPUT_DIR }}/*.nupkg
+          files: '*.nupkg'
   deploy:
     name: Deploy to NuGet
     needs: [release]
@@ -74,7 +74,7 @@ jobs:
         with:
           name: nuget-package
       - name: NuGet push
-        uses: EasyDesk/action-nuget-push@v1
+        uses: EasyDesk/job-nuget-library-deploy@v1
         with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-
