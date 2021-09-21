@@ -32,6 +32,7 @@ namespace EasyDesk.Tools
             }
 
             public bool Equals(T x, T y) => _equals(x, y);
+
             public int GetHashCode(T obj) => _hashCode(obj);
         }
     }

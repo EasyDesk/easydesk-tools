@@ -49,6 +49,6 @@ namespace EasyDesk.Tools
             });
 
         private static Comparison<T> CompareBy<T, P>(Func<T, P> property, OrderingDirection direction) where P : IComparable<P> =>
-            (x, y) => property(x).CompareTo(property(y)) * (int) direction;
+            (x, y) => property(x).CompareTo(property(y)) * (int)direction;
     }
 }

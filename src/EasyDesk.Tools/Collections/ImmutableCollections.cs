@@ -27,12 +27,12 @@ namespace EasyDesk.Tools.Collections
 
         public static IImmutableList<T> List<T>(IEnumerable<T> items) => ImmutableList.CreateRange(items);
 
-        public static IImmutableDictionary<K, V> Map<K, V>(params (K key, V value)[] items) =>
+        public static IImmutableDictionary<K, V> Map<K, V>(params (K Key, V Value)[] items) =>
             Map(items as IEnumerable<(K, V)>);
 
-        public static IImmutableDictionary<K, V> Map<K, V>(IEnumerable<(K key, V value)> items)
+        public static IImmutableDictionary<K, V> Map<K, V>(IEnumerable<(K Key, V Value)> items)
         {
-            var pairs = items.Select(x => new KeyValuePair<K, V>(x.key, x.value));
+            var pairs = items.Select(x => new KeyValuePair<K, V>(x.Key, x.Value));
             return Map(pairs);
         }
 

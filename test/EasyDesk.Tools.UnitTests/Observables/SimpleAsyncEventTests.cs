@@ -11,14 +11,14 @@ namespace EasyDesk.Tools.UnitTests.Observables
 {
     public class SimpleAsyncEventTests
     {
-        private const int _value = 0;
+        private const int Value = 0;
 
         private readonly SimpleAsyncEvent<int> _sut = new();
 
         [Fact]
         public async Task Emit_ShouldNotFail_IfEventHasNoSubscriber()
         {
-            await Should.NotThrowAsync(() => _sut.Emit(_value));
+            await Should.NotThrowAsync(() => _sut.Emit(Value));
         }
 
         [Fact]
@@ -29,10 +29,10 @@ namespace EasyDesk.Tools.UnitTests.Observables
             _sut.Subscribe(handler1);
             _sut.Subscribe(handler2);
 
-            await _sut.Emit(_value);
+            await _sut.Emit(Value);
 
-            handler1.Received(1)(_value);
-            handler2.Received(1)(_value);
+            handler1.Received(1)(Value);
+            handler2.Received(1)(Value);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace EasyDesk.Tools.UnitTests.Observables
             var subscription = _sut.Subscribe(handler);
             subscription.Unsubscribe();
 
-            await _sut.Emit(_value);
+            await _sut.Emit(Value);
 
             handler.DidNotReceiveWithAnyArgs()(default);
         }

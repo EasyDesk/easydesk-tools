@@ -9,47 +9,47 @@ namespace EasyDesk.Tools.UnitTests.Options
 {
     public class OptionMatchersTests
     {
-        private const int _value = 5;
-        private const int _other = 10;
+        private const int Value = 5;
+        private const int Other = 10;
 
-        private const string _reference = "abc";
+        private const string Reference = "abc";
 
         [Fact]
         public void OrElse_ShouldReturnTheGivenValue_IfOptionIsEmpty()
         {
-            NoneT<int>().OrElse(_other).ShouldBe(_other);
+            NoneT<int>().OrElse(Other).ShouldBe(Other);
         }
 
         [Fact]
         public void OrElse_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty()
         {
-            Some(_value).OrElse(_other).ShouldBe(_value);
+            Some(Value).OrElse(Other).ShouldBe(Value);
         }
 
         [Fact]
         public void OrElseGet_ShouldReturnTheValueReturnedByTheGivenFunction_IfOptionIsEmpty()
         {
-            NoneT<int>().OrElseGet(() => _other).ShouldBe(_other);
+            NoneT<int>().OrElseGet(() => Other).ShouldBe(Other);
         }
 
         [Fact]
         public void OrElseGet_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty()
         {
-            Some(_value).OrElseGet(() => _other).ShouldBe(_value);
+            Some(Value).OrElseGet(() => Other).ShouldBe(Value);
         }
 
         [Fact]
         public async Task OrElseGetAsync_ShouldReturnTheGivenTask_IfOptionIsEmpty()
         {
-            var result = await NoneT<int>().OrElseGetAsync(() => Task.FromResult(_other));
-            result.ShouldBe(_other);
+            var result = await NoneT<int>().OrElseGetAsync(() => Task.FromResult(Other));
+            result.ShouldBe(Other);
         }
 
         [Fact]
         public async Task OrElseGetAsync_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty()
         {
-            var result = await Some(_value).OrElseGetAsync(() => Task.FromResult(_other));
-            result.ShouldBe(_value);
+            var result = await Some(Value).OrElseGetAsync(() => Task.FromResult(Other));
+            result.ShouldBe(Value);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace EasyDesk.Tools.UnitTests.Options
         [Fact]
         public void OrElseDefault_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty()
         {
-            Some(_value).OrElseDefault().ShouldBe(_value);
+            Some(Value).OrElseDefault().ShouldBe(Value);
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace EasyDesk.Tools.UnitTests.Options
         [Fact]
         public void OrElseNull_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty()
         {
-            Some(_reference).OrElseNull().ShouldBe(_reference);
+            Some(Reference).OrElseNull().ShouldBe(Reference);
         }
 
         [Fact]
@@ -85,13 +85,13 @@ namespace EasyDesk.Tools.UnitTests.Options
         [Fact]
         public void OrElseThrow_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty()
         {
-            Some(_value).OrElseThrow(() => new Exception()).ShouldBe(_value);
+            Some(Value).OrElseThrow(() => new Exception()).ShouldBe(Value);
         }
 
         [Fact]
         public void AsNullable_ShouldReturnNull_IfOptionIsEmpty()
         {
-            Some(_value).AsNullable().ShouldBe(_value);
+            Some(Value).AsNullable().ShouldBe(Value);
         }
 
         [Fact]

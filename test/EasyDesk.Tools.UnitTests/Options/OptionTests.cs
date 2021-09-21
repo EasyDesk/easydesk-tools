@@ -8,20 +8,20 @@ namespace EasyDesk.Tools.UnitTests.Options
 {
     public class OptionTests
     {
-        private const int _value = 5;
+        private const int Value = 5;
 
         [Fact]
         public void IsPresent_ShouldBeTrue_OnlyIfOptionIsNotEmpty()
         {
             NoneT<int>().IsPresent.ShouldBeFalse();
-            Some(_value).IsPresent.ShouldBeTrue();
+            Some(Value).IsPresent.ShouldBeTrue();
         }
 
         [Fact]
         public void IsAbsent_ShouldBeTrue_OnlyIfOptionIsEmpty()
         {
             NoneT<int>().IsAbsent.ShouldBeTrue();
-            Some(_value).IsAbsent.ShouldBeFalse();
+            Some(Value).IsAbsent.ShouldBeFalse();
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace EasyDesk.Tools.UnitTests.Options
         [Fact]
         public void ReadingValue_ShouldSucceed_IfOptionIsNotEmpty()
         {
-            Some(_value).Value.ShouldBe(_value);
+            Some(Value).Value.ShouldBe(Value);
         }
 
         [Fact]
@@ -43,9 +43,9 @@ namespace EasyDesk.Tools.UnitTests.Options
 
             var res = NoneT<int>().Match(
                 some: shouldNotBeCalled,
-                none: () => _value);
+                none: () => Value);
 
-            res.ShouldBe(_value);
+            res.ShouldBe(Value);
             shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default);
         }
 
@@ -54,11 +54,11 @@ namespace EasyDesk.Tools.UnitTests.Options
         {
             var shouldNotBeCalled = Substitute.For<Func<int>>();
 
-            var res = Some(_value).Match(
+            var res = Some(Value).Match(
                 some: v => v + 1,
                 none: shouldNotBeCalled);
 
-            res.ShouldBe(_value + 1);
+            res.ShouldBe(Value + 1);
             shouldNotBeCalled.DidNotReceiveWithAnyArgs()();
         }
 
@@ -82,12 +82,12 @@ namespace EasyDesk.Tools.UnitTests.Options
             var shouldBeCalled = Substitute.For<Action<int>>();
             var shouldNotBeCalled = Substitute.For<Action>();
 
-            Some(_value).Match(
+            Some(Value).Match(
                 some: shouldBeCalled,
                 none: shouldNotBeCalled);
 
             shouldNotBeCalled.DidNotReceiveWithAnyArgs()();
-            shouldBeCalled.Received(1)(_value);
+            shouldBeCalled.Received(1)(Value);
         }
     }
 }

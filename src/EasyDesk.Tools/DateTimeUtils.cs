@@ -18,7 +18,7 @@ namespace EasyDesk.Tools
             EndTime = end;
         }
 
-        public static implicit operator TimeInterval((TimeOfDay, TimeOfDay) interval) => new(interval.Item1, interval.Item2);
+        public static implicit operator TimeInterval((TimeOfDay Start, TimeOfDay End) interval) => new(interval.Start, interval.End);
     }
 
     public struct DateTimeInterval
@@ -33,7 +33,7 @@ namespace EasyDesk.Tools
             End = end;
         }
 
-        public static implicit operator DateTimeInterval((Timestamp, Timestamp) interval) => new(interval.Item1, interval.Item2);
+        public static implicit operator DateTimeInterval((Timestamp Start, Timestamp End) interval) => new(interval.Start, interval.End);
     }
 
     public struct DateInterval
@@ -48,7 +48,7 @@ namespace EasyDesk.Tools
             EndDate = end;
         }
 
-        public static implicit operator DateInterval((Date, Date) interval) => new(interval.Item1, interval.Item2);
+        public static implicit operator DateInterval((Date Start, Date End) interval) => new(interval.Start, interval.End);
     }
 
     public static class DateTimeUtils
@@ -80,7 +80,7 @@ namespace EasyDesk.Tools
     {
         public static bool Contains(this DateInterval interval, Date date) =>
             (interval.StartDate is null || interval.StartDate <= date) &&
-            (interval.EndDate is null|| interval.EndDate >= date);
+            (interval.EndDate is null || interval.EndDate >= date);
 
         public static Option<DateInterval> Intersect(this DateInterval interval, DateInterval other)
         {

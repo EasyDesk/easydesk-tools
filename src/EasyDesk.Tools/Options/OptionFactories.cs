@@ -6,7 +6,7 @@ namespace EasyDesk.Tools.Options
     {
         public static NoneOption None => NoneOption.Value;
 
-        public static Option<T> NoneT<T>() => new();
+        public static Option<T> NoneT<T>() => default;
 
         public static Option<T> Some<T>(T value) =>
             value is null ? throw new ArgumentNullException(nameof(value)) : new(value);

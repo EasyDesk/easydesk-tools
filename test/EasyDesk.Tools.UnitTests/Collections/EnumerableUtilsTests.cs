@@ -1,13 +1,13 @@
-﻿using EasyDesk.Tools.Options;
-using NSubstitute;
-using Shouldly;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EasyDesk.Tools.Options;
+using NSubstitute;
+using Shouldly;
 using Xunit;
+using static System.Linq.Enumerable;
 using static EasyDesk.Tools.Collections.EnumerableUtils;
 using static EasyDesk.Tools.Options.OptionImports;
-using static System.Linq.Enumerable;
 
 namespace EasyDesk.Tools.UnitTests.Collections
 {
@@ -143,15 +143,15 @@ namespace EasyDesk.Tools.UnitTests.Collections
         public void Scan_ShouldReturnTheSeedAlone_IfSequenceIsEmpty()
         {
             var next = Substitute.For<Func<string, int, string>>();
-            var seed = "";
+            var seed = string.Empty;
             Empty<int>().Scan(seed, next).ShouldBe(Items(seed));
         }
 
         [Fact]
         public void Scan_ShouldReturnTheSequenceOfResultStartingFromTheSeed_IfSequenceIsNotEmpty()
         {
-            Range(1, 5).Scan("", (s, n) => s + n).ShouldBe(Items(
-                "",
+            Range(1, 5).Scan(string.Empty, (s, n) => s + n).ShouldBe(Items(
+                string.Empty,
                 "1",
                 "12",
                 "123",
@@ -163,13 +163,13 @@ namespace EasyDesk.Tools.UnitTests.Collections
         public void ZipScan_ShouldReturnAnEmptySequence_IfSequenceIsEmpty()
         {
             var next = Substitute.For<Func<string, int, string>>();
-            Empty<int>().ZipScan("", next).ShouldBe(Empty<(int, string)>());
+            Empty<int>().ZipScan(string.Empty, next).ShouldBe(Empty<(int, string)>());
         }
 
         [Fact]
         public void ZipScan_ShouldReturnTheSequenceOfResultsPairedWithItems_IfSequenceIsNotEmpty()
         {
-            Range(1, 5).ZipScan("", (s, n) => s + n).ShouldBe(Items(
+            Range(1, 5).ZipScan(string.Empty, (s, n) => s + n).ShouldBe(Items(
                 (1, "1"),
                 (2, "12"),
                 (3, "123"),
@@ -194,7 +194,7 @@ namespace EasyDesk.Tools.UnitTests.Collections
         }
 
         public record Wrapper(int Value);
-        
+
         [Fact]
         public void MinMaxByOption_ShouldReturnNone_IfSequenceIsEmpty()
         {

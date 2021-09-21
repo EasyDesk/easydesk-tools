@@ -21,13 +21,11 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
             AsTimeSpan = timeSpan;
         }
 
-        #region Factories
         public static TimeOfDay StartOfDay => FromTimeSpan(TimeSpan.Zero);
 
         public static TimeOfDay FromTimeSpan(TimeSpan timeSpan) => new(timeSpan);
 
         public static TimeOfDay Parse(string timeOfDay) => FromTimeSpan(TimeSpan.Parse(timeOfDay, CultureInfo.InvariantCulture));
-        #endregion
 
         public TimeSpan AsTimeSpan { get; }
 
@@ -39,7 +37,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 
         public static TimeOfDay operator -(TimeOfDay left, TimeOffset right) => FromTimeSpan(left.AsTimeSpan - right.AsTimeSpan);
 
-        #region Common operators
         public override string ToString() => ToString(DateTimeFormats.Time.Long);
 
         public string ToString(string format) => ToString(format, CultureInfo.InvariantCulture);
@@ -53,7 +50,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static bool operator >(TimeOfDay left, TimeOfDay right) => left.CompareTo(right) > 0;
 
         public static bool operator >=(TimeOfDay left, TimeOfDay right) => left.CompareTo(right) >= 0;
-        #endregion
     }
 
     public class TimeOfDayMetric : UniformContinuousMetric<TimeOfDay, TimeOffset>

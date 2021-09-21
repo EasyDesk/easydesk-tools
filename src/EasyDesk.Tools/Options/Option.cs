@@ -8,7 +8,7 @@ namespace EasyDesk.Tools.Options
 {
     public readonly struct NoneOption
     {
-        public static NoneOption Value { get; } = new();
+        public static NoneOption Value { get; } = default;
     }
 
     public readonly struct Option<T> : IEnumerable<T>
@@ -67,7 +67,9 @@ namespace EasyDesk.Tools.Options
             }
         }
 
-        public static implicit operator Option<T>(NoneOption _) => new();
+#pragma warning disable IDE0060
+        public static implicit operator Option<T>(NoneOption none) => default;
+#pragma warning restore IDE0060
 
         public static implicit operator Option<T>(T value) => Some(value);
 

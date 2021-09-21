@@ -121,7 +121,7 @@ namespace EasyDesk.Tools.Collections
             }
         }
 
-        public static IEnumerable<(T item, TTemp scan)> ZipScan<T, TTemp>(this IEnumerable<T> input, TTemp seed, Func<TTemp, T, TTemp> next)
+        public static IEnumerable<(T Item, TTemp Scan)> ZipScan<T, TTemp>(this IEnumerable<T> input, TTemp seed, Func<TTemp, T, TTemp> next)
         {
             foreach (var item in input)
             {

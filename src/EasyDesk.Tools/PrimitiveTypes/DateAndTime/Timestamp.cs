@@ -16,14 +16,12 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
             AsDateTime = dateTime;
         }
 
-        #region Factories
         public static Timestamp FromUtcDateTime(DateTime dateTime) => new(dateTime);
 
         public static Timestamp Now => FromUtcDateTime(DateTime.UtcNow);
 
         public static Timestamp Parse(string timestamp) =>
             FromUtcDateTime(DateTime.Parse(timestamp, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal));
-        #endregion
 
         public DateTime AsDateTime { get; }
 
@@ -35,7 +33,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 
         public static TimeOffset operator -(Timestamp left, Timestamp right) => TimeOffset.FromTimeSpan(left.AsDateTime - right.AsDateTime);
 
-        #region Common operators
         public override string ToString() => ToString(DateTimeFormats.RoundTripDateTime);
 
         public string ToString(string format) => ToString(format, CultureInfo.InvariantCulture);
@@ -49,7 +46,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static bool operator >(Timestamp left, Timestamp right) => left.CompareTo(right) > 0;
 
         public static bool operator >=(Timestamp left, Timestamp right) => left.CompareTo(right) >= 0;
-        #endregion
     }
 
     public class TimestampMetric : UniformContinuousMetric<Timestamp, TimeOffset>

@@ -11,7 +11,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
             AsDateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
         }
 
-        #region Factories
         public static LocalDateTime FromDateTime(DateTime dateTime) => new(dateTime);
 
         public static LocalDateTime FromDateAndTimeOfDay(Date date, TimeOfDay timeOfDay) =>
@@ -22,7 +21,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 
         public static LocalDateTime Parse(string localDateTime) =>
             FromDateTime(DateTime.Parse(localDateTime, CultureInfo.InvariantCulture));
-        #endregion
 
         public DateTime AsDateTime { get; }
 
@@ -41,7 +39,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static TimeOffset operator -(LocalDateTime left, LocalDateTime right) =>
             TimeOffset.FromTimeSpan(left.AsDateTime - right.AsDateTime);
 
-        #region Common operators
         public override string ToString() => ToString(DateTimeFormats.RoundTripDateTime);
 
         public string ToString(string format) => ToString(format, CultureInfo.InvariantCulture);
@@ -55,7 +52,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static bool operator >(LocalDateTime left, LocalDateTime right) => left.CompareTo(right) > 0;
 
         public static bool operator >=(LocalDateTime left, LocalDateTime right) => left.CompareTo(right) >= 0;
-        #endregion
     }
 
     public class LocalDateTimeMetric : UniformContinuousMetric<LocalDateTime, TimeOffset>

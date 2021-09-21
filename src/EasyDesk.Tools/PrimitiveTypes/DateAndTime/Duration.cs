@@ -15,7 +15,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
             AsTimeSpan = timeSpan;
         }
 
-        #region Factories
         public static Duration FromTimeSpan(TimeSpan timeSpan) => new(timeSpan);
 
         public static Duration FromTimeOffset(TimeOffset timeOffset) => FromTimeSpan(timeOffset.AsTimeSpan);
@@ -31,7 +30,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static Duration FromSeconds(double seconds) => FromTimeSpan(TimeSpan.FromSeconds(seconds));
 
         public static Duration FromMilliseconds(double ms) => FromTimeSpan(TimeSpan.FromMilliseconds(ms));
-        #endregion
 
         public TimeSpan AsTimeSpan { get; }
 
@@ -39,7 +37,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 
         public int CompareTo(Duration other) => AsTimeSpan.CompareTo(other.AsTimeSpan);
 
-        #region Common operators
         public override string ToString() => ToString(TimeFormats.Invariant);
 
         public string ToString(string format) => ToString(format, CultureInfo.InvariantCulture);
@@ -53,6 +50,5 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static bool operator <=(Duration left, Duration right) => left.CompareTo(right) <= 0;
 
         public static bool operator >=(Duration left, Duration right) => left.CompareTo(right) >= 0;
-        #endregion
     }
 }

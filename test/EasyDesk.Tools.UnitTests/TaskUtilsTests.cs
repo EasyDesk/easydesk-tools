@@ -12,6 +12,7 @@ namespace EasyDesk.Tools.UnitTests
         private readonly Exception _exception = new("FAILED");
 
         private Task<int> SuccessfulTask => YieldedTask(() => _value);
+
         private Task<int> FailedTask => YieldedTask(() => throw _exception);
 
         private async Task<int> YieldedTask(Func<int> result)
@@ -142,31 +143,31 @@ namespace EasyDesk.Tools.UnitTests
             await ShouldThrowTheExpectedException(() => SuccessfulTask.FlatMap(x => Task.FromException<int>(_exception)));
         }
 
-        //[Fact]
-        //public async Task FireAndForget_ShouldCallTheExceptionHandler_IfTheTaskFailsWithACompatibleException()
-        //{
-        //    var exceptionHandler = Substitute.For<Action<Exception>>();
-        //    FailedTask.FireAndForget(exceptionHandler);
-        //    await HandlingException(FailedTask);
-        //    exceptionHandler.Received(1)(_exception);
-        //}
+        ////[Fact]
+        ////public async Task FireAndForget_ShouldCallTheExceptionHandler_IfTheTaskFailsWithACompatibleException()
+        ////{
+        ////    var exceptionHandler = Substitute.For<Action<Exception>>();
+        ////    FailedTask.FireAndForget(exceptionHandler);
+        ////    await HandlingException(FailedTask);
+        ////    exceptionHandler.Received(1)(_exception);
+        ////}
 
-        //[Fact]
-        //public async Task FireAndForget_ShouldNotCallTheExceptionHandler_IfTheTaskFailsWithAnIncompatibleException()
-        //{
-        //    var exceptionHandler = Substitute.For<Action<InvalidOperationException>>();
-        //    FailedTask.FireAndForget(exceptionHandler);
-        //    await HandlingException(FailedTask);
-        //    exceptionHandler.DidNotReceiveWithAnyArgs()(default);
-        //}
+        ////[Fact]
+        ////public async Task FireAndForget_ShouldNotCallTheExceptionHandler_IfTheTaskFailsWithAnIncompatibleException()
+        ////{
+        ////    var exceptionHandler = Substitute.For<Action<InvalidOperationException>>();
+        ////    FailedTask.FireAndForget(exceptionHandler);
+        ////    await HandlingException(FailedTask);
+        ////    exceptionHandler.DidNotReceiveWithAnyArgs()(default);
+        ////}
 
-        //private async Task HandlingException(Task task)
-        //{
-        //    try
-        //    {
-        //        await task;
-        //    }
-        //    catch { }
-        //}
+        ////private async Task HandlingException(Task task)
+        ////{
+        ////    try
+        ////    {
+        ////        await task;
+        ////    }
+        ////    catch { }
+        ////}
     }
 }

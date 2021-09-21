@@ -11,11 +11,9 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
             AsDateTime = DateTime.SpecifyKind(date, DateTimeKind.Unspecified).Date;
         }
 
-        #region Factories
         public static Date FromDateTime(DateTime dateTime) => new(dateTime);
 
         public static Date Parse(string date) => FromDateTime(DateTime.Parse(date, CultureInfo.InvariantCulture));
-        #endregion
 
         public DateTime AsDateTime { get; }
 
@@ -29,7 +27,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 
         public static int operator -(Date left, Date right) => (left.AsDateTime - right.AsDateTime).Days;
 
-        #region Common operators
         public override string ToString() => ToString(DateTimeFormats.Date.Short);
 
         public string ToString(string format) => ToString(format, CultureInfo.InvariantCulture);
@@ -43,7 +40,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static bool operator >(Date left, Date right) => left.CompareTo(right) > 0;
 
         public static bool operator >=(Date left, Date right) => left.CompareTo(right) >= 0;
-        #endregion
     }
 
     public class DateMetric : UniformDiscreteMetric<Date, int>
