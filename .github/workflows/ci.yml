@@ -48,7 +48,7 @@ jobs:
           path: ${{ env.OUTPUT_DIR }}
   release:
     name: GitHub Release
-    if: needs.needs.outputs.should-release == 'true'
+    if: needs.build.outputs.should-release == 'true'
     concurrency: release
     needs: [build]
     runs-on: ubuntu-20.04
@@ -73,7 +73,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: nuget-package
-      - name: NuGet push
+      - name: NuGet library deploy
         uses: EasyDesk/job-nuget-library-deploy@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
