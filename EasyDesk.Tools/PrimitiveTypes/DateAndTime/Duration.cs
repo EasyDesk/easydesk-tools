@@ -29,8 +29,6 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
         public static Duration FromSeconds(double seconds) => FromTimeSpan(TimeSpan.FromSeconds(seconds));
 
         public static Duration FromMilliseconds(double ms) => FromTimeSpan(TimeSpan.FromMilliseconds(ms));
-
-        public static Duration Since(DateTime time) => FromTimeSpan(DateTime.Now - time);
         #endregion
 
         public TimeSpan AsTimeSpan { get; }
