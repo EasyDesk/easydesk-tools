@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyDesk.Tools\EasyDesk.Tools.csproj" />
+    <ProjectReference Include="..\..\src\EasyDesk.Tools\EasyDesk.Tools.csproj" />
   </ItemGroup>
 
 </Project>

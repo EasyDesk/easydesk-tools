@@ -15,7 +15,7 @@ jobs:
     name: Build
     runs-on: ubuntu-20.04
     env:
-      PROJECT_DIR: EasyDesk.Tools
+      PROJECT_DIR: src/EasyDesk.Tools
       OUTPUT_DIR: publish
     outputs:
       version: ${{ steps.semver.outputs.version }}
