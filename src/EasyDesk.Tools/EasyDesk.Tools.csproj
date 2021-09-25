@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <RootFolder>..\..</RootFolder>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -25,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)\LICENSE">
+    <None Include="$(RootFolder)\LICENSE">
       <Pack>True</Pack>
     </None>
   </ItemGroup>
