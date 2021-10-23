@@ -1,9 +1,11 @@
 ﻿using EasyDesk.Tools.Options;
+using System;
 using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.PrimitiveTypes.Intervals
 {
-    public record IntervalExtension<D>
+    public record IntervalExtension<D> : IComparable<IntervalExtension<D>>
+        where D : IComparable<D>
     {
         private IntervalExtension(D duration)
         {
@@ -22,5 +24,13 @@ namespace EasyDesk.Tools.PrimitiveTypes.Intervals
         public static IntervalExtension<D> Finite(D duration) => new(duration);
 
         public static IntervalExtension<D> Infinite { get; } = new();
+
+        public int CompareTo(IntervalExtension<D> other) => (IsInfinite, other.IsInfinite) switch
+        {
+            (true, true) => 0,
+            (false, true) => -1,
+            (true, false) => 1,
+            (false, false) => Duration.Value.CompareTo(other.Duration.Value)
+        };
     }
 }

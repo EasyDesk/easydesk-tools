@@ -1,6 +1,10 @@
-﻿namespace EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics
+﻿using System;
+
+namespace EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics
 {
     public abstract class UniformDiscreteMetric<T, D> : UniformMetric<T, D>
+        where T : IComparable<T>
+        where D : IComparable<D>
     {
         public override D NullOffset => Multiply(UnaryOffset, 0);
 
