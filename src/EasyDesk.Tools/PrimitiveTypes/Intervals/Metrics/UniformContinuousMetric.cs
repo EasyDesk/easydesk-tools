@@ -1,6 +1,10 @@
-﻿namespace EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics
+﻿using System;
+
+namespace EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics
 {
     public abstract class UniformContinuousMetric<T, D> : UniformMetric<T, D>
+        where T : IComparable<T>
+        where D : IComparable<D>
     {
         public override IntervalBound<T> AddOffset(IntervalBound<T> start, D offset, bool closed) =>
             IntervalBound<T>.Create(Add(start.Instant, offset), closed);

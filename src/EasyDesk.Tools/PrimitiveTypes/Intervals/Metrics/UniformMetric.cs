@@ -1,6 +1,10 @@
-﻿namespace EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics
+﻿using System;
+
+namespace EasyDesk.Tools.PrimitiveTypes.Intervals.Metrics
 {
     public abstract class UniformMetric<T, D> : IMetric<T, D>
+        where T : IComparable<T>
+        where D : IComparable<D>
     {
         public abstract D NullOffset { get; }
 

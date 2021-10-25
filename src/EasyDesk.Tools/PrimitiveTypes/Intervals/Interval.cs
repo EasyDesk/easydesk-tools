@@ -7,6 +7,7 @@ namespace EasyDesk.Tools.PrimitiveTypes.Intervals
 {
     public record Interval<T, D, M>
         where T : IComparable<T>
+        where D : IComparable<D>
         where M : IMetric<T, D>, new()
     {
         private Interval(IntervalEndpoint<T> lowerEndpoint, IntervalEndpoint<T> upperEndpoint, IntervalExtension<D> extension)

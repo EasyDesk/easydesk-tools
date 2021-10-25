@@ -1,6 +1,10 @@
-﻿namespace EasyDesk.Tools.PrimitiveTypes.Intervals
+﻿using System;
+
+namespace EasyDesk.Tools.PrimitiveTypes.Intervals
 {
     public interface IMetric<T, D>
+        where T : IComparable<T>
+        where D : IComparable<D>
     {
         D NullOffset { get; }
 

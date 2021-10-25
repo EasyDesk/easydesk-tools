@@ -1,9 +1,11 @@
 ﻿using EasyDesk.Tools.Options;
+using System;
 using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.PrimitiveTypes.Intervals
 {
     public record IntervalEndpoint<T>
+        where T : IComparable<T>
     {
         private IntervalEndpoint()
         {

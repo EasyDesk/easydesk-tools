@@ -1,6 +1,9 @@
-﻿namespace EasyDesk.Tools.PrimitiveTypes.Intervals
+﻿using System;
+
+namespace EasyDesk.Tools.PrimitiveTypes.Intervals
 {
     public record IntervalBound<T>
+        where T : IComparable<T>
     {
         private IntervalBound(T instant, bool closed)
         {
