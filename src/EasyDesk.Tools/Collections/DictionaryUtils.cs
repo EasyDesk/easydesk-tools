@@ -10,15 +10,17 @@ namespace EasyDesk.Tools.Collections
         public static Option<V> GetOption<K, V>(this IDictionary<K, V> dictionary, K key) =>
             FromTryConstruct<K, V>(key, dictionary.TryGetValue);
 
-        public static void Merge<K, V>(this IDictionary<K, V> dictionary, K key, V value, Func<V, V, V> combiner)
+        public static bool Merge<K, V>(this IDictionary<K, V> dictionary, K key, V value, Func<V, V, V> combiner)
         {
             if (dictionary.ContainsKey(key))
             {
                 dictionary[key] = combiner(dictionary[key], value);
+                return false;
             }
             else
             {
                 dictionary.Add(key, value);
+                return true;
             }
         }
 
