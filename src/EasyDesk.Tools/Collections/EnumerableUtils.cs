@@ -47,12 +47,14 @@ namespace EasyDesk.Tools.Collections
 
         public static Option<T> FirstOption<T>(this IEnumerable<T> sequence)
         {
-            var enumerator = sequence.GetEnumerator();
-            if (!enumerator.MoveNext())
+            using (var enumerator = sequence.GetEnumerator())
             {
-                return None;
+                if (!enumerator.MoveNext())
+                {
+                    return None;
+                }
+                return Some(enumerator.Current); 
             }
-            return Some(enumerator.Current);
         }
 
         public static Option<T> FirstOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
@@ -62,17 +64,19 @@ namespace EasyDesk.Tools.Collections
 
         public static Option<T> SingleOption<T>(this IEnumerable<T> sequence)
         {
-            var enumerator = sequence.GetEnumerator();
-            if (!enumerator.MoveNext())
+            using (var enumerator = sequence.GetEnumerator())
             {
-                return None;
+                if (!enumerator.MoveNext())
+                {
+                    return None;
+                }
+                var itemToReturn = enumerator.Current;
+                if (enumerator.MoveNext())
+                {
+                    throw new InvalidOperationException("Sequence contains more than one element");
+                }
+                return Some(itemToReturn);
             }
-            var itemToReturn = enumerator.Current;
-            if (enumerator.MoveNext())
-            {
-                throw new InvalidOperationException("Sequence contains more than one element");
-            }
-            return Some(itemToReturn);
         }
 
         public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
@@ -118,6 +122,55 @@ namespace EasyDesk.Tools.Collections
             {
                 seed = next(seed, item);
                 yield return seed;
+            }
+        }
+
+        public static R FoldLeft<T, R>(this IEnumerable<T> sequence, R seed, Func<R, T, R> combiner)
+        {
+            var current = seed;
+            foreach (var item in sequence)
+            {
+                current = combiner(current, item);
+            }
+            return current;
+        }
+
+        public static R FoldRight<T, R>(this IEnumerable<T> sequence, R seed, Func<T, R, R> combiner) =>
+            sequence.Reverse().FoldLeft(seed, (a, b) => combiner(b, a));
+
+        public static bool IsSorted<T>(this IEnumerable<T> sequence) where T : IComparable<T> =>
+            sequence.MatchesTwoByTwo((a, b) => a.IsLessThanOrEqualTo(b));
+
+        public static bool IsStrictlySorted<T>(this IEnumerable<T> sequence) where T : IComparable<T> =>
+            sequence.MatchesTwoByTwo((a, b) => a.IsLessThan(b));
+
+        public static bool IsSortedDescending<T>(this IEnumerable<T> sequence) where T : IComparable<T> =>
+            sequence.MatchesTwoByTwo((a, b) => a.IsGreaterThanOrEqualTo(b));
+
+        public static bool IsStrictlySortedDescending<T>(this IEnumerable<T> sequence) where T : IComparable<T> =>
+            sequence.MatchesTwoByTwo((a, b) => a.IsGreaterThan(b));
+
+        public static bool AllSame<T>(this IEnumerable<T> sequence) =>
+            sequence.MatchesTwoByTwo((a, b) => a.Equals(b));
+
+        public static bool MatchesTwoByTwo<T>(this IEnumerable<T> sequence, Func<T, T, bool> predicate)
+        {
+            using (var enumerator = sequence.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                {
+                    return true;
+                }
+                var previous = enumerator.Current;
+                while (enumerator.MoveNext())
+                {
+                    if (!predicate(previous, enumerator.Current))
+                    {
+                        return false;
+                    }
+                    previous = enumerator.Current;
+                }
+                return true;
             }
         }
 

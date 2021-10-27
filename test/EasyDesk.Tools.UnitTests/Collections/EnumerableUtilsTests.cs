@@ -178,6 +178,65 @@ namespace EasyDesk.Tools.UnitTests.Collections
         }
 
         [Fact]
+        public void FoldLeft_ShouldReturnTheSeed_IfTheSequenceIsEmpty()
+        {
+            Empty<int>().FoldLeft(0, (a, b) => a + b).ShouldBe(0);
+        }
+
+        [Fact]
+        public void FoldLeft_ShouldCombineElementsToTheLeft_IfTheSequnceIsNotEmpty()
+        {
+            Range(1, 5).FoldLeft(string.Empty, (s, n) => s + n).ShouldBe("12345");
+        }
+
+        [Fact]
+        public void FoldRight_ShouldReturnTheSeed_IfTheSequenceIsEmpty()
+        {
+            Empty<int>().FoldRight(0, (a, b) => a + b).ShouldBe(0);
+        }
+
+        [Fact]
+        public void FoldRight_ShouldCombineElementsToTheRight_IfTheSequnceIsNotEmpty()
+        {
+            Range(1, 5).FoldRight(string.Empty, (n, s) => s + n).ShouldBe("54321");
+        }
+
+        [Fact]
+        public void MatchesTwoByTwo_ShouldReturnTrue_IfTheSequenceIsEmpty()
+        {
+            Empty<int>().MatchesTwoByTwo((a, b) => false).ShouldBeTrue();
+        }
+
+        [Fact]
+        public void MatchesTwoByTwo_ShouldReturnTrue_IfTheSequenceContainsOneElement()
+        {
+            Items(1).MatchesTwoByTwo((a, b) => false).ShouldBeTrue();
+        }
+
+        [Fact]
+        public void MatchesTwoByTwo_ShouldReturnTrue_IfThePredicateIsSatisfiedByAllItemPairsInTheSequence()
+        {
+            Range(1, 5).MatchesTwoByTwo((a, b) => a < b).ShouldBeTrue();
+        }
+
+        [Theory]
+        [MemberData(nameof(FailingMatchesTwoByTwo))]
+        public void MatchesTwoByTwo_ShouldReturnFalse_IfThePredicateIsNotSatisfiedByAnyItemPairInTheSequence(
+            IEnumerable<int> sequence)
+        {
+            sequence.MatchesTwoByTwo((a, b) => a < b).ShouldBeFalse();
+        }
+
+        public static IEnumerable<object[]> FailingMatchesTwoByTwo()
+        {
+            yield return new object[] { Items(1, 0, 1, 0) };
+            yield return new object[] { Items(1, 2, 1, 0) };
+            yield return new object[] { Items(1, 2, 3, 0) };
+            yield return new object[] { Items(4, 3, 2, 1) };
+            yield return new object[] { Items(4, 3, 4, 5) };
+        }
+
+        [Fact]
         public void MinMaxOption_ShouldReturnNone_IfSequenceIsEmpty()
         {
             Empty<int>().MaxOption().ShouldBe(None);
