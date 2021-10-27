@@ -13,6 +13,10 @@ namespace EasyDesk.Tools.Collections
 
         public delegate IImmutableDictionary<K, V> DictionaryMutation<K, V>(IImmutableDictionary<K, V> dictionary);
 
+        public static IImmutableSet<T> ToEquatableSet<T>(this IEnumerable<T> items) => Set(items);
+
+        public static IImmutableSet<T> ToEquatableSet<T>(this IEnumerable<T> items, IEqualityComparer<T> comparer) => Set(items, comparer);
+
         public static IImmutableSet<T> Set<T>(params T[] items) => Set(items as IEnumerable<T>);
 
         public static IImmutableSet<T> Set<T>(IEnumerable<T> items) => Set(items, EqualityComparer<T>.Default);
@@ -23,9 +27,19 @@ namespace EasyDesk.Tools.Collections
             return EquatableImmutableSet<T>.FromHashSet(set);
         }
 
+        public static IImmutableList<T> ToEquatableList<T>(this IEnumerable<T> items) => List(items);
+
         public static IImmutableList<T> List<T>(params T[] items) => List(items as IEnumerable<T>);
 
-        public static IImmutableList<T> List<T>(IEnumerable<T> items) => ImmutableList.CreateRange(items);
+        public static IImmutableList<T> List<T>(IEnumerable<T> items)
+        {
+            var list = ImmutableList.CreateRange(items);
+            return EquatableImmutableList<T>.FromList(list);
+        }
+
+        public static IImmutableDictionary<K, V> ToEquatableMap<K, V>(this IEnumerable<(K Key, V Value)> items) => Map(items);
+
+        public static IImmutableDictionary<K, V> ToEquatableMap<K, V>(this IEnumerable<KeyValuePair<K, V>> items) => Map(items);
 
         public static IImmutableDictionary<K, V> Map<K, V>(params (K Key, V Value)[] items) =>
             Map(items as IEnumerable<(K, V)>);
