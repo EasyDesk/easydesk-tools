@@ -53,7 +53,7 @@ namespace EasyDesk.Tools.Collections
                 {
                     return None;
                 }
-                return Some(enumerator.Current); 
+                return Some(enumerator.Current);
             }
         }
 
