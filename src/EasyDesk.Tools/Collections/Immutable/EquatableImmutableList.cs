@@ -42,7 +42,7 @@ namespace EasyDesk.Tools.Collections.Immutable
 
         public IImmutableList<T> RemoveAt(int index) => Wrap(_list.RemoveAt(index));
 
-        public IImmutableList<T> RemoveRange(IEnumerable<T> items, IEqualityComparer<T> equalityComparer) => 
+        public IImmutableList<T> RemoveRange(IEnumerable<T> items, IEqualityComparer<T> equalityComparer) =>
             Wrap(_list.RemoveRange(items, equalityComparer));
 
         public IImmutableList<T> RemoveRange(int index, int count) =>

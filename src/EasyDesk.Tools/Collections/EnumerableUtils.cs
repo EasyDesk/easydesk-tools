@@ -150,16 +150,16 @@ namespace EasyDesk.Tools.Collections
         public static bool IsStrictlySortedDescending<T>(this IEnumerable<T> sequence) where T : IComparable<T> =>
             sequence.MatchesTwoByTwo((a, b) => a.IsGreaterThan(b));
 
-        public static bool IsSorted<T>(this IEnumerable<T> sequence, IComparer<T> comparer) where T : IComparable<T> =>
+        public static bool IsSorted<T>(this IEnumerable<T> sequence, IComparer<T> comparer) =>
             sequence.MatchesTwoByTwo((a, b) => comparer.Compare(a, b) <= 0);
 
-        public static bool IsStrictlySorted<T>(this IEnumerable<T> sequence, IComparer<T> comparer) where T : IComparable<T> =>
+        public static bool IsStrictlySorted<T>(this IEnumerable<T> sequence, IComparer<T> comparer) =>
             sequence.MatchesTwoByTwo((a, b) => comparer.Compare(a, b) < 0);
 
-        public static bool IsSortedDescending<T>(this IEnumerable<T> sequence, IComparer<T> comparer) where T : IComparable<T> =>
+        public static bool IsSortedDescending<T>(this IEnumerable<T> sequence, IComparer<T> comparer) =>
             sequence.MatchesTwoByTwo((a, b) => comparer.Compare(a, b) >= 0);
 
-        public static bool IsStrictlySortedDescending<T>(this IEnumerable<T> sequence, IComparer<T> comparer) where T : IComparable<T> =>
+        public static bool IsStrictlySortedDescending<T>(this IEnumerable<T> sequence, IComparer<T> comparer) =>
             sequence.MatchesTwoByTwo((a, b) => comparer.Compare(a, b) > 0);
 
         public static bool AllSame<T>(this IEnumerable<T> sequence) =>
