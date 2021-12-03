@@ -1,4 +1,6 @@
-﻿namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
+﻿using System;
+
+namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 {
     public enum Month
     {
@@ -27,5 +29,7 @@
                 _ => 31
             };
         }
+
+        public static int NumberOfDays(this Month month, int year) => month.NumberOfDays(DateTime.IsLeapYear(year));
     }
 }
