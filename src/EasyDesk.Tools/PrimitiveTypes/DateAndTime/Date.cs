@@ -19,6 +19,12 @@ namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime
 
         public DayOfWeek DayOfWeek => AsDateTime.DayOfWeek;
 
+        public Month Month => (Month)AsDateTime.Month;
+
+        public int Day => AsDateTime.Day;
+
+        public int Year => AsDateTime.Year;
+
         public int CompareTo(Date other) => AsDateTime.CompareTo(other.AsDateTime);
 
         public static Date operator +(Date left, int right) => FromDateTime(left.AsDateTime + TimeSpan.FromDays(right));
