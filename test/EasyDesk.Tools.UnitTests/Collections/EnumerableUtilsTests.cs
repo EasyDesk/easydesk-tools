@@ -53,6 +53,30 @@ namespace EasyDesk.Tools.UnitTests.Collections
             });
         }
 
+        [Fact]
+        public void IndexOf_ShouldReturnNone_IfNoItemsMatchThePredicate()
+        {
+            Items(1, 2, 3).IndexOf(x => x > 5).ShouldBeEmpty();
+        }
+
+        [Fact]
+        public void IndexOf_ShouldReturnTheIndexOfTheFirstOccurrence()
+        {
+            Items(1, 2, 3, 4).IndexOf(x => x % 2 == 0).ShouldContain(1);
+        }
+
+        [Fact]
+        public void LastIndexOf_ShouldReturnNone_IfNoItemsMatchThePredicate()
+        {
+            Items(1, 2, 3).LastIndexOf(x => x > 5).ShouldBeEmpty();
+        }
+
+        [Fact]
+        public void LastIndexOf_ShouldReturnTheIndexOfTheLastOccurrence()
+        {
+            Items(1, 2, 3, 4).LastIndexOf(x => x % 2 == 0).ShouldContain(3);
+        }
+
         [Theory]
         [MemberData(nameof(FirstOptionEmptyData))]
         public void FirstOption_ShouldReturnNone_IfNoItemsMatchThePredicate(
