@@ -45,6 +45,12 @@ namespace EasyDesk.Tools.Collections
             }
         }
 
+        public static Option<int> IndexOf<T>(this IEnumerable<T> sequence, Func<T, bool> predicate) =>
+            sequence.ZipWithIndex().FirstOption(x => predicate(x.Item)).Map(x => x.Index);
+
+        public static Option<int> LastIndexOf<T>(this IEnumerable<T> sequence, Func<T, bool> predicate) =>
+            sequence.Reverse().IndexOf(predicate);
+
         public static Option<T> FirstOption<T>(this IEnumerable<T> sequence)
         {
             using (var enumerator = sequence.GetEnumerator())
@@ -183,6 +189,16 @@ namespace EasyDesk.Tools.Collections
                     previous = enumerator.Current;
                 }
                 return true;
+            }
+        }
+
+        public static IEnumerable<(T Item, int Index)> ZipWithIndex<T>(this IEnumerable<T> sequence)
+        {
+            var index = 0;
+            foreach (var item in sequence)
+            {
+                yield return (item, index);
+                index++;
             }
         }
 
