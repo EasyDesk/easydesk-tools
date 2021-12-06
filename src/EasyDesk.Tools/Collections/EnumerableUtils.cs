@@ -46,10 +46,13 @@ namespace EasyDesk.Tools.Collections
         }
 
         public static Option<int> IndexOf<T>(this IEnumerable<T> sequence, Func<T, bool> predicate) =>
-            sequence.ZipWithIndex().FirstOption(x => predicate(x.Item)).Map(x => x.Index);
+            sequence.ZipWithIndex().IndexOfImpl(predicate);
 
         public static Option<int> LastIndexOf<T>(this IEnumerable<T> sequence, Func<T, bool> predicate) =>
-            sequence.Reverse().IndexOf(predicate);
+            sequence.ZipWithIndex().Reverse().IndexOfImpl(predicate);
+
+        private static Option<int> IndexOfImpl<T>(this IEnumerable<(T Item, int Index)> sequence, Func<T, bool> predicate) =>
+            sequence.FirstOption(x => predicate(x.Item)).Map(x => x.Index);
 
         public static Option<T> FirstOption<T>(this IEnumerable<T> sequence)
         {
