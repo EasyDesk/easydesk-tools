@@ -2,6 +2,7 @@
 using Shouldly;
 using System;
 using Xunit;
+using Xunit.Sdk;
 using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.UnitTests.Options
@@ -88,6 +89,24 @@ namespace EasyDesk.Tools.UnitTests.Options
 
             shouldNotBeCalled.DidNotReceiveWithAnyArgs()();
             shouldBeCalled.Received(1)(Value);
+        }
+
+        [Fact]
+        public void OptionsShouldSupportShortCircuitEvaluationWithOperatorOr()
+        {
+            var shouldNotBeCalled = Substitute.For<Func<int>>();
+            var test = Some(Value) || Some(shouldNotBeCalled());
+            test.ShouldBe(Value);
+            shouldNotBeCalled.DidNotReceiveWithAnyArgs()();
+        }
+
+        [Fact]
+        public void OptionsShouldSupportShortCircuitEvaluationWithOperatorAnd()
+        {
+            var shouldNotBeCalled = Substitute.For<Func<int>>();
+            var test = None && Some(shouldNotBeCalled());
+            test.ShouldBeEmpty();
+            shouldNotBeCalled.DidNotReceiveWithAnyArgs()();
         }
     }
 }

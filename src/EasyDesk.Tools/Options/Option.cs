@@ -85,6 +85,10 @@ namespace EasyDesk.Tools.Options
             some: _ => b.Match(some: _ => None, none: () => a),
             none: () => b);
 
+        public static bool operator true(Option<T> a) => a.IsPresent;
+
+        public static bool operator false(Option<T> a) => a.IsAbsent;
+
         public override string ToString() => Match(
             some: t => $"Some({t})",
             none: () => "None");
