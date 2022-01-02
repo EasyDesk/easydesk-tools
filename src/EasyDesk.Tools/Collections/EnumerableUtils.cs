@@ -28,6 +28,8 @@ namespace EasyDesk.Tools.Collections
             }
         }
 
+        public static bool IsEmpty<T>(this IEnumerable<T> sequence) => !sequence.Any();
+
         public static void ForEach<T>(this IEnumerable<T> sequence, Action<T> action)
         {
             foreach (var item in sequence)

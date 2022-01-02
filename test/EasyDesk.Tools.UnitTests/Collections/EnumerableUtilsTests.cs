@@ -35,6 +35,18 @@ namespace EasyDesk.Tools.UnitTests.Collections
         }
 
         [Fact]
+        public void IsEmpty_ShouldReturnTrue_IfTheSequenceContainsNoElements()
+        {
+            Empty<int>().IsEmpty().ShouldBeTrue();
+        }
+
+        [Fact]
+        public void IsEmpty_ShouldReturnFalse_IfTheSequenceContainsAtLeastOneElement()
+        {
+            Items(1).IsEmpty().ShouldBeFalse();
+        }
+
+        [Fact]
         public void ForEach_ShouldCallTheGivenActionForEveryElementInTheSquence()
         {
             var count = 10;
