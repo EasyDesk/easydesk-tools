@@ -240,18 +240,6 @@ namespace EasyDesk.Tools.Collections
             return sequence.MinOrMaxBy(property, LessThan);
         }
 
-        public static T MaxBy<T, U>(this IEnumerable<T> sequence, Func<T, U> property)
-            where U : IComparable<U>
-        {
-            return sequence.MaxByOption(property).OrElseThrow(SequenceIsEmptyException);
-        }
-
-        public static T MinBy<T, U>(this IEnumerable<T> sequence, Func<T, U> property)
-            where U : IComparable<U>
-        {
-            return sequence.MinByOption(property).OrElseThrow(SequenceIsEmptyException);
-        }
-
         private static Option<T> MinOrMaxBy<T, U>(this IEnumerable<T> sequence, Func<T, U> property, Func<int, bool> direction)
             where U : IComparable<U>
         {

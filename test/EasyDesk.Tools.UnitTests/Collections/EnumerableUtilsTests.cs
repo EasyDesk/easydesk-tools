@@ -307,23 +307,6 @@ namespace EasyDesk.Tools.UnitTests.Collections
             wrapped.MaxByOption(x => x.Value).ShouldBe(Some(new Wrapper(max)));
         }
 
-        [Fact]
-        public void MinMaxBy_ShouldFail_IfSequenceIsEmpty()
-        {
-            Should.Throw<InvalidOperationException>(() => Empty<Wrapper>().MaxBy(x => x.Value));
-            Should.Throw<InvalidOperationException>(() => Empty<Wrapper>().MinBy(x => x.Value));
-        }
-
-        [Theory]
-        [MemberData(nameof(MinMaxData))]
-        public void MinMaxBy_ShouldReturnMinMax_IfSequenceIsNotEmpty(
-            IEnumerable<int> sequence, int min, int max)
-        {
-            var wrapped = sequence.Select(x => new Wrapper(x));
-            wrapped.MinBy(x => x.Value).ShouldBe(new Wrapper(min));
-            wrapped.MaxBy(x => x.Value).ShouldBe(new Wrapper(max));
-        }
-
         public static IEnumerable<object[]> MinMaxData()
         {
             yield return new object[] { Items(1), 1, 1 };
