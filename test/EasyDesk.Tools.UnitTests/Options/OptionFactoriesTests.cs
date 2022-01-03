@@ -4,38 +4,37 @@ using System;
 using Xunit;
 using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Tools.UnitTests.Options
+namespace EasyDesk.Tools.UnitTests.Options;
+
+public class OptionFactoriesTests
 {
-    public class OptionFactoriesTests
+    [Fact]
+    public void Some_ShouldFail_WhenNullIsPassed()
     {
-        [Fact]
-        public void Some_ShouldFail_WhenNullIsPassed()
-        {
-            Should.Throw<ArgumentNullException>(() => Some<string>(null));
-        }
+        Should.Throw<ArgumentNullException>(() => Some<string>(null));
+    }
 
-        [Fact]
-        public void AsOptionForReferenceTypes_ShouldReturnAnEmptyOption_WhenNullIsPassed()
-        {
-            OptionImports.AsOption<string>(null).ShouldBe(None);
-        }
+    [Fact]
+    public void AsOptionForReferenceTypes_ShouldReturnAnEmptyOption_WhenNullIsPassed()
+    {
+        OptionImports.AsOption<string>(null).ShouldBe(None);
+    }
 
-        [Fact]
-        public void AsOptionForReferenceTypes_ShouldReturnANonEmptyOption_WhenANonNullValueIsPassed()
-        {
-            OptionImports.AsOption("abc").ShouldBe(Some("abc"));
-        }
+    [Fact]
+    public void AsOptionForReferenceTypes_ShouldReturnANonEmptyOption_WhenANonNullValueIsPassed()
+    {
+        OptionImports.AsOption("abc").ShouldBe(Some("abc"));
+    }
 
-        [Fact]
-        public void AsOptionForNullableValueTypes_ShouldReturnAnEmptyOption_WhenNullIsPassed()
-        {
-            OptionImports.AsOption<int>(null).ShouldBe(None);
-        }
+    [Fact]
+    public void AsOptionForNullableValueTypes_ShouldReturnAnEmptyOption_WhenNullIsPassed()
+    {
+        OptionImports.AsOption<int>(null).ShouldBe(None);
+    }
 
-        [Fact]
-        public void AsOptionForNullableValueTypes_ShouldReturnANonEmptyOption_WhenANonNullValueIsPassed()
-        {
-            OptionImports.AsOption<int>(1).ShouldBe(Some(1));
-        }
+    [Fact]
+    public void AsOptionForNullableValueTypes_ShouldReturnANonEmptyOption_WhenANonNullValueIsPassed()
+    {
+        OptionImports.AsOption<int>(1).ShouldBe(Some(1));
     }
 }

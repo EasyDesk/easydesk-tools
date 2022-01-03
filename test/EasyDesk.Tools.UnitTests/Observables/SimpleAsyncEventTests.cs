@@ -7,72 +7,71 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDesk.Tools.UnitTests.Observables
+namespace EasyDesk.Tools.UnitTests.Observables;
+
+public class SimpleAsyncEventTests
 {
-    public class SimpleAsyncEventTests
+    private const int Value = 0;
+
+    private readonly SimpleAsyncEvent<int> _sut = new();
+
+    [Fact]
+    public async Task Emit_ShouldNotFail_IfEventHasNoSubscriber()
     {
-        private const int Value = 0;
+        await Should.NotThrowAsync(() => _sut.Emit(Value));
+    }
 
-        private readonly SimpleAsyncEvent<int> _sut = new();
+    [Fact]
+    public async Task Emit_ShouldNotifyHandlersWithTheGivenValueAsync()
+    {
+        var handler1 = Substitute.For<Action<int>>();
+        var handler2 = Substitute.For<Action<int>>();
+        _sut.Subscribe(handler1);
+        _sut.Subscribe(handler2);
 
-        [Fact]
-        public async Task Emit_ShouldNotFail_IfEventHasNoSubscriber()
+        await _sut.Emit(Value);
+
+        handler1.Received(1)(Value);
+        handler2.Received(1)(Value);
+    }
+
+    [Fact]
+    public async Task Emit_ShouldNotifyAllHandlersInOrderOfSubscriptionAsync()
+    {
+        var index = 0;
+
+        void InOrderHandler(int expected)
         {
-            await Should.NotThrowAsync(() => _sut.Emit(Value));
+            index.ShouldBe(expected);
+            index++;
         }
 
-        [Fact]
-        public async Task Emit_ShouldNotifyHandlersWithTheGivenValueAsync()
+        Enumerable.Range(0, 10).ForEach(i =>
         {
-            var handler1 = Substitute.For<Action<int>>();
-            var handler2 = Substitute.For<Action<int>>();
-            _sut.Subscribe(handler1);
-            _sut.Subscribe(handler2);
+            _sut.Subscribe(_ => InOrderHandler(i));
+        });
 
-            await _sut.Emit(Value);
+        await _sut.Emit(0);
+    }
 
-            handler1.Received(1)(Value);
-            handler2.Received(1)(Value);
-        }
+    [Fact]
+    public async Task Emit_ShouldNotNotifyUnsubscribedHandlers()
+    {
+        var handler = Substitute.For<Action<int>>();
+        var subscription = _sut.Subscribe(handler);
+        subscription.Unsubscribe();
 
-        [Fact]
-        public async Task Emit_ShouldNotifyAllHandlersInOrderOfSubscriptionAsync()
-        {
-            var index = 0;
+        await _sut.Emit(Value);
 
-            void InOrderHandler(int expected)
-            {
-                index.ShouldBe(expected);
-                index++;
-            }
+        handler.DidNotReceiveWithAnyArgs()(default);
+    }
 
-            Enumerable.Range(0, 10).ForEach(i =>
-            {
-                _sut.Subscribe(_ => InOrderHandler(i));
-            });
+    [Fact]
+    public void Unsubscribe_ShouldFail_IfCalledMultipleTimes()
+    {
+        var subscription = _sut.Subscribe(_ => { });
+        subscription.Unsubscribe();
 
-            await _sut.Emit(0);
-        }
-
-        [Fact]
-        public async Task Emit_ShouldNotNotifyUnsubscribedHandlers()
-        {
-            var handler = Substitute.For<Action<int>>();
-            var subscription = _sut.Subscribe(handler);
-            subscription.Unsubscribe();
-
-            await _sut.Emit(Value);
-
-            handler.DidNotReceiveWithAnyArgs()(default);
-        }
-
-        [Fact]
-        public void Unsubscribe_ShouldFail_IfCalledMultipleTimes()
-        {
-            var subscription = _sut.Subscribe(_ => { });
-            subscription.Unsubscribe();
-
-            Should.Throw<InvalidOperationException>(() => subscription.Unsubscribe());
-        }
+        Should.Throw<InvalidOperationException>(() => subscription.Unsubscribe());
     }
 }

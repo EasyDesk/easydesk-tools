@@ -1,25 +1,24 @@
 ﻿using System;
 
-namespace EasyDesk.Tools.Observables
+namespace EasyDesk.Tools.Observables;
+
+public class SimpleSubscription : ISubscription
 {
-    public class SimpleSubscription : ISubscription
+    private readonly Action _unsubscribeAction;
+    private bool _unsubscribed = false;
+
+    public SimpleSubscription(Action unsubscribeAction)
     {
-        private readonly Action _unsubscribeAction;
-        private bool _unsubscribed = false;
+        _unsubscribeAction = unsubscribeAction;
+    }
 
-        public SimpleSubscription(Action unsubscribeAction)
+    public void Unsubscribe()
+    {
+        if (_unsubscribed)
         {
-            _unsubscribeAction = unsubscribeAction;
+            throw new InvalidOperationException("Already unsubscribed");
         }
-
-        public void Unsubscribe()
-        {
-            if (_unsubscribed)
-            {
-                throw new InvalidOperationException("Already unsubscribed");
-            }
-            _unsubscribed = true;
-            _unsubscribeAction();
-        }
+        _unsubscribed = true;
+        _unsubscribeAction();
     }
 }

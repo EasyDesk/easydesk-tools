@@ -1,24 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EasyDesk.Tools.Observables
+namespace EasyDesk.Tools.Observables;
+
+public class SimpleAsyncEvent<T> : IAsyncObservable<T>, IAsyncEmitter<T>
 {
-    public class SimpleAsyncEvent<T> : IAsyncObservable<T>, IAsyncEmitter<T>
+    private readonly List<AsyncAction<T>> _handlers = new();
+
+    public async Task Emit(T value)
     {
-        private readonly List<AsyncAction<T>> _handlers = new();
-
-        public async Task Emit(T value)
+        foreach (var handler in _handlers)
         {
-            foreach (var handler in _handlers)
-            {
-                await handler(value);
-            }
+            await handler(value);
         }
+    }
 
-        public ISubscription Subscribe(AsyncAction<T> handler)
-        {
-            _handlers.Add(handler);
-            return new SimpleSubscription(() => _handlers.Remove(handler));
-        }
+    public ISubscription Subscribe(AsyncAction<T> handler)
+    {
+        _handlers.Add(handler);
+        return new SimpleSubscription(() => _handlers.Remove(handler));
     }
 }

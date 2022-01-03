@@ -6,229 +6,228 @@ using System.Threading.Tasks;
 using Xunit;
 using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Tools.UnitTests.Options
+namespace EasyDesk.Tools.UnitTests.Options;
+
+public class OptionOperatorsTests
 {
-    public class OptionOperatorsTests
+    private const int Value = 5;
+    private const int Other = 10;
+
+    [Fact]
+    public void IfPresent_ShouldNotCallTheGivenAction_IfOptionIsEmpty()
     {
-        private const int Value = 5;
-        private const int Other = 10;
+        var action = Substitute.For<Action<int>>();
 
-        [Fact]
-        public void IfPresent_ShouldNotCallTheGivenAction_IfOptionIsEmpty()
-        {
-            var action = Substitute.For<Action<int>>();
+        NoneT<int>().IfPresent(action);
 
-            NoneT<int>().IfPresent(action);
+        action.DidNotReceiveWithAnyArgs()(default);
+    }
 
-            action.DidNotReceiveWithAnyArgs()(default);
-        }
+    [Fact]
+    public void IfPresent_ShouldCallTheGivenAction_IfOptionIsNotEmpty()
+    {
+        var action = Substitute.For<Action<int>>();
 
-        [Fact]
-        public void IfPresent_ShouldCallTheGivenAction_IfOptionIsNotEmpty()
-        {
-            var action = Substitute.For<Action<int>>();
+        Some(Value).IfPresent(action);
 
-            Some(Value).IfPresent(action);
+        action.Received(1)(Value);
+    }
 
-            action.Received(1)(Value);
-        }
+    [Fact]
+    public void IfAbsent_ShouldCallTheGivenAction_IfOptionIsEmpty()
+    {
+        var action = Substitute.For<Action>();
 
-        [Fact]
-        public void IfAbsent_ShouldCallTheGivenAction_IfOptionIsEmpty()
-        {
-            var action = Substitute.For<Action>();
+        NoneT<int>().IfAbsent(action);
 
-            NoneT<int>().IfAbsent(action);
+        action.Received(1)();
+    }
 
-            action.Received(1)();
-        }
+    [Fact]
+    public void IfAbsent_ShouldNotCallTheGivenAction_IfOptionIsNotEmpty()
+    {
+        var action = Substitute.For<Action>();
 
-        [Fact]
-        public void IfAbsent_ShouldNotCallTheGivenAction_IfOptionIsNotEmpty()
-        {
-            var action = Substitute.For<Action>();
+        Some(Value).IfAbsent(action);
 
-            Some(Value).IfAbsent(action);
+        action.DidNotReceiveWithAnyArgs()();
+    }
 
-            action.DidNotReceiveWithAnyArgs()();
-        }
+    [Fact]
+    public void Map_ShouldReturnNone_IfOptionIsEmpty()
+    {
+        NoneT<int>().Map(x => x + 1).ShouldBe(None);
+    }
 
-        [Fact]
-        public void Map_ShouldReturnNone_IfOptionIsEmpty()
-        {
-            NoneT<int>().Map(x => x + 1).ShouldBe(None);
-        }
+    [Fact]
+    public void Map_ShouldReturnTheMappedValue_IfOptionIsNotEmpty()
+    {
+        Some(Value).Map(x => x + 1).ShouldBe(Some(Value + 1));
+    }
 
-        [Fact]
-        public void Map_ShouldReturnTheMappedValue_IfOptionIsNotEmpty()
-        {
-            Some(Value).Map(x => x + 1).ShouldBe(Some(Value + 1));
-        }
+    [Fact]
+    public void Filter_ShouldReturnNone_IfOptionIsEmpty()
+    {
+        NoneT<int>().Filter(_ => true).ShouldBe(None);
+    }
 
-        [Fact]
-        public void Filter_ShouldReturnNone_IfOptionIsEmpty()
-        {
-            NoneT<int>().Filter(_ => true).ShouldBe(None);
-        }
+    [Fact]
+    public void Filter_ShouldReturnNone_IfOptionIsNotEmptyButPredicateIsNotMatched()
+    {
+        Some(Value).Filter(x => x != Value).ShouldBe(None);
+    }
 
-        [Fact]
-        public void Filter_ShouldReturnNone_IfOptionIsNotEmptyButPredicateIsNotMatched()
-        {
-            Some(Value).Filter(x => x != Value).ShouldBe(None);
-        }
+    [Fact]
+    public void Filter_ShouldReturnTheSameOption_IfOptionIsNotEmptyAndPredicateIsMatched()
+    {
+        var some = Some(Value);
+        some.Filter(x => x == Value).ShouldBe(some);
+    }
 
-        [Fact]
-        public void Filter_ShouldReturnTheSameOption_IfOptionIsNotEmptyAndPredicateIsMatched()
-        {
-            var some = Some(Value);
-            some.Filter(x => x == Value).ShouldBe(some);
-        }
+    [Fact]
+    public void FlatMap_ShouldReturnNone_IfOptionIsEmpty()
+    {
+        NoneT<int>().FlatMap(_ => Some(Value)).ShouldBe(None);
+    }
 
-        [Fact]
-        public void FlatMap_ShouldReturnNone_IfOptionIsEmpty()
-        {
-            NoneT<int>().FlatMap(_ => Some(Value)).ShouldBe(None);
-        }
+    [Fact]
+    public void FlatMap_ShouldReturnTheResultOfTheMapper_IfOptionIsNotEmpty()
+    {
+        Some(Value).FlatMap(_ => NoneT<int>()).ShouldBe(None);
+        Some(Value).FlatMap(v => Some(v + 1)).ShouldBe(Some(Value + 1));
+    }
 
-        [Fact]
-        public void FlatMap_ShouldReturnTheResultOfTheMapper_IfOptionIsNotEmpty()
-        {
-            Some(Value).FlatMap(_ => NoneT<int>()).ShouldBe(None);
-            Some(Value).FlatMap(v => Some(v + 1)).ShouldBe(Some(Value + 1));
-        }
+    [Fact]
+    public void Flatten_ShouldReturnNone_IfAnyOptionIsNone()
+    {
+        Some(NoneT<int>()).Flatten().ShouldBe(None);
+        NoneT<Option<int>>().Flatten().ShouldBe(None);
+    }
 
-        [Fact]
-        public void Flatten_ShouldReturnNone_IfAnyOptionIsNone()
-        {
-            Some(NoneT<int>()).Flatten().ShouldBe(None);
-            NoneT<Option<int>>().Flatten().ShouldBe(None);
-        }
+    [Fact]
+    public void Flatten_ShouldReturnTheInnermostValue_IfBothOptionsAreNotEmpty()
+    {
+        Some(Some(Value)).Flatten().ShouldBe(Some(Value));
+    }
 
-        [Fact]
-        public void Flatten_ShouldReturnTheInnermostValue_IfBothOptionsAreNotEmpty()
-        {
-            Some(Some(Value)).Flatten().ShouldBe(Some(Value));
-        }
+    [Fact]
+    public void Or_ShouldShortCircuit_IfTheFirstOptionIsNotEmpty()
+    {
+        var first = Some(Value);
+        first.Or(NoneT<int>()).ShouldBe(first);
+        first.Or(Some(Other)).ShouldBe(first);
+    }
 
-        [Fact]
-        public void Or_ShouldShortCircuit_IfTheFirstOptionIsNotEmpty()
-        {
-            var first = Some(Value);
-            first.Or(NoneT<int>()).ShouldBe(first);
-            first.Or(Some(Other)).ShouldBe(first);
-        }
+    [Fact]
+    public void Or_ShouldReturnTheSecondOption_IfTheFirstIsEmpty()
+    {
+        NoneT<int>().Or(Some(Value)).ShouldBe(Some(Value));
+        NoneT<int>().Or(NoneT<int>()).ShouldBe(None);
+    }
 
-        [Fact]
-        public void Or_ShouldReturnTheSecondOption_IfTheFirstIsEmpty()
-        {
-            NoneT<int>().Or(Some(Value)).ShouldBe(Some(Value));
-            NoneT<int>().Or(NoneT<int>()).ShouldBe(None);
-        }
+    [Fact]
+    public async Task IfPresentAsync_ShouldNotCallTheGivenAsyncAction_IfOptionIsEmpty()
+    {
+        var action = Substitute.For<AsyncAction<int>>();
 
-        [Fact]
-        public async Task IfPresentAsync_ShouldNotCallTheGivenAsyncAction_IfOptionIsEmpty()
-        {
-            var action = Substitute.For<AsyncAction<int>>();
+        await NoneT<int>().IfPresentAsync(action);
 
-            await NoneT<int>().IfPresentAsync(action);
+        await action.DidNotReceiveWithAnyArgs()(default);
+    }
 
-            await action.DidNotReceiveWithAnyArgs()(default);
-        }
+    [Fact]
+    public async Task IfPresentAsync_ShouldCallTheGivenAsyncAction_IfOptionIsNotEmpty()
+    {
+        var action = Substitute.For<AsyncAction<int>>();
 
-        [Fact]
-        public async Task IfPresentAsync_ShouldCallTheGivenAsyncAction_IfOptionIsNotEmpty()
-        {
-            var action = Substitute.For<AsyncAction<int>>();
+        await Some(Value).IfPresentAsync(action);
 
-            await Some(Value).IfPresentAsync(action);
+        await action.Received(1)(Value);
+    }
 
-            await action.Received(1)(Value);
-        }
+    [Fact]
+    public async Task IfAbsentAsync_ShouldCallTheGivenAsyncAction_IfOptionIsEmpty()
+    {
+        var action = Substitute.For<AsyncAction>();
 
-        [Fact]
-        public async Task IfAbsentAsync_ShouldCallTheGivenAsyncAction_IfOptionIsEmpty()
-        {
-            var action = Substitute.For<AsyncAction>();
+        await NoneT<int>().IfAbsentAsync(action);
 
-            await NoneT<int>().IfAbsentAsync(action);
+        await action.Received(1)();
+    }
 
-            await action.Received(1)();
-        }
+    [Fact]
+    public async Task IfAbsentAsync_ShouldNotCallTheGivenAsyncAction_IfOptionIsNotEmpty()
+    {
+        var action = Substitute.For<AsyncAction>();
 
-        [Fact]
-        public async Task IfAbsentAsync_ShouldNotCallTheGivenAsyncAction_IfOptionIsNotEmpty()
-        {
-            var action = Substitute.For<AsyncAction>();
+        await Some(Value).IfAbsentAsync(action);
 
-            await Some(Value).IfAbsentAsync(action);
+        await action.DidNotReceiveWithAnyArgs()();
+    }
 
-            await action.DidNotReceiveWithAnyArgs()();
-        }
+    [Fact]
+    public async Task MapAsync_ShouldReturnNone_IfOptionIsEmpty()
+    {
+        var result = await NoneT<int>().MapAsync(x => Task.FromResult(x + 1));
 
-        [Fact]
-        public async Task MapAsync_ShouldReturnNone_IfOptionIsEmpty()
-        {
-            var result = await NoneT<int>().MapAsync(x => Task.FromResult(x + 1));
+        result.ShouldBe(None);
+    }
 
-            result.ShouldBe(None);
-        }
+    [Fact]
+    public async Task MapAsync_ShouldReturnTheMappedValue_IfOptionIsNotEmptyAsync()
+    {
+        var result = await Some(Value).MapAsync(x => Task.FromResult(x + 1));
 
-        [Fact]
-        public async Task MapAsync_ShouldReturnTheMappedValue_IfOptionIsNotEmptyAsync()
-        {
-            var result = await Some(Value).MapAsync(x => Task.FromResult(x + 1));
+        result.ShouldBe(Some(Value + 1));
+    }
 
-            result.ShouldBe(Some(Value + 1));
-        }
+    [Fact]
+    public async Task FilterAsync_ShouldReturnNone_IfOptionIsEmpty()
+    {
+        var result = await NoneT<int>().FilterAsync(_ => Task.FromResult(true));
 
-        [Fact]
-        public async Task FilterAsync_ShouldReturnNone_IfOptionIsEmpty()
-        {
-            var result = await NoneT<int>().FilterAsync(_ => Task.FromResult(true));
+        result.ShouldBe(None);
+    }
 
-            result.ShouldBe(None);
-        }
+    [Fact]
+    public async Task FilterAsync_ShouldReturnNone_IfOptionIsNotEmptyButPredicateIsNotMatched()
+    {
+        var result = await Some(Value).FilterAsync(x => Task.FromResult(x != Value));
 
-        [Fact]
-        public async Task FilterAsync_ShouldReturnNone_IfOptionIsNotEmptyButPredicateIsNotMatched()
-        {
-            var result = await Some(Value).FilterAsync(x => Task.FromResult(x != Value));
+        result.ShouldBe(None);
+    }
 
-            result.ShouldBe(None);
-        }
+    [Fact]
+    public async Task FilterAsync_ShouldReturnTheSameOption_IfOptionIsNotEmptyAndPredicateIsMatched()
+    {
+        var some = Some(Value);
 
-        [Fact]
-        public async Task FilterAsync_ShouldReturnTheSameOption_IfOptionIsNotEmptyAndPredicateIsMatched()
-        {
-            var some = Some(Value);
+        var result = await some.FilterAsync(x => Task.FromResult(x == Value));
 
-            var result = await some.FilterAsync(x => Task.FromResult(x == Value));
+        result.ShouldBe(some);
+    }
 
-            result.ShouldBe(some);
-        }
+    [Fact]
+    public async Task FlatMapAsync_ShouldReturnNone_IfOptionIsEmpty()
+    {
+        var result = await NoneT<int>().FlatMapAsync(_ => Task.FromResult(Some(Value)));
 
-        [Fact]
-        public async Task FlatMapAsync_ShouldReturnNone_IfOptionIsEmpty()
-        {
-            var result = await NoneT<int>().FlatMapAsync(_ => Task.FromResult(Some(Value)));
+        result.ShouldBe(None);
+    }
 
-            result.ShouldBe(None);
-        }
+    [Fact]
+    public async Task FlatMapAsync_ShouldReturnNone_IfOptionIsNotEmptyAndMapperReturnsNone()
+    {
+        var result = await Some(Value).FlatMapAsync(_ => Task.FromResult(NoneT<int>()));
 
-        [Fact]
-        public async Task FlatMapAsync_ShouldReturnNone_IfOptionIsNotEmptyAndMapperReturnsNone()
-        {
-            var result = await Some(Value).FlatMapAsync(_ => Task.FromResult(NoneT<int>()));
+        result.ShouldBe(None);
+    }
 
-            result.ShouldBe(None);
-        }
+    [Fact]
+    public async Task FlatMapAsync_ShouldReturnTheValueReturnedByTheGivenFunction_IfOptionIsNotEmpty()
+    {
+        var result = await Some(Value).FlatMapAsync(v => Task.FromResult(Some(v + 1)));
 
-        [Fact]
-        public async Task FlatMapAsync_ShouldReturnTheValueReturnedByTheGivenFunction_IfOptionIsNotEmpty()
-        {
-            var result = await Some(Value).FlatMapAsync(v => Task.FromResult(Some(v + 1)));
-
-            result.ShouldBe(Some(Value + 1));
-        }
+        result.ShouldBe(Some(Value + 1));
     }
 }

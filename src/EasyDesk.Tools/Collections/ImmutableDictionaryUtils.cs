@@ -3,31 +3,30 @@ using System;
 using System.Collections.Immutable;
 using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Tools.Collections
+namespace EasyDesk.Tools.Collections;
+
+public static class ImmutableDictionaryUtils
 {
-    public static class ImmutableDictionaryUtils
+    public static Option<V> GetOption<K, V>(this IImmutableDictionary<K, V> dictionary, K key) =>
+        FromTryConstruct<K, V>(key, dictionary.TryGetValue);
+
+    public static IImmutableDictionary<K, V> Merge<K, V>(
+        this IImmutableDictionary<K, V> dictionary,
+        K key,
+        V value,
+        Func<V, V, V> combiner)
     {
-        public static Option<V> GetOption<K, V>(this IImmutableDictionary<K, V> dictionary, K key) =>
-            FromTryConstruct<K, V>(key, dictionary.TryGetValue);
+        return dictionary.Update(key, v => combiner(v, value), () => value);
+    }
 
-        public static IImmutableDictionary<K, V> Merge<K, V>(
-            this IImmutableDictionary<K, V> dictionary,
-            K key,
-            V value,
-            Func<V, V, V> combiner)
-        {
-            return dictionary.Update(key, v => combiner(v, value), () => value);
-        }
-
-        public static IImmutableDictionary<K, V> Update<K, V>(
-            this IImmutableDictionary<K, V> dictionary,
-            K key,
-            Func<V, V> mutation,
-            Func<V> supplier = default)
-        {
-            return dictionary.GetOption(key).Match(
-                some: v => dictionary.SetItem(key, mutation(v)),
-                none: () => supplier is null ? dictionary : dictionary.Add(key, supplier()));
-        }
+    public static IImmutableDictionary<K, V> Update<K, V>(
+        this IImmutableDictionary<K, V> dictionary,
+        K key,
+        Func<V, V> mutation,
+        Func<V> supplier = default)
+    {
+        return dictionary.GetOption(key).Match(
+            some: v => dictionary.SetItem(key, mutation(v)),
+            none: () => supplier is null ? dictionary : dictionary.Add(key, supplier()));
     }
 }

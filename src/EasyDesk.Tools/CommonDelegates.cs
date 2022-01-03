@@ -1,8 +1,7 @@
 ﻿using EasyDesk.Tools.Results;
 
-namespace EasyDesk.Tools
-{
-    public delegate T Mapper<T>(T arg);
+namespace EasyDesk.Tools;
 
-    public delegate ResultBase<T, E> ResultMapper<T, E>(T arg);
-}
+public delegate T Mapper<T>(T arg);
+
+public delegate ResultBase<T, E> ResultMapper<T, E>(T arg);
