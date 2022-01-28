@@ -1,13 +1,13 @@
-﻿using EasyDesk.Tools.Options;
-using NSubstitute;
-using Shouldly;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EasyDesk.Tools.Options;
+using NSubstitute;
+using Shouldly;
 using Xunit;
+using static System.Linq.Enumerable;
 using static EasyDesk.Tools.Collections.EnumerableUtils;
 using static EasyDesk.Tools.Options.OptionImports;
-using static System.Linq.Enumerable;
 
 namespace EasyDesk.Tools.UnitTests.Collections;
 
