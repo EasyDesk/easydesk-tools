@@ -45,11 +45,11 @@ public abstract record ResultBase<T, E>
 
     public R Match<R>(Func<T, R> success, Func<E, R> failure) => IsFailure ? failure(_error) : success(_value);
 
-    public void Match(Action<T> success = null, Action<E> failure = null)
+    public void Match(System.Action<T> success = null, System.Action<E> failure = null)
     {
         Match(
-            success: t => JustDoIt(() => success?.Invoke(t)),
-            failure: e => JustDoIt(() => failure?.Invoke(e)));
+            success: t => Execute(() => success?.Invoke(t)),
+            failure: e => Execute(() => failure?.Invoke(e)));
     }
 
     public Task<R> MatchAsync<R>(AsyncFunc<T, R> success, AsyncFunc<E, R> failure) =>
@@ -57,7 +57,7 @@ public abstract record ResultBase<T, E>
             success: a => success(a),
             failure: e => failure(e));
 
-    public Task MatchAsync(AsyncAction<T> success = null, AsyncAction<E> failure = null) =>
+    public Task MatchAsync(Action<T> success = null, Action<E> failure = null) =>
         Match(
             success: a => success is null ? Task.CompletedTask : success(a),
             failure: e => failure is null ? Task.CompletedTask : failure(e));

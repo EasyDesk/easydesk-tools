@@ -62,7 +62,7 @@ public class TaskUtilsTests
     [Fact]
     public async Task ThenForTaskWithResult_ShouldCallTheGivenAction_IfTheTaskIsSuccessful()
     {
-        var action = Substitute.For<Action<int>>();
+        var action = Substitute.For<System.Action<int>>();
         await SuccessfulTask.Then(action);
         action.Received(1)(_value);
     }
@@ -70,7 +70,7 @@ public class TaskUtilsTests
     [Fact]
     public async Task ThenForTaskWithResultAndAsyncContinuation_ShouldCallTheGivenAsyncAction_IfTheTaskIsSuccessful()
     {
-        var action = Substitute.For<AsyncAction<int>>();
+        var action = Substitute.For<Action<int>>();
         await SuccessfulTask.Then(action);
         await action.Received(1)(_value);
     }
@@ -78,7 +78,7 @@ public class TaskUtilsTests
     [Fact]
     public async Task ThenForTaskWithResult_ShouldFail_IfTheTaskFails()
     {
-        var action = Substitute.For<Action<int>>();
+        var action = Substitute.For<System.Action<int>>();
         await ShouldThrowTheExpectedException(() => FailedTask.Then(action));
         action.DidNotReceiveWithAnyArgs()(default);
     }
@@ -86,7 +86,7 @@ public class TaskUtilsTests
     [Fact]
     public async Task ThenForTaskWithResultAndAsyncContinuation_ShouldFail_IfTheTaskFails()
     {
-        var action = Substitute.For<AsyncAction<int>>();
+        var action = Substitute.For<Action<int>>();
         await ShouldThrowTheExpectedException(() => FailedTask.Then(action));
         await action.DidNotReceiveWithAnyArgs()(default);
     }

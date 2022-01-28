@@ -16,7 +16,7 @@ public class OptionOperatorsTests
     [Fact]
     public void IfPresent_ShouldNotCallTheGivenAction_IfOptionIsEmpty()
     {
-        var action = Substitute.For<Action<int>>();
+        var action = Substitute.For<System.Action<int>>();
 
         NoneT<int>().IfPresent(action);
 
@@ -26,7 +26,7 @@ public class OptionOperatorsTests
     [Fact]
     public void IfPresent_ShouldCallTheGivenAction_IfOptionIsNotEmpty()
     {
-        var action = Substitute.For<Action<int>>();
+        var action = Substitute.For<System.Action<int>>();
 
         Some(Value).IfPresent(action);
 
@@ -128,7 +128,7 @@ public class OptionOperatorsTests
     [Fact]
     public async Task IfPresentAsync_ShouldNotCallTheGivenAsyncAction_IfOptionIsEmpty()
     {
-        var action = Substitute.For<AsyncAction<int>>();
+        var action = Substitute.For<Action<int>>();
 
         await NoneT<int>().IfPresentAsync(action);
 
@@ -138,7 +138,7 @@ public class OptionOperatorsTests
     [Fact]
     public async Task IfPresentAsync_ShouldCallTheGivenAsyncAction_IfOptionIsNotEmpty()
     {
-        var action = Substitute.For<AsyncAction<int>>();
+        var action = Substitute.For<Action<int>>();
 
         await Some(Value).IfPresentAsync(action);
 

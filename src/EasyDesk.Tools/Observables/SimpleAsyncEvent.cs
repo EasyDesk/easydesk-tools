@@ -5,7 +5,7 @@ namespace EasyDesk.Tools.Observables;
 
 public class SimpleAsyncEvent<T> : IAsyncObservable<T>, IAsyncEmitter<T>
 {
-    private readonly List<AsyncAction<T>> _handlers = new();
+    private readonly List<Action<T>> _handlers = new();
 
     public async Task Emit(T value)
     {
@@ -15,7 +15,7 @@ public class SimpleAsyncEvent<T> : IAsyncObservable<T>, IAsyncEmitter<T>
         }
     }
 
-    public ISubscription Subscribe(AsyncAction<T> handler)
+    public ISubscription Subscribe(Action<T> handler)
     {
         _handlers.Add(handler);
         return new SimpleSubscription(() => _handlers.Remove(handler));

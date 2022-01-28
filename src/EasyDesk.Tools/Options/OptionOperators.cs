@@ -5,7 +5,7 @@ namespace EasyDesk.Tools.Options;
 
 public static partial class OptionImports
 {
-    public static Option<T> IfPresent<T>(this Option<T> option, Action<T> action)
+    public static Option<T> IfPresent<T>(this Option<T> option, System.Action<T> action)
     {
         option.Match(
             some: action,
@@ -13,7 +13,7 @@ public static partial class OptionImports
         return option;
     }
 
-    public static async Task<Option<T>> IfPresentAsync<T>(this Option<T> option, AsyncAction<T> action)
+    public static async Task<Option<T>> IfPresentAsync<T>(this Option<T> option, Action<T> action)
     {
         await option.MatchAsync(
             some: action,

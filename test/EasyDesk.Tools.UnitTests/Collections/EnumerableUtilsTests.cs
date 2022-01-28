@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EasyDesk.Tools.Options;
+﻿using EasyDesk.Tools.Options;
 using NSubstitute;
 using Shouldly;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
-using static System.Linq.Enumerable;
 using static EasyDesk.Tools.Collections.EnumerableUtils;
 using static EasyDesk.Tools.Options.OptionImports;
+using static System.Linq.Enumerable;
 
 namespace EasyDesk.Tools.UnitTests.Collections;
 
@@ -50,7 +50,7 @@ public class EnumerableUtilsTests
     public void ForEach_ShouldCallTheGivenActionForEveryElementInTheSquence()
     {
         var count = 10;
-        var action = Substitute.For<Action<int>>();
+        var action = Substitute.For<System.Action<int>>();
         var range = Range(0, count);
 
         range.ForEach(action);

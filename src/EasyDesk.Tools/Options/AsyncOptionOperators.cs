@@ -5,10 +5,10 @@ namespace EasyDesk.Tools.Options;
 
 public static partial class OptionImports
 {
-    public static async Task<Option<T>> ThenIfPresent<T>(this Task<Option<T>> option, Action<T> action) =>
+    public static async Task<Option<T>> ThenIfPresent<T>(this Task<Option<T>> option, System.Action<T> action) =>
         (await option).IfPresent(action);
 
-    public static async Task<Option<T>> ThenIfPresentAsync<T>(this Task<Option<T>> option, AsyncAction<T> action) =>
+    public static async Task<Option<T>> ThenIfPresentAsync<T>(this Task<Option<T>> option, Action<T> action) =>
         await (await option).IfPresentAsync(action);
 
     public static async Task<Option<T>> ThenIfAbsent<T>(this Task<Option<T>> option, Action action) =>

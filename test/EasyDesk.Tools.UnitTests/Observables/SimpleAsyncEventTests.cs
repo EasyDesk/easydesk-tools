@@ -24,8 +24,8 @@ public class SimpleAsyncEventTests
     [Fact]
     public async Task Emit_ShouldNotifyHandlersWithTheGivenValueAsync()
     {
-        var handler1 = Substitute.For<Action<int>>();
-        var handler2 = Substitute.For<Action<int>>();
+        var handler1 = Substitute.For<System.Action<int>>();
+        var handler2 = Substitute.For<System.Action<int>>();
         _sut.Subscribe(handler1);
         _sut.Subscribe(handler2);
 
@@ -57,7 +57,7 @@ public class SimpleAsyncEventTests
     [Fact]
     public async Task Emit_ShouldNotNotifyUnsubscribedHandlers()
     {
-        var handler = Substitute.For<Action<int>>();
+        var handler = Substitute.For<System.Action<int>>();
         var subscription = _sut.Subscribe(handler);
         subscription.Unsubscribe();
 

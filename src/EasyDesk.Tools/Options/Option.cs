@@ -43,7 +43,7 @@ public readonly struct Option<T> : IEnumerable<T>
     public Task<R> MatchAsync<R>(AsyncFunc<T, R> some, AsyncFunc<R> none) =>
        Match(some: t => some(t), none: () => none());
 
-    public void Match(Action<T> some, Action none)
+    public void Match(System.Action<T> some, Action none)
     {
         if (IsPresent)
         {
@@ -55,7 +55,7 @@ public readonly struct Option<T> : IEnumerable<T>
         }
     }
 
-    public async Task MatchAsync(AsyncAction<T> some, AsyncAction none)
+    public async Task MatchAsync(Action<T> some, AsyncAction none)
     {
         if (IsPresent)
         {
