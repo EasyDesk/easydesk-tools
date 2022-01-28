@@ -22,7 +22,7 @@ public class AsyncEnumerableUtilsTests
     public async void ForEach_ShouldCallTheGivenAsyncActionForEveryElementInTheSquence()
     {
         var count = 10;
-        var action = Substitute.For<Action<int>>();
+        var action = Substitute.For<AsyncAction<int>>();
         var range = ToAsyncEnumerable(Range(0, count));
 
         await range.ForEach(action);
@@ -41,7 +41,7 @@ public class AsyncEnumerableUtilsTests
     public async void ForEach_ShouldCallTheGivenActionForEveryElementInTheSquence()
     {
         var count = 10;
-        var action = Substitute.For<Action<int>>();
+        var action = Substitute.For<AsyncAction<int>>();
         var range = ToAsyncEnumerable(Range(0, count));
 
         await range.ForEach(action);

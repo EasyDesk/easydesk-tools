@@ -65,7 +65,7 @@ public class OptionTests
     [Fact]
     public void MatchWithActions_ShouldCallTheNoneBranchOnly_IfOptionIsEmpty()
     {
-        var shouldNotBeCalled = Substitute.For<System.Action<int>>();
+        var shouldNotBeCalled = Substitute.For<Action<int>>();
         var shouldBeCalled = Substitute.For<Action>();
 
         NoneT<int>().Match(
@@ -79,7 +79,7 @@ public class OptionTests
     [Fact]
     public void MatchWithActions_ShouldCallTheSomeBranchOnly_IfOptionIsNotEmpty()
     {
-        var shouldBeCalled = Substitute.For<System.Action<int>>();
+        var shouldBeCalled = Substitute.For<Action<int>>();
         var shouldNotBeCalled = Substitute.For<Action>();
 
         Some(Value).Match(

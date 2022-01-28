@@ -5,7 +5,7 @@ namespace EasyDesk.Tools.Collections;
 
 public static class AsyncEnumerableUtils
 {
-    public static async Task ForEach<T>(this IAsyncEnumerable<T> sequence, Action<T> action)
+    public static async Task ForEach<T>(this IAsyncEnumerable<T> sequence, AsyncAction<T> action)
     {
         await foreach (var item in sequence)
         {

@@ -17,12 +17,12 @@ public static class TaskUtils
         await taskContinuation();
     }
 
-    public static async Task Then<T>(this Task<T> task, System.Action<T> taskContinuation)
+    public static async Task Then<T>(this Task<T> task, Action<T> taskContinuation)
     {
         taskContinuation(await task);
     }
 
-    public static async Task Then<T>(this Task<T> task, Action<T> taskContinuation)
+    public static async Task Then<T>(this Task<T> task, AsyncAction<T> taskContinuation)
     {
         await taskContinuation(await task);
     }
@@ -48,7 +48,7 @@ public static class TaskUtils
         await task;
     }
 
-    public static async void FireAndForget<TException>(this Task task, System.Action<TException> exceptionHandler)
+    public static async void FireAndForget<TException>(this Task task, Action<TException> exceptionHandler)
         where TException : Exception
     {
         try

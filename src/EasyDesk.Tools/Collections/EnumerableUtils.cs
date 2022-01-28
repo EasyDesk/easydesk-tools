@@ -30,7 +30,7 @@ public static class EnumerableUtils
 
     public static bool IsEmpty<T>(this IEnumerable<T> sequence) => !sequence.Any();
 
-    public static void ForEach<T>(this IEnumerable<T> sequence, System.Action<T> action)
+    public static void ForEach<T>(this IEnumerable<T> sequence, Action<T> action)
     {
         foreach (var item in sequence)
         {
@@ -38,7 +38,7 @@ public static class EnumerableUtils
         }
     }
 
-    public static IEnumerable<T> Peek<T>(this IEnumerable<T> sequence, System.Action<T> action)
+    public static IEnumerable<T> Peek<T>(this IEnumerable<T> sequence, Action<T> action)
     {
         foreach (var item in sequence)
         {

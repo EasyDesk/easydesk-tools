@@ -50,7 +50,7 @@ public class EnumerableUtilsTests
     public void ForEach_ShouldCallTheGivenActionForEveryElementInTheSquence()
     {
         var count = 10;
-        var action = Substitute.For<System.Action<int>>();
+        var action = Substitute.For<Action<int>>();
         var range = Range(0, count);
 
         range.ForEach(action);
