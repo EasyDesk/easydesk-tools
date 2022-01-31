@@ -18,4 +18,10 @@ public static class AsyncObservableExtensions
             return Task.CompletedTask;
         });
     }
+
+    public static ISubscription Subscribe<T>(this IAsyncObservable<T> observable, AsyncAction handler) =>
+        observable.Subscribe(_ => handler());
+
+    public static ISubscription Subscribe<T>(this IAsyncObservable<T> observable, Action handler) =>
+        observable.Subscribe(_ => handler());
 }
