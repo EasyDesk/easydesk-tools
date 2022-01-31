@@ -6,12 +6,12 @@ using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.Options;
 
-public readonly struct NoneOption
+public readonly record struct NoneOption
 {
     public static NoneOption Value { get; } = default;
 }
 
-public readonly struct Option<T> : IEnumerable<T>
+public readonly record struct Option<T> : IEnumerable<T>
 {
     private readonly T _value;
 

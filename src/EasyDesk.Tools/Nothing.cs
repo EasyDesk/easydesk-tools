@@ -2,7 +2,7 @@
 
 namespace EasyDesk.Tools;
 
-public struct Nothing
+public readonly record struct Nothing
 {
     public static Nothing Value { get; } = default;
 
