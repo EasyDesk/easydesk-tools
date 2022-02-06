@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using EasyDesk.Tools.Options;
+using NSubstitute;
 using Shouldly;
 using System;
 using Xunit;
@@ -95,7 +96,7 @@ public class OptionTests
     {
         var shouldNotBeCalled = Substitute.For<Func<int>>();
         var test = Some(Value) || Some(shouldNotBeCalled());
-        test.ShouldBe(Value);
+        test.ShouldContain(Value);
         shouldNotBeCalled.DidNotReceiveWithAnyArgs()();
     }
 
@@ -106,5 +107,20 @@ public class OptionTests
         var test = None && Some(shouldNotBeCalled());
         test.ShouldBeEmpty();
         shouldNotBeCalled.DidNotReceiveWithAnyArgs()();
+    }
+
+    [Fact]
+    public void AsSome_ShouldThrowWithNullArgument()
+    {
+        Should.Throw<ArgumentNullException>(() =>
+        {
+            OptionImports.AsSome<object>(null);
+        });
+    }
+
+    [Fact]
+    public void AsSome_ShouldCallSomeWithNotNullArgument()
+    {
+        string.Empty.AsSome().ShouldBe(Some(string.Empty));
     }
 }

@@ -11,6 +11,8 @@ public static partial class OptionImports
     public static Option<T> Some<T>(T value) =>
         value is null ? throw new ArgumentNullException(nameof(value)) : new(value);
 
+    public static Option<T> AsSome<T>(this T value) => Some(value);
+
     public static Option<T> AsOption<T>(this T value) where T : class =>
         value is null ? None : Some(value);
 

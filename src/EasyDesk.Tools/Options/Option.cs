@@ -71,8 +71,6 @@ public readonly record struct Option<T> : IEnumerable<T>
     public static implicit operator Option<T>(NoneOption none) => default;
 #pragma warning restore IDE0060
 
-    public static implicit operator Option<T>(T value) => Some(value);
-
     public static T operator |(Option<T> a, T b) => a.OrElse(b);
 
     public static T operator |(Option<T> a, Func<T> b) => a.OrElseGet(b);
