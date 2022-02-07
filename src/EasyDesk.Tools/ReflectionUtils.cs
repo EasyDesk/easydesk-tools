@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace EasyDesk.Tools;
 
@@ -45,6 +46,29 @@ public static class ReflectionUtils
     {
         return InstantiableSubtypes(baseType, assemblyTypes)
             .Select(Activator.CreateInstance);
+    }
+
+    public static IEnumerable<(Type Interface, Type Implementation)> InstantiableSubtypesOfGenericInterface(
+        Type genericInterfaceType, params Type[] assemblyTypes) =>
+        InstantiableSubtypesOfGenericInterface(genericInterfaceType, assemblyTypes.AsEnumerable());
+
+    public static IEnumerable<(Type Interface, Type Implementation)> InstantiableSubtypesOfGenericInterface(
+        Type genericInterfaceType, IEnumerable<Type> assemblyTypes)
+    {
+        if (!genericInterfaceType.IsGenericTypeDefinition)
+        {
+            throw new ArgumentException("The given interface type is not an open generic", nameof(genericInterfaceType));
+        }
+        return InstantiableTypesInAssemblies(assemblyTypes)
+            .SelectMany(impl => FindGenericImplementedInterfaces(impl, genericInterfaceType).Select(i => (i, impl)));
+    }
+
+    private static IEnumerable<Type> FindGenericImplementedInterfaces(Type implementationType, Type genericInterfaceType)
+    {
+        return implementationType
+            .GetTypeInfo()
+            .GetInterfaces()
+            .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericInterfaceType);
     }
 
     public static object GetPropertyFromPath(object source, string path)
