@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime;
 
-public record LocalDateTime : IComparable<LocalDateTime>, IFormattable
+public readonly record struct LocalDateTime : IComparable<LocalDateTime>, IFormattable
 {
     private LocalDateTime(DateTime dateTime)
     {

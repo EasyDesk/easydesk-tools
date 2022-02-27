@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime;
 
-public record TimeOffset : IComparable<TimeOffset>, IFormattable
+public readonly record struct TimeOffset : IComparable<TimeOffset>, IFormattable
 {
     private TimeOffset(TimeSpan timeSpan)
     {

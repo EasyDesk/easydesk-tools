@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime;
 
-public record TimeOfDay : IComparable<TimeOfDay>, IFormattable
+public readonly record struct TimeOfDay : IComparable<TimeOfDay>, IFormattable
 {
     private TimeOfDay(TimeSpan timeSpan)
     {

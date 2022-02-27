@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace EasyDesk.Tools.PrimitiveTypes.DateAndTime;
 
-public record Timestamp : IComparable<Timestamp>, IFormattable
+public readonly record struct Timestamp : IComparable<Timestamp>, IFormattable
 {
     private Timestamp(DateTime dateTime)
     {
