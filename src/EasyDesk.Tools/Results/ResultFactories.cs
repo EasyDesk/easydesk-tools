@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EasyDesk.Tools.Options;
+using System;
+using System.Threading.Tasks;
 
 namespace EasyDesk.Tools.Results;
 
@@ -15,4 +17,11 @@ public static partial class ResultImports
 
     public static Result<Nothing> EnsureNot(bool condition, Func<Error> otherwise) =>
         Ensure(!condition, otherwise);
+
+    public static Result<T> OrElseError<T>(this Option<T> option, Func<Error> error) => option.Match<Result<T>>(
+        some: t => t,
+        none: () => error());
+
+    public static async Task<Result<T>> ThenOrElseError<T>(this Task<Option<T>> option, Func<Error> error) =>
+        (await option).OrElseError(error);
 }

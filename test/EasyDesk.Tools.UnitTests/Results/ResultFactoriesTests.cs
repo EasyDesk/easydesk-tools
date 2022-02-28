@@ -1,6 +1,7 @@
 ﻿using EasyDesk.Tools.Results;
 using Shouldly;
 using Xunit;
+using static EasyDesk.Tools.Options.OptionImports;
 using static EasyDesk.Tools.Results.ResultImports;
 
 namespace EasyDesk.Tools.UnitTests.Results;
@@ -37,5 +38,17 @@ public class ResultFactoriesTests
     public void EnsureNot_ShouldReturnTheGivenError_IfTheConditionIsMet()
     {
         EnsureNot(true, otherwise: () => _error).ShouldBe(Failure<Nothing>(_error));
+    }
+
+    [Fact]
+    public void OrElseError_ShouldReturnSuccess_IfTheOptionIsNotEmpty()
+    {
+        Some(10).OrElseError(() => _error).ShouldBe(Success(10));
+    }
+
+    [Fact]
+    public void OrElseError_ShouldReturnTheGivenError_IfTheOptionIsEmpty()
+    {
+        NoneT<int>().OrElseError(() => _error).ShouldBe(Failure<int>(_error));
     }
 }
