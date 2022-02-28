@@ -3,6 +3,7 @@ using NSubstitute;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 using static EasyDesk.Tools.Results.ResultImports;
 
@@ -26,11 +27,19 @@ public class ResultOperatorsTests
         yield return new[] { Failure };
     }
 
+    public static IEnumerable<object[]> FlatMapData()
+    {
+        yield return new[] { Success(TestString) };
+        yield return new[] { Failure<string>(_mappedError) };
+    }
+
     [Fact]
     public void IfSuccess_ShouldNotCallTheGivenFunction_ForFailedResults()
     {
         var shouldNotBeCalled = Substitute.For<Action<int>>();
+
         Failure.IfSuccess(shouldNotBeCalled);
+
         shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default);
     }
 
@@ -38,7 +47,9 @@ public class ResultOperatorsTests
     public void IfSuccess_ShouldCallTheGivenFunction_ForSuccessfulResults()
     {
         var shouldBeCalled = Substitute.For<Action<int>>();
+
         Success.IfSuccess(shouldBeCalled);
+
         shouldBeCalled.Received(1)(_value);
     }
 
@@ -46,14 +57,18 @@ public class ResultOperatorsTests
     [MemberData(nameof(AllTypesOfResult))]
     public void IfSuccess_ShouldReturnTheSameResult(Result<int> result)
     {
-        result.IfSuccess(Substitute.For<Action<int>>()).ShouldBe(result);
+        var output = result.IfSuccess(Substitute.For<Action<int>>());
+
+        output.ShouldBe(result);
     }
 
     [Fact]
     public void IfFailure_ShouldCallTheGivenFunction_ForFailedResults()
     {
         var shouldBeCalled = Substitute.For<Action<Error>>();
+
         Failure.IfFailure(shouldBeCalled);
+
         shouldBeCalled.Received(1)(_error);
     }
 
@@ -61,7 +76,9 @@ public class ResultOperatorsTests
     public void IfFailure_ShouldNotCallTheGivenFunction_ForFailedResults()
     {
         var shouldNotBeCalled = Substitute.For<Action<Error>>();
+
         Success.IfFailure(shouldNotBeCalled);
+
         shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default);
     }
 
@@ -69,7 +86,9 @@ public class ResultOperatorsTests
     [MemberData(nameof(AllTypesOfResult))]
     public void IfFailure_ShouldReturnTheSameResult(Result<int> result)
     {
-        result.IfFailure(Substitute.For<Action<Error>>()).ShouldBe(result);
+        var output = result.IfFailure(Substitute.For<Action<Error>>());
+
+        output.ShouldBe(result);
     }
 
     [Fact]
@@ -77,7 +96,10 @@ public class ResultOperatorsTests
     {
         var mapper = Substitute.For<Func<int, string>>();
         mapper(_value).Returns(TestString);
-        Success.Map(mapper).ShouldBe(Success(TestString));
+
+        var output = Success.Map(mapper);
+
+        output.ShouldBe(Success(TestString));
         mapper.Received(1)(_value);
     }
 
@@ -85,7 +107,10 @@ public class ResultOperatorsTests
     public void Map_ShouldReturnTheSameError_ForFailedResults()
     {
         var mapper = Substitute.For<Func<int, string>>();
-        Failure.Map(mapper).ShouldBe(Failure<string>(_error));
+
+        var output = Failure.Map(mapper);
+
+        output.ShouldBe(Failure<string>(_error));
         mapper.DidNotReceiveWithAnyArgs()(default);
     }
 
@@ -94,7 +119,10 @@ public class ResultOperatorsTests
     {
         var mapper = Substitute.For<Func<Error, Error>>();
         mapper(_error).Returns(_mappedError);
-        Failure.MapError(mapper).ShouldBe(Failure<int>(_mappedError));
+
+        var output = Failure.MapError(mapper);
+
+        output.ShouldBe(Failure<int>(_mappedError));
         mapper.Received(1)(_error);
     }
 
@@ -102,7 +130,10 @@ public class ResultOperatorsTests
     public void MapError_ShouldReturnTheSameValue_ForSuccessfulResults()
     {
         var mapper = Substitute.For<Func<Error, Error>>();
-        Success.MapError(mapper).ShouldBe(Success);
+
+        var output = Success.MapError(mapper);
+
+        output.ShouldBe(Success);
         mapper.DidNotReceiveWithAnyArgs()(default);
     }
 
@@ -110,7 +141,10 @@ public class ResultOperatorsTests
     public void FlatMap_ShouldReturnTheSameError_ForFailedResults()
     {
         var mapper = Substitute.For<Func<int, Result<string>>>();
-        Failure.FlatMap(mapper).ShouldBe(Failure<string>(_error));
+
+        var output = Failure.FlatMap(mapper);
+
+        output.ShouldBe(Failure<string>(_error));
         mapper.DidNotReceiveWithAnyArgs()(_value);
     }
 
@@ -121,21 +155,21 @@ public class ResultOperatorsTests
     {
         var mapper = Substitute.For<Func<int, Result<string>>>();
         mapper(_value).Returns(mappedResult);
-        Success.FlatMap(mapper).ShouldBe(mappedResult);
-        mapper.Received(1)(_value);
-    }
 
-    public static IEnumerable<object[]> FlatMapData()
-    {
-        yield return new[] { Success(TestString) };
-        yield return new[] { Failure<string>(_mappedError) };
+        var output = Success.FlatMap(mapper);
+
+        output.ShouldBe(mappedResult);
+        mapper.Received(1)(_value);
     }
 
     [Fact]
     public void FlatTap_ShouldReturnTheSameError_ForFailedResults()
     {
         var mapper = Substitute.For<Func<int, Result<string>>>();
-        Failure.FlatTap(mapper).ShouldBe(Failure);
+
+        var output = Failure.FlatTap(mapper);
+
+        output.ShouldBe(Failure);
         mapper.DidNotReceiveWithAnyArgs()(default);
     }
 
@@ -144,7 +178,10 @@ public class ResultOperatorsTests
     {
         var mapper = Substitute.For<Func<int, Result<string>>>();
         mapper(_value).Returns(Failure<string>(_mappedError));
-        Success.FlatTap(mapper).ShouldBe(Failure<int>(_mappedError));
+
+        var output = Success.FlatTap(mapper);
+
+        output.ShouldBe(Failure<int>(_mappedError));
         mapper.Received(1)(_value);
     }
 
@@ -153,7 +190,151 @@ public class ResultOperatorsTests
     {
         var mapper = Substitute.For<Func<int, Result<string>>>();
         mapper(_value).Returns(Success(TestString));
-        Success.FlatTap(mapper).ShouldBe(Success);
+
+        var output = Success.FlatTap(mapper);
+
+        output.ShouldBe(Success);
         mapper.Received(1)(_value);
+    }
+
+    [Fact]
+    public async Task IfSuccessAsync_ShouldNotCallTheGivenFunction_ForFailedResults()
+    {
+        var shouldNotBeCalled = Substitute.For<AsyncAction<int>>();
+
+        await Failure.IfSuccessAsync(shouldNotBeCalled);
+
+        await shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default);
+    }
+
+    [Fact]
+    public async Task IfSuccessAsync_ShouldCallTheGivenFunction_ForSuccessfulResults()
+    {
+        var shouldBeCalled = Substitute.For<AsyncAction<int>>();
+
+        await Success.IfSuccessAsync(shouldBeCalled);
+
+        await shouldBeCalled.Received(1)(_value);
+    }
+
+    [Theory]
+    [MemberData(nameof(AllTypesOfResult))]
+    public async Task IfSuccessAsync_ShouldReturnTheSameResult(Result<int> result)
+    {
+        var output = await result.IfSuccessAsync(Substitute.For<AsyncAction<int>>());
+
+        output.ShouldBe(result);
+    }
+
+    [Fact]
+    public async Task IfFailureAsync_ShouldCallTheGivenFunction_ForFailedResults()
+    {
+        var shouldBeCalled = Substitute.For<AsyncAction<Error>>();
+
+        await Failure.IfFailureAsync(shouldBeCalled);
+
+        await shouldBeCalled.Received(1)(_error);
+    }
+
+    [Fact]
+    public async Task IfFailureAsync_ShouldNotCallTheGivenFunction_ForFailedResults()
+    {
+        var shouldNotBeCalled = Substitute.For<AsyncAction<Error>>();
+
+        await Success.IfFailureAsync(shouldNotBeCalled);
+
+        await shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default);
+    }
+
+    [Theory]
+    [MemberData(nameof(AllTypesOfResult))]
+    public async Task IfFailureAsync_ShouldReturnTheSameResult(Result<int> result)
+    {
+        var output = await result.IfFailureAsync(Substitute.For<AsyncAction<Error>>());
+
+        output.ShouldBe(result);
+    }
+
+    [Fact]
+    public async Task MapAsync_ShouldMapTheWrappedValue_ForSuccessfulResults()
+    {
+        var mapper = Substitute.For<AsyncFunc<int, string>>();
+        mapper(_value).Returns(TestString);
+
+        var output = await Success.MapAsync(mapper);
+
+        output.ShouldBe(Success(TestString));
+        await mapper.Received(1)(_value);
+    }
+
+    [Fact]
+    public async Task MapAsync_ShouldReturnTheSameError_ForFailedResults()
+    {
+        var mapper = Substitute.For<AsyncFunc<int, string>>();
+
+        var output = await Failure.MapAsync(mapper);
+
+        output.ShouldBe(Failure<string>(_error));
+        await mapper.DidNotReceiveWithAnyArgs()(default);
+    }
+
+    [Fact]
+    public async Task FlatMapAsync_ShouldReturnTheSameError_ForFailedResults()
+    {
+        var mapper = Substitute.For<AsyncFunc<int, Result<string>>>();
+
+        var output = await Failure.FlatMapAsync(mapper);
+
+        output.ShouldBe(Failure<string>(_error));
+        await mapper.DidNotReceiveWithAnyArgs()(_value);
+    }
+
+    [Theory]
+    [MemberData(nameof(FlatMapData))]
+    public async Task FlatMapAsync_ShouldReturnTheMappedValue_ForSuccessfulResults(
+        Result<string> mappedResult)
+    {
+        var mapper = Substitute.For<AsyncFunc<int, Result<string>>>();
+        mapper(_value).Returns(mappedResult);
+
+        var output = await Success.FlatMapAsync(mapper);
+
+        output.ShouldBe(mappedResult);
+        await mapper.Received(1)(_value);
+    }
+
+    [Fact]
+    public async Task FlatTapAsync_ShouldReturnTheSameError_ForFailedResults()
+    {
+        var mapper = Substitute.For<AsyncFunc<int, Result<string>>>();
+
+        var output = await Failure.FlatTapAsync(mapper);
+
+        output.ShouldBe(Failure);
+        await mapper.DidNotReceiveWithAnyArgs()(default);
+    }
+
+    [Fact]
+    public async Task FlatTapAsync_ShouldReturnTheMappedError_ForSuccessfulResults()
+    {
+        var mapper = Substitute.For<AsyncFunc<int, Result<string>>>();
+        mapper(_value).Returns(Failure<string>(_mappedError));
+
+        var output = await Success.FlatTapAsync(mapper);
+
+        output.ShouldBe(Failure<int>(_mappedError));
+        await mapper.Received(1)(_value);
+    }
+
+    [Fact]
+    public async Task FlatTapAsync_ShouldReturnTheMappedValue_ForSuccessfulResults()
+    {
+        var mapper = Substitute.For<AsyncFunc<int, Result<string>>>();
+        mapper(_value).Returns(Success(TestString));
+
+        var output = await Success.FlatTapAsync(mapper);
+
+        output.ShouldBe(Success);
+        await mapper.Received(1)(_value);
     }
 }
