@@ -17,11 +17,11 @@ public static partial class ResultImports
     public static async Task<Result<A>> ThenIfFailureAsync<A>(this Task<Result<A>> result, AsyncAction<Error> action) =>
         await (await result).IfFailureAsync(action);
 
-    public static async Task<Result<A>> ThenFlatTap<A, B>(this Task<Result<A>> result, Func<A, Result<B>> requirement) =>
-        (await result).FlatTap(requirement);
+    public static async Task<Result<A>> ThenFlatTap<A, B>(this Task<Result<A>> result, Func<A, Result<B>> mapper) =>
+        (await result).FlatTap(mapper);
 
-    public static async Task<Result<A>> ThenFlatTapAsync<A, B>(this Task<Result<A>> result, AsyncFunc<A, Result<B>> requirement) =>
-        await (await result).FlatTapAsync(requirement);
+    public static async Task<Result<A>> ThenFlatTapAsync<A, B>(this Task<Result<A>> result, AsyncFunc<A, Result<B>> mapper) =>
+        await (await result).FlatTapAsync(mapper);
 
     public static async Task<Result<B>> ThenMap<A, B>(this Task<Result<A>> result, Func<A, B> mapper) =>
         (await result).Map(mapper);
