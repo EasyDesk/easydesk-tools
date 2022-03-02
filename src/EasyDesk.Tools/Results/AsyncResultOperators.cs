@@ -37,4 +37,10 @@ public static partial class ResultImports
 
     public static async Task<Result<B>> ThenFlatMapAsync<A, B>(this Task<Result<A>> result, AsyncFunc<A, Result<B>> mapper) =>
         await (await result).FlatMapAsync(mapper);
+
+    public static async Task<Result<A>> ThenThrowIfFailure<A>(this Task<Result<A>> result) =>
+        (await result).ThrowIfFailure();
+
+    public static async Task<Result<A>> ThenThrowIfFailure<A>(this Task<Result<A>> result, Func<Error, Exception> exception) =>
+        (await result).ThrowIfFailure(exception);
 }

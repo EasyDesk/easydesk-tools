@@ -337,4 +337,37 @@ public class ResultOperatorsTests
         output.ShouldBe(Success);
         await mapper.Received(1)(_value);
     }
+
+    [Fact]
+    public void ThrowIfFailure_ShouldNotThrowAnyException_ForSuccessfulResults()
+    {
+        Should.NotThrow(() => Success.ThrowIfFailure());
+    }
+
+    [Fact]
+    public void ThrowIfFailure_ShouldReturnTheWrappedValue_ForSuccessfulResults()
+    {
+        Success.ThrowIfFailure().ShouldBe(_value);
+    }
+
+    [Fact]
+    public void ThrowIfFailure_ShouldThrowAResultFailedException_ForFailedResults()
+    {
+        var exception = Should.Throw<ResultFailedException>(() => Failure.ThrowIfFailure());
+
+        exception.Error.ShouldBe(_error);
+    }
+
+    [Fact]
+    public void ThrowIfFailure_ShouldThrowTheGivenException_ForFailedResults()
+    {
+        var exceptionFactory = Substitute.For<Func<Error, Exception>>();
+        var expectedException = new Exception("Test");
+        exceptionFactory(_error).Returns(expectedException);
+
+        var actualException = Should.Throw<Exception>(() => Failure.ThrowIfFailure(exceptionFactory));
+
+        actualException.ShouldBe(expectedException);
+        exceptionFactory.Received(1)(_error);
+    }
 }

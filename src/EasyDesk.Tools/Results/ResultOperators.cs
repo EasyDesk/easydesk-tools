@@ -41,7 +41,7 @@ public static partial class ResultImports
     public static Task<Result<B>> MapAsync<A, B>(this Result<A> result, AsyncFunc<A, B> mapper) =>
         result.FlatMapAsync(async x => Success(await mapper(x)));
 
-    public static Result<A> MapError<A>(this Result<A> result, Func<Error, Error> mapper) => result.Match<Result<A>>(
+    public static Result<A> MapError<A>(this Result<A> result, Func<Error, Error> mapper) => result.Match(
         success: a => a,
         failure: e => Failure<A>(mapper(e)));
 
@@ -52,4 +52,10 @@ public static partial class ResultImports
     public static Task<Result<B>> FlatMapAsync<A, B>(this Result<A> result, AsyncFunc<A, Result<B>> mapper) => result.Match(
         success: a => mapper(a),
         failure: e => Task.FromResult(Failure<B>(e)));
+
+    public static A ThrowIfFailure<A>(this Result<A> result, Func<Error, Exception> exception) => result.Match(
+        success: a => a,
+        failure: e => throw exception(e));
+
+    public static A ThrowIfFailure<A>(this Result<A> result) => result.ThrowIfFailure(e => new ResultFailedException(e));
 }
