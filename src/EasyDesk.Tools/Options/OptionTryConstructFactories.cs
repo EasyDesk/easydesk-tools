@@ -1,6 +1,6 @@
-﻿namespace EasyDesk.Tools.Options;
+﻿namespace EasyDesk.Tools;
 
-public static partial class OptionImports
+public static partial class StaticImports
 {
     public delegate bool TryConstruct<T>(out T output);
 

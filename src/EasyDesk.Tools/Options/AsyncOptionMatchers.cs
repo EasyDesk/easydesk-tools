@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace EasyDesk.Tools.Options;
+namespace EasyDesk.Tools;
 
-public static partial class OptionImports
+public static partial class StaticImports
 {
     public static async Task<R> ThenMatch<T, R>(this Task<Option<T>> option, Func<T, R> some, Func<R> none) =>
         (await option).Match(some, none);

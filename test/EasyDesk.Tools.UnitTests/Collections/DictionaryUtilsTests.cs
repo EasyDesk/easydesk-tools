@@ -4,7 +4,6 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using Xunit;
-using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.UnitTests.Collections;
 
@@ -20,13 +19,13 @@ public class DictionaryUtilsTests
     [Fact]
     public void GetOption_ShouldReturnNone_IfTheKeyIsNotInTheDictionary()
     {
-        _sut.GetOption("four").ShouldBe(None);
+        _sut.GetOption("four").ShouldBeEmpty();
     }
 
     [Fact]
     public void GetOption_ShouldReturnTheCorrespondingValue_IfTheKeyIsInTheDictionary()
     {
-        _sut.GetOption("one").ShouldBe(Some(1));
+        _sut.GetOption("one").ShouldContain(1);
     }
 
     [Fact]

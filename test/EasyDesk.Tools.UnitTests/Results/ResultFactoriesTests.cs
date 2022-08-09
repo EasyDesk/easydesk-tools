@@ -1,8 +1,6 @@
-﻿using EasyDesk.Tools.Results;
+﻿using EasyDesk.Tools.Utils;
 using Shouldly;
 using Xunit;
-using static EasyDesk.Tools.Options.OptionImports;
-using static EasyDesk.Tools.Results.ResultImports;
 
 namespace EasyDesk.Tools.UnitTests.Results;
 

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EasyDesk.Tools.Options;
 using NSubstitute;
 using Shouldly;
 using Xunit;
 using static System.Linq.Enumerable;
 using static EasyDesk.Tools.Collections.EnumerableUtils;
-using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.UnitTests.Collections;
 
@@ -94,7 +92,7 @@ public class EnumerableUtilsTests
     public void FirstOption_ShouldReturnNone_IfNoItemsMatchThePredicate(
         IEnumerable<int> sequence, Func<int, bool> predicate)
     {
-        sequence.FirstOption(predicate).ShouldBe(None);
+        sequence.FirstOption(predicate).ShouldBeEmpty();
     }
 
     public static IEnumerable<object[]> FirstOptionEmptyData()
@@ -109,7 +107,7 @@ public class EnumerableUtilsTests
     public void FirstOption_ShouldReturnTheFirstItemMatchingThePredicate_IfAny(
         IEnumerable<int> sequence, Func<int, bool> predicate, int expected)
     {
-        sequence.FirstOption(predicate).ShouldBe(Some(expected));
+        sequence.FirstOption(predicate).ShouldContain(expected);
     }
 
     public static IEnumerable<object[]> FirstOptionNonEmptyData()
@@ -123,7 +121,7 @@ public class EnumerableUtilsTests
     public void SingleOption_ShouldReturnTheOnlyItemMatchingThePredicate_IfNoOtherItemsMatchThePredicate(
         IEnumerable<int> sequence, Func<int, bool> predicate, int expected)
     {
-        sequence.SingleOption(predicate).ShouldBe(Some(expected));
+        sequence.SingleOption(predicate).ShouldContain(expected);
     }
 
     public static IEnumerable<object[]> SingleOptionWithOneMatchData()
@@ -137,7 +135,7 @@ public class EnumerableUtilsTests
     public void SingleOption_ShouldReturnNone_IfNoItemsMatchThePredicate(
         IEnumerable<int> sequence, Func<int, bool> predicate)
     {
-        sequence.SingleOption(predicate).ShouldBe(None);
+        sequence.SingleOption(predicate).ShouldBeEmpty();
     }
 
     public static IEnumerable<object[]> SingleOptionWithNoMatchesData()
@@ -275,8 +273,8 @@ public class EnumerableUtilsTests
     [Fact]
     public void MinMaxOption_ShouldReturnNone_IfSequenceIsEmpty()
     {
-        Empty<int>().MaxOption().ShouldBe(None);
-        Empty<int>().MinOption().ShouldBe(None);
+        Empty<int>().MaxOption().ShouldBeEmpty();
+        Empty<int>().MinOption().ShouldBeEmpty();
     }
 
     [Theory]
@@ -284,8 +282,8 @@ public class EnumerableUtilsTests
     public void MinMaxOption_ShouldReturnMinMax_IfSequenceIsNotEmpty(
         IEnumerable<int> sequence, int min, int max)
     {
-        sequence.MinOption().ShouldBe(Some(min));
-        sequence.MaxOption().ShouldBe(Some(max));
+        sequence.MinOption().ShouldContain(min);
+        sequence.MaxOption().ShouldContain(max);
     }
 
     public record Wrapper(int Value);
@@ -293,8 +291,8 @@ public class EnumerableUtilsTests
     [Fact]
     public void MinMaxByOption_ShouldReturnNone_IfSequenceIsEmpty()
     {
-        Empty<Wrapper>().MaxByOption(x => x.Value).ShouldBe(None);
-        Empty<Wrapper>().MinByOption(x => x.Value).ShouldBe(None);
+        Empty<Wrapper>().MaxByOption(x => x.Value).ShouldBeEmpty();
+        Empty<Wrapper>().MinByOption(x => x.Value).ShouldBeEmpty();
     }
 
     [Theory]

@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static EasyDesk.Tools.Options.OptionImports;
 
-namespace EasyDesk.Tools.Options;
+namespace EasyDesk.Tools;
 
 public readonly record struct NoneOption
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace EasyDesk.Tools.Options;
+namespace EasyDesk.Tools;
 
-public static partial class OptionImports
+public static partial class StaticImports
 {
     public static NoneOption None => NoneOption.Value;
 

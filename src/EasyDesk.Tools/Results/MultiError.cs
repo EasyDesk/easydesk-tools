@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace EasyDesk.Tools.Results;
+namespace EasyDesk.Tools;
 
 public record MultiError : Error
 {

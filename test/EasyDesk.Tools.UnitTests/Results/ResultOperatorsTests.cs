@@ -1,11 +1,9 @@
-﻿using EasyDesk.Tools.Results;
-using NSubstitute;
+﻿using NSubstitute;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
-using static EasyDesk.Tools.Results.ResultImports;
 
 namespace EasyDesk.Tools.UnitTests.Results;
 
@@ -23,14 +21,14 @@ public class ResultOperatorsTests
 
     public static IEnumerable<object[]> AllTypesOfResult()
     {
-        yield return new[] { Success };
-        yield return new[] { Failure };
+        yield return new object[] { Success };
+        yield return new object[] { Failure };
     }
 
     public static IEnumerable<object[]> FlatMapData()
     {
-        yield return new[] { Success(TestString) };
-        yield return new[] { Failure<string>(_mappedError) };
+        yield return new object[] { Success(TestString) };
+        yield return new object[] { Failure<string>(_mappedError) };
     }
 
     [Fact]

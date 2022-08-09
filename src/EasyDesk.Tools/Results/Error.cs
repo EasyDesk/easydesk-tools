@@ -1,3 +1,3 @@
-﻿namespace EasyDesk.Tools.Results;
+﻿namespace EasyDesk.Tools;
 
 public abstract record Error;

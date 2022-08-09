@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace EasyDesk.Tools.Results;
+namespace EasyDesk.Tools;
 
-public static partial class ResultImports
+public static partial class StaticImports
 {
     public static Result<R> Select<T, R>(this Result<T> result, Func<T, R> mapper) =>
         result.Map(mapper);

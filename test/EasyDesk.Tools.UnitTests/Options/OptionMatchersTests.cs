@@ -1,9 +1,7 @@
-﻿using EasyDesk.Tools.Options;
-using Shouldly;
+﻿using Shouldly;
 using System;
 using System.Threading.Tasks;
 using Xunit;
-using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.UnitTests.Options;
 

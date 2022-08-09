@@ -1,10 +1,8 @@
-﻿using EasyDesk.Tools.Results;
-using NSubstitute;
+﻿using NSubstitute;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using Xunit;
-using static EasyDesk.Tools.Results.ResultImports;
 
 namespace EasyDesk.Tools.UnitTests.Results;
 

@@ -1,13 +1,10 @@
-﻿using EasyDesk.Tools.Options;
+﻿using EasyDesk.Tools.Utils;
 using System;
 using System.Threading.Tasks;
-using static EasyDesk.Tools.Functions;
-using static EasyDesk.Tools.Options.OptionImports;
-using static EasyDesk.Tools.Results.ResultImports;
 
-namespace EasyDesk.Tools.Results;
+namespace EasyDesk.Tools;
 
-public record Result<T>
+public record struct Result<T>
 {
     private readonly T _value;
     private readonly Error _error;
@@ -15,11 +12,13 @@ public record Result<T>
     public Result(T value)
     {
         _value = value;
+        _error = default;
         IsFailure = false;
     }
 
     public Result(Error error)
     {
+        _value = default;
         _error = error;
         IsFailure = true;
     }
@@ -49,8 +48,8 @@ public record Result<T>
     public void Match(Action<T> success = null, Action<Error> failure = null)
     {
         Match(
-            success: t => Execute(() => success?.Invoke(t)),
-            failure: e => Execute(() => failure?.Invoke(e)));
+            success: t => ReturningNothing(() => success?.Invoke(t)),
+            failure: e => ReturningNothing(() => failure?.Invoke(e)));
     }
 
     public Task<R> MatchAsync<R>(AsyncFunc<T, R> success, AsyncFunc<Error, R> failure) =>

@@ -1,10 +1,8 @@
-﻿using EasyDesk.Tools.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using static EasyDesk.Tools.Functions;
-using static EasyDesk.Tools.Options.OptionImports;
+using static EasyDesk.Tools.ComparisonUtils;
 
 namespace EasyDesk.Tools.Collections;
 
@@ -263,6 +261,4 @@ public static class EnumerableUtils
         }
         return empty ? None : Some(currentItem);
     }
-
-    private static Exception SequenceIsEmptyException() => new InvalidOperationException("Sequence is empty");
 }

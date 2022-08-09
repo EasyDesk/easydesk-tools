@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace EasyDesk.Tools.Options;
+namespace EasyDesk.Tools;
 
-public static partial class OptionImports
+public static partial class StaticImports
 {
     public static Option<T> IfPresent<T>(this Option<T> option, Action<T> action)
     {

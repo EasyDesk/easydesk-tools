@@ -1,9 +1,7 @@
-﻿using EasyDesk.Tools.Options;
-using NSubstitute;
+﻿using NSubstitute;
 using Shouldly;
 using System;
 using Xunit;
-using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.UnitTests.Options;
 
@@ -114,7 +112,7 @@ public class OptionTests
     {
         Should.Throw<ArgumentNullException>(() =>
         {
-            OptionImports.AsSome<object>(null);
+            StaticImports.AsSome<object>(null);
         });
     }
 

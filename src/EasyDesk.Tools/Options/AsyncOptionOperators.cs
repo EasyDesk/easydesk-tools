@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace EasyDesk.Tools.Options;
+namespace EasyDesk.Tools;
 
-public static partial class OptionImports
+public static partial class StaticImports
 {
     public static async Task<Option<T>> ThenIfPresent<T>(this Task<Option<T>> option, Action<T> action) =>
         (await option).IfPresent(action);

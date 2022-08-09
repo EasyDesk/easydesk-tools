@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyDesk.Tools.Results;
+namespace EasyDesk.Tools;
 
 public class ResultFailedException : Exception
 {

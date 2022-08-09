@@ -1,10 +1,8 @@
-﻿using EasyDesk.Tools.Options;
-using NSubstitute;
+﻿using NSubstitute;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
 using Xunit;
-using static EasyDesk.Tools.Options.OptionImports;
 
 namespace EasyDesk.Tools.UnitTests.Options;
 

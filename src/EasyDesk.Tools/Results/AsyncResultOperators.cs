@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace EasyDesk.Tools.Results;
+namespace EasyDesk.Tools;
 
-public static partial class ResultImports
+public static partial class StaticImports
 {
     public static async Task<Result<A>> ThenIfSuccess<A>(this Task<Result<A>> result, Action<A> action) =>
         (await result).IfSuccess(action);
