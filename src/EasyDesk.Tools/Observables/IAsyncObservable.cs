@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace EasyDesk.Tools.Observables;
+﻿namespace EasyDesk.Tools.Observables;
 
 public interface IAsyncObservable<out T>
 {

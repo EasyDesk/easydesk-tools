@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace EasyDesk.Tools.Collections;
+﻿namespace EasyDesk.Tools.Collections;
 
 public static class DictionaryUtils
 {

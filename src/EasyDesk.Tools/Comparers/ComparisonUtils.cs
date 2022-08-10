@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace EasyDesk.Tools;
+﻿namespace EasyDesk.Tools;
 
 public enum OrderingDirection
 {

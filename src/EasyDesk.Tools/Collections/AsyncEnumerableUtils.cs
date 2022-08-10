@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace EasyDesk.Tools.Collections;
+﻿namespace EasyDesk.Tools.Collections;
 
 public static class AsyncEnumerableUtils
 {

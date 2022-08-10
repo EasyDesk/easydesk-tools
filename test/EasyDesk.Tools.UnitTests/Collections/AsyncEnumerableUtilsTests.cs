@@ -1,7 +1,5 @@
 ﻿using EasyDesk.Tools.Collections;
 using NSubstitute;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 using static System.Linq.Enumerable;
 

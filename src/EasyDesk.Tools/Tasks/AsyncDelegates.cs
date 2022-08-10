@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace EasyDesk.Tools;
+﻿namespace EasyDesk.Tools;
 
 public delegate Task AsyncAction();
 

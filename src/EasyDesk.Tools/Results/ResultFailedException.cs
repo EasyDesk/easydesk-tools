@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EasyDesk.Tools;
+﻿namespace EasyDesk.Tools;
 
 public class ResultFailedException : Exception
 {

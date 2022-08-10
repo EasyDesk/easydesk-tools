@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace EasyDesk.Tools.Utils;
+﻿namespace EasyDesk.Tools.Utils;
 
 public readonly record struct Nothing
 {

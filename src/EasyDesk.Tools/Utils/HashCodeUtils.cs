@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace EasyDesk.Tools.Utils;
+﻿namespace EasyDesk.Tools.Utils;
 
 public static class HashCodeUtils
 {

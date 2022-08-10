@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EasyDesk.Tools.Observables;
+﻿namespace EasyDesk.Tools.Observables;
 
 public class SimpleSubscription : ISubscription
 {

@@ -1,7 +1,5 @@
 ﻿using NSubstitute;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace EasyDesk.Tools.UnitTests.Results;

@@ -1,6 +1,5 @@
 ﻿using EasyDesk.Tools.Utils;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace EasyDesk.Tools.Collections.Immutable;

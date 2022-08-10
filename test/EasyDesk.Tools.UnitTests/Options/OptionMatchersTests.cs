@@ -1,6 +1,4 @@
 ﻿using Shouldly;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace EasyDesk.Tools.UnitTests.Options;

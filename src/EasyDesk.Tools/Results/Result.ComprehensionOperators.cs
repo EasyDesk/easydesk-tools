@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EasyDesk.Tools;
+﻿namespace EasyDesk.Tools;
 
 public static partial class StaticImports
 {
