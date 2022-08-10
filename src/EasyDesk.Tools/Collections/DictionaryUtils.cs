@@ -3,7 +3,7 @@
 public static class DictionaryUtils
 {
     public static Option<V> GetOption<K, V>(this IDictionary<K, V> dictionary, K key) =>
-        FromTryConstruct<K, V>(key, dictionary.TryGetValue);
+        TryOption<K, V>(dictionary.TryGetValue, key);
 
     public static bool Merge<K, V>(this IDictionary<K, V> dictionary, K key, V value, Func<V, V, V> combiner)
     {

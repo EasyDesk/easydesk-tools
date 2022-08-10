@@ -5,7 +5,7 @@ namespace EasyDesk.Tools.Collections;
 public static class ImmutableDictionaryUtils
 {
     public static Option<V> GetOption<K, V>(this IImmutableDictionary<K, V> dictionary, K key) =>
-        FromTryConstruct<K, V>(key, dictionary.TryGetValue);
+        TryOption<K, V>(dictionary.TryGetValue, key);
 
     public static IImmutableDictionary<K, V> Merge<K, V>(
         this IImmutableDictionary<K, V> dictionary,
