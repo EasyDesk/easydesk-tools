@@ -16,6 +16,9 @@ public static class ImmutableDictionaryUtils
         return dictionary.Update(key, v => combiner(v, value), () => value);
     }
 
+    public static IImmutableDictionary<K, V> AddIfAbsent<K, V>(this IImmutableDictionary<K, V> dictionary, K key, Func<V> value) =>
+        dictionary.ContainsKey(key) ? dictionary : dictionary.Add(key, value());
+
     public static IImmutableDictionary<K, V> Update<K, V>(
         this IImmutableDictionary<K, V> dictionary,
         K key,
