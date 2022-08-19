@@ -1,4 +1,4 @@
-﻿namespace EasyDesk.Tools.Utils;
+﻿namespace EasyDesk.Tools;
 
 public readonly record struct Nothing
 {
