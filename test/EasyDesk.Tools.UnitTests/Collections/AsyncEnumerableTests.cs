@@ -40,6 +40,22 @@ public class AsyncEnumerableTests
         });
     }
 
+    [Theory]
+    [MemberData(nameof(ConcatData))]
+    public async Task Concat_ShouldJoinItsArguments(
+        IAsyncEnumerable<int> left, IAsyncEnumerable<int> right, IAsyncEnumerable<int> expected)
+    {
+        (await left.Concat(right).SequenceEqualAsync(expected)).ShouldBe(true);
+    }
+
+    public static IEnumerable<object[]> ConcatData()
+    {
+        yield return new object[] { Empty<int>(), Empty<int>(), Empty<int>() };
+        yield return new object[] { Empty<int>(), Of(1, 2, 3), Of(1, 2, 3) };
+        yield return new object[] { Of(1, 2, 3), Empty<int>(), Of(1, 2, 3) };
+        yield return new object[] { Of(1, 2, 3), Of(4, 5, 6), Of(1, 2, 3, 4, 5, 6) };
+    }
+
     [Fact]
     public async Task SequenceEqualAsync_ShouldReturnTrue_IfTheSequencesAreEqualElementByElement()
     {

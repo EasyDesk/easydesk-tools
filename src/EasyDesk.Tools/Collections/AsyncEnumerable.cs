@@ -55,6 +55,19 @@ public static class AsyncEnumerable
         }
     }
 
+    public static async IAsyncEnumerable<T> Concat<T>(this IAsyncEnumerable<T> left, IAsyncEnumerable<T> right)
+    {
+        await foreach (var item in left)
+        {
+            yield return item;
+        }
+
+        await foreach (var item in right)
+        {
+            yield return item;
+        }
+    }
+
     public static async IAsyncEnumerable<R> Select<T, R>(this IAsyncEnumerable<T> sequence, Func<T, R> mapper)
     {
         await foreach (var item in sequence)
