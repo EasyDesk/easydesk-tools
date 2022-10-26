@@ -55,14 +55,17 @@ public static class AsyncEnumerable
         }
     }
 
-    public static async IAsyncEnumerable<T> Concat<T>(this IAsyncEnumerable<T> left, IAsyncEnumerable<T> right)
+    public static IAsyncEnumerable<T> Concat<T>(this IAsyncEnumerable<T> left, IAsyncEnumerable<T> right) =>
+        left.ThenConcat(() => right);
+
+    public static async IAsyncEnumerable<T> ThenConcat<T>(this IAsyncEnumerable<T> left, Func<IAsyncEnumerable<T>> right)
     {
         await foreach (var item in left)
         {
             yield return item;
         }
 
-        await foreach (var item in right)
+        await foreach (var item in right())
         {
             yield return item;
         }

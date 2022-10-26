@@ -42,6 +42,44 @@ public class AsyncEnumerableTests
 
     [Theory]
     [MemberData(nameof(ConcatData))]
+    public async Task ThenConcat_ShouldJoinItsArguments(
+        IAsyncEnumerable<int> left, IAsyncEnumerable<int> right, IAsyncEnumerable<int> expected)
+    {
+        (await left.ThenConcat(() => right).SequenceEqualAsync(expected)).ShouldBe(true);
+    }
+
+    [Fact]
+    public async Task ThenConcat_ShouldNotEvaluateTheSecondArgument_IfNotNecessary()
+    {
+        var left = Of(1, 2, 3);
+        var right = Substitute.For<Func<IAsyncEnumerable<int>>>();
+
+        var enumerator = left.ThenConcat(right).GetAsyncEnumerator();
+        await enumerator.MoveNextAsync();
+        await enumerator.MoveNextAsync();
+        await enumerator.MoveNextAsync();
+
+        right.DidNotReceive()();
+    }
+
+    [Fact]
+    public async Task ThenConcat_ShouldEvaluateTheSecondArgument_OnlyWhenNecessary()
+    {
+        var left = Of(1, 2, 3);
+        var right = Substitute.For<Func<IAsyncEnumerable<int>>>();
+        right().Returns(Of(4, 5));
+
+        var enumerator = left.ThenConcat(right).GetAsyncEnumerator();
+        await enumerator.MoveNextAsync();
+        await enumerator.MoveNextAsync();
+        await enumerator.MoveNextAsync();
+        await enumerator.MoveNextAsync();
+
+        right.Received(1)();
+    }
+
+    [Theory]
+    [MemberData(nameof(ConcatData))]
     public async Task Concat_ShouldJoinItsArguments(
         IAsyncEnumerable<int> left, IAsyncEnumerable<int> right, IAsyncEnumerable<int> expected)
     {
