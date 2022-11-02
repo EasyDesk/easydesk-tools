@@ -150,6 +150,18 @@ public class EnumerableUtilsTests
         Should.Throw<InvalidOperationException>(() => sequence.SingleOption(predicate));
     }
 
+    private class CustomException : Exception
+    {
+    }
+
+    [Theory]
+    [MemberData(nameof(SingleOptionWithMoreThanOneMatchData))]
+    public void SingleOption_ShouldFailWithCustomException_IfMoreThanOneItemMatchesThePredicate(
+        IEnumerable<int> sequence, Func<int, bool> predicate)
+    {
+        Should.Throw<CustomException>(() => sequence.SingleOption(predicate, () => new CustomException()));
+    }
+
     public static IEnumerable<object[]> SingleOptionWithMoreThanOneMatchData()
     {
         yield return new object[] { Range(5, 10), new Func<int, bool>(x => x > 3) };

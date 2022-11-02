@@ -68,7 +68,7 @@ public static class EnumerableUtils
         return sequence.Where(predicate).FirstOption();
     }
 
-    public static Option<T> SingleOption<T>(this IEnumerable<T> sequence)
+    public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<Exception> exception = null)
     {
         using (var enumerator = sequence.GetEnumerator())
         {
@@ -79,15 +79,15 @@ public static class EnumerableUtils
             var itemToReturn = enumerator.Current;
             if (enumerator.MoveNext())
             {
-                throw new InvalidOperationException("Sequence contains more than one element");
+                throw exception?.Invoke() ?? new InvalidOperationException("Sequence contains more than one element");
             }
             return Some(itemToReturn);
         }
     }
 
-    public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
+    public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate, Func<Exception> exception = null)
     {
-        return sequence.Where(predicate).SingleOption();
+        return sequence.Where(predicate).SingleOption(exception);
     }
 
     public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> sequence)
