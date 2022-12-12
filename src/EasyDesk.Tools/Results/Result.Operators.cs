@@ -32,6 +32,12 @@ public static partial class StaticImports
     public static Task<Result<A>> FlatTapAsync<A, B>(this Result<A> result, AsyncFunc<A, Result<B>> mapper) =>
         result.FlatMapAsync(a => mapper(a).ThenMap(_ => a));
 
+    public static Result<A> Filter<A>(this Result<A> result, Func<A, bool> predicate, Func<A, Error> otherwise) =>
+        result.FlatTap(a => Ensure(predicate(a), () => otherwise(a)));
+
+    public static Task<Result<A>> FilterAsync<A>(this Result<A> result, AsyncFunc<A, bool> predicate, Func<A, Error> otherwise) =>
+        result.FlatTapAsync(async a => Ensure(await predicate(a), () => otherwise(a)));
+
     public static Result<B> Map<A, B>(this Result<A> result, Func<A, B> mapper) =>
         result.FlatMap(x => Success(mapper(x)));
 

@@ -1,5 +1,4 @@
-﻿using EasyDesk.Tools.Utils;
-using Shouldly;
+﻿using Shouldly;
 using Xunit;
 
 namespace EasyDesk.Tools.UnitTests.Results;
@@ -48,5 +47,17 @@ public class ResultFactoriesTests
     public void OrElseError_ShouldReturnTheGivenError_IfTheOptionIsEmpty()
     {
         NoneT<int>().OrElseError(() => _error).ShouldBe(Failure<int>(_error));
+    }
+
+    [Fact]
+    public void EnsureOfT_ShouldReturnSuccess_IfPredicateIsTrue()
+    {
+        Ensure(10, i => i > 0, _ => _error).ShouldBe(Success(10));
+    }
+
+    [Fact]
+    public void EnsureOfT_ShouldReturnError_IfPredicateIsFalse()
+    {
+        Ensure(10, i => i < 0, _ => _error).ShouldBe(Failure<int>(_error));
     }
 }

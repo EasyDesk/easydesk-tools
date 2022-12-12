@@ -1,6 +1,4 @@
-﻿using EasyDesk.Tools.Utils;
-
-namespace EasyDesk.Tools;
+﻿namespace EasyDesk.Tools;
 
 public static partial class StaticImports
 {
@@ -15,6 +13,12 @@ public static partial class StaticImports
 
     public static Result<Nothing> EnsureNot(bool condition, Func<Error> otherwise) =>
         Ensure(!condition, otherwise);
+
+    public static Result<T> Ensure<T>(T subject, Func<T, bool> predicate, Func<T, Error> otherwise) =>
+        predicate(subject) ? Success(subject) : Failure<T>(otherwise(subject));
+
+    public static Result<T> EnsureNot<T>(T subject, Func<T, bool> predicate, Func<T, Error> otherwise) =>
+        Ensure(subject, t => !predicate(t), otherwise);
 
     public static Result<T> OrElseError<T>(this Option<T> option, Func<Error> error) => option.Match<Result<T>>(
         some: t => t,

@@ -20,6 +20,12 @@ public static partial class StaticImports
     public static async Task<Result<A>> ThenFlatTapAsync<A, B>(this Task<Result<A>> result, AsyncFunc<A, Result<B>> mapper) =>
         await (await result).FlatTapAsync(mapper);
 
+    public static async Task<Result<A>> ThenFilter<A>(this Task<Result<A>> result, Func<A, bool> predicate, Func<A, Error> otherwise) =>
+        (await result).Filter(predicate, otherwise);
+
+    public static async Task<Result<A>> ThenFilterAsync<A>(this Task<Result<A>> result, AsyncFunc<A, bool> predicate, Func<A, Error> otherwise) =>
+        await (await result).FilterAsync(predicate, otherwise);
+
     public static async Task<Result<B>> ThenMap<A, B>(this Task<Result<A>> result, Func<A, B> mapper) =>
         (await result).Map(mapper);
 

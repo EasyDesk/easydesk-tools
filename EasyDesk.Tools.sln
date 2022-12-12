@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9A6A9F74-A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyDesk.Tools.UnitTests", "test\EasyDesk.Tools.UnitTests\EasyDesk.Tools.UnitTests.csproj", "{9739A25C-3A7E-4D0A-981D-667045AE129F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{17226BC8-9AD1-44F6-96E3-0A6F9C0876AA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{17226BC8-9AD1-44F6-96E3-0A6F9C0876AA}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.github\workflows\ci.yml = .github\workflows\ci.yml
