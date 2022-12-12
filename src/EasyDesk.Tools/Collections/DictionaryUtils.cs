@@ -21,15 +21,15 @@ public static class DictionaryUtils
 
     public static V GetOrAdd<K, V>(this IDictionary<K, V> dictionary, K key, Func<V> supplier)
     {
-        if (dictionary.ContainsKey(key))
+        if (dictionary.TryGetValue(key, out var value))
         {
-            return dictionary[key];
+            return value;
         }
         else
         {
-            var value = supplier();
-            dictionary.Add(key, value);
-            return value;
+            var newValue = supplier();
+            dictionary.Add(key, newValue);
+            return newValue;
         }
     }
 }
