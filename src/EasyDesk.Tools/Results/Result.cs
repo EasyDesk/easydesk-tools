@@ -1,8 +1,6 @@
-﻿using EasyDesk.Tools.Utils;
+﻿namespace EasyDesk.Tools;
 
-namespace EasyDesk.Tools;
-
-public record struct Result<T>
+public readonly record struct Result<T>
 {
     private readonly T _value;
     private readonly Error _error;
