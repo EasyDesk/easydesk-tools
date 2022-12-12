@@ -50,7 +50,7 @@ public static partial class StaticImports
 
     public static Result<B> FlatMap<A, B>(this Result<A> result, Func<A, Result<B>> mapper) => result.Match(
         success: a => mapper(a),
-        failure: e => Failure<B>(e));
+        failure: Failure<B>);
 
     public static Task<Result<B>> FlatMapAsync<A, B>(this Result<A> result, AsyncFunc<A, Result<B>> mapper) => result.Match(
         success: a => mapper(a),
