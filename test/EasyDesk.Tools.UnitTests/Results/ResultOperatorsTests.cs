@@ -7,12 +7,12 @@ namespace EasyDesk.Tools.UnitTests.Results;
 public class ResultOperatorsTests
 {
     private const string TestString = "TEST";
+    private const int Value = 10;
 
-    private static readonly int _value = 10;
     private static readonly Error _error = new TestError(false);
     private static readonly Error _mappedError = new TestError(true);
 
-    private static Result<int> Success => Success(_value);
+    private static Result<int> Success => Success(Value);
 
     private static Result<int> Failure => Failure<int>(_error);
 
@@ -45,7 +45,7 @@ public class ResultOperatorsTests
 
         Success.IfSuccess(shouldBeCalled);
 
-        shouldBeCalled.Received(1)(_value);
+        shouldBeCalled.Received(1)(Value);
     }
 
     [Theory]
@@ -90,12 +90,12 @@ public class ResultOperatorsTests
     public void Map_ShouldMapTheWrappedValue_ForSuccessfulResults()
     {
         var mapper = Substitute.For<Func<int, string>>();
-        mapper(_value).Returns(TestString);
+        mapper(Value).Returns(TestString);
 
         var output = Success.Map(mapper);
 
         output.ShouldBe(Success(TestString));
-        mapper.Received(1)(_value);
+        mapper.Received(1)(Value);
     }
 
     [Fact]
@@ -140,7 +140,7 @@ public class ResultOperatorsTests
         var output = Failure.FlatMap(mapper);
 
         output.ShouldBe(Failure<string>(_error));
-        mapper.DidNotReceiveWithAnyArgs()(_value);
+        mapper.DidNotReceiveWithAnyArgs()(Value);
     }
 
     [Theory]
@@ -149,12 +149,12 @@ public class ResultOperatorsTests
         Result<string> mappedResult)
     {
         var mapper = Substitute.For<Func<int, Result<string>>>();
-        mapper(_value).Returns(mappedResult);
+        mapper(Value).Returns(mappedResult);
 
         var output = Success.FlatMap(mapper);
 
         output.ShouldBe(mappedResult);
-        mapper.Received(1)(_value);
+        mapper.Received(1)(Value);
     }
 
     [Fact]
@@ -172,24 +172,42 @@ public class ResultOperatorsTests
     public void FlatTap_ShouldReturnTheMappedError_ForSuccessfulResults()
     {
         var mapper = Substitute.For<Func<int, Result<string>>>();
-        mapper(_value).Returns(Failure<string>(_mappedError));
+        mapper(Value).Returns(Failure<string>(_mappedError));
 
         var output = Success.FlatTap(mapper);
 
         output.ShouldBe(Failure<int>(_mappedError));
-        mapper.Received(1)(_value);
+        mapper.Received(1)(Value);
     }
 
     [Fact]
     public void FlatTap_ShouldReturnTheMappedValue_ForSuccessfulResults()
     {
         var mapper = Substitute.For<Func<int, Result<string>>>();
-        mapper(_value).Returns(Success(TestString));
+        mapper(Value).Returns(Success(TestString));
 
         var output = Success.FlatTap(mapper);
 
         output.ShouldBe(Success);
-        mapper.Received(1)(_value);
+        mapper.Received(1)(Value);
+    }
+
+    [Fact]
+    public void Filter_ShouldReturnTheOriginalValue_IfPredicateIsTrue()
+    {
+        Success.Filter(x => x > 0, _ => _mappedError).ShouldBe(Success);
+    }
+
+    [Fact]
+    public void Filter_ShouldReturnTheOriginalError()
+    {
+        Failure.Filter(x => true, _ => _mappedError).ShouldBe(_error);
+    }
+
+    [Fact]
+    public void Filter_ShouldReturnTheMappedError_IfPredicateIsFalse()
+    {
+        Success.Filter(x => x < 0, _ => _mappedError).ShouldBe(_mappedError);
     }
 
     [Fact]
@@ -209,7 +227,7 @@ public class ResultOperatorsTests
 
         await Success.IfSuccessAsync(shouldBeCalled);
 
-        await shouldBeCalled.Received(1)(_value);
+        await shouldBeCalled.Received(1)(Value);
     }
 
     [Theory]
@@ -254,12 +272,12 @@ public class ResultOperatorsTests
     public async Task MapAsync_ShouldMapTheWrappedValue_ForSuccessfulResults()
     {
         var mapper = Substitute.For<AsyncFunc<int, string>>();
-        mapper(_value).Returns(TestString);
+        mapper(Value).Returns(TestString);
 
         var output = await Success.MapAsync(mapper);
 
         output.ShouldBe(Success(TestString));
-        await mapper.Received(1)(_value);
+        await mapper.Received(1)(Value);
     }
 
     [Fact]
@@ -281,7 +299,7 @@ public class ResultOperatorsTests
         var output = await Failure.FlatMapAsync(mapper);
 
         output.ShouldBe(Failure<string>(_error));
-        await mapper.DidNotReceiveWithAnyArgs()(_value);
+        await mapper.DidNotReceiveWithAnyArgs()(Value);
     }
 
     [Theory]
@@ -290,12 +308,12 @@ public class ResultOperatorsTests
         Result<string> mappedResult)
     {
         var mapper = Substitute.For<AsyncFunc<int, Result<string>>>();
-        mapper(_value).Returns(mappedResult);
+        mapper(Value).Returns(mappedResult);
 
         var output = await Success.FlatMapAsync(mapper);
 
         output.ShouldBe(mappedResult);
-        await mapper.Received(1)(_value);
+        await mapper.Received(1)(Value);
     }
 
     [Fact]
@@ -313,24 +331,45 @@ public class ResultOperatorsTests
     public async Task FlatTapAsync_ShouldReturnTheMappedError_ForSuccessfulResults()
     {
         var mapper = Substitute.For<AsyncFunc<int, Result<string>>>();
-        mapper(_value).Returns(Failure<string>(_mappedError));
+        mapper(Value).Returns(Failure<string>(_mappedError));
 
         var output = await Success.FlatTapAsync(mapper);
 
         output.ShouldBe(Failure<int>(_mappedError));
-        await mapper.Received(1)(_value);
+        await mapper.Received(1)(Value);
     }
 
     [Fact]
     public async Task FlatTapAsync_ShouldReturnTheMappedValue_ForSuccessfulResults()
     {
         var mapper = Substitute.For<AsyncFunc<int, Result<string>>>();
-        mapper(_value).Returns(Success(TestString));
+        mapper(Value).Returns(Success(TestString));
 
         var output = await Success.FlatTapAsync(mapper);
 
         output.ShouldBe(Success);
-        await mapper.Received(1)(_value);
+        await mapper.Received(1)(Value);
+    }
+
+    [Fact]
+    public async Task FilterAsync_ShouldReturnTheOriginalValue_IfPredicateIsTrue()
+    {
+        var output = await Success.FilterAsync(x => Task.FromResult(x > 0), _ => _mappedError);
+        output.ShouldBe(Success);
+    }
+
+    [Fact]
+    public async Task FilterAsync_ShouldReturnTheOriginalError()
+    {
+        var output = await Failure.FilterAsync(x => Task.FromResult(true), _ => _mappedError);
+        output.ShouldBe(_error);
+    }
+
+    [Fact]
+    public async Task FilterAsync_ShouldReturnTheMappedError_IfPredicateIsFalse()
+    {
+        var output = await Success.FilterAsync(x => Task.FromResult(x < 0), _ => _mappedError);
+        output.ShouldBe(_mappedError);
     }
 
     [Fact]
@@ -342,7 +381,7 @@ public class ResultOperatorsTests
     [Fact]
     public void ThrowIfFailure_ShouldReturnTheWrappedValue_ForSuccessfulResults()
     {
-        Success.ThrowIfFailure().ShouldBe(_value);
+        Success.ThrowIfFailure().ShouldBe(Value);
     }
 
     [Fact]
