@@ -320,4 +320,19 @@ public class EnumerableUtilsTests
         yield return new object[] { Items(1, 2, 3, 4, 5), 1, 5 };
         yield return new object[] { Items(3, 2, 1, 5, 4), 1, 5 };
     }
+
+    [Theory]
+    [MemberData(nameof(FilterNotNullData))]
+    public void WhereNotNull_ShouldKeepOnlyNotNullValues(
+        IEnumerable<string> sequence, IEnumerable<string> expected)
+    {
+        sequence.WhereNotNull().ShouldBe(expected);
+    }
+
+    public static IEnumerable<object[]> FilterNotNullData()
+    {
+        yield return new object[] { Items("a", null, "b", null, null), Items("a", "b") };
+        yield return new object[] { Empty<string>(), Empty<string>() };
+        yield return new object[] { Items<string>(null, null, null), Empty<string>() };
+    }
 }

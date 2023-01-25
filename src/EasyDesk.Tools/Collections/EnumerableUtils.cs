@@ -52,6 +52,7 @@ public static class EnumerableUtils
         sequence.FirstOption(x => predicate(x.Item)).Map(x => x.Index);
 
     public static Option<T> FirstOption<T>(this IEnumerable<T> sequence)
+        where T : notnull
     {
         using (var enumerator = sequence.GetEnumerator())
         {
@@ -64,11 +65,13 @@ public static class EnumerableUtils
     }
 
     public static Option<T> FirstOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
+        where T : notnull
     {
         return sequence.Where(predicate).FirstOption();
     }
 
     public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<Exception>? exception = null)
+        where T : notnull
     {
         using (var enumerator = sequence.GetEnumerator())
         {
@@ -86,6 +89,7 @@ public static class EnumerableUtils
     }
 
     public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate, Func<Exception>? exception = null)
+        where T : notnull
     {
         return sequence.Where(predicate).SingleOption(exception);
     }
@@ -224,12 +228,14 @@ public static class EnumerableUtils
     }
 
     public static Option<T> MaxByOption<T, U>(this IEnumerable<T> sequence, Func<T, U> property)
+        where T : notnull
         where U : IComparable<U>
     {
         return sequence.MinOrMaxBy(property, GreaterThan);
     }
 
     public static Option<T> MinByOption<T, U>(this IEnumerable<T> sequence, Func<T, U> property)
+        where T : notnull
         where U : IComparable<U>
     {
         return sequence.MinOrMaxBy(property, LessThan);
@@ -237,6 +243,7 @@ public static class EnumerableUtils
 
     private static Option<T> MinOrMaxBy<T, U>(this IEnumerable<T> sequence, Func<T, U> property, Func<int, bool> direction)
         where U : IComparable<U>
+        where T : notnull
     {
         var empty = true;
         T? currentItem = default;
@@ -256,6 +263,12 @@ public static class EnumerableUtils
                 currentValue = value;
             }
         }
-        return empty ? None : currentItem.ToOption();
+        return empty ? None : Some(currentItem!);
     }
+
+    public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> values) where T : struct =>
+        values.SelectMany(v => v.AsOption());
+
+    public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> values) where T : class =>
+        values.SelectMany(v => v.AsOption());
 }
