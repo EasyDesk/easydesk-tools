@@ -9,8 +9,8 @@ public static partial class StaticImports
     public static Option<T> Some<T>(T value) =>
         value is null ? throw new ArgumentNullException(nameof(value)) : new(value);
 
-    public static Option<T> AsSome<T>(this T value) => Some(value);
+    public static Option<T> AsSome<T>(this T value) where T : notnull => Some(value);
 
-    public static Option<T> AsOption<T>(this T? value) =>
+    public static Option<T> AsOption<T>(this T? value) where T : notnull =>
         value is null ? None : Some(value);
 }
