@@ -256,6 +256,6 @@ public static class EnumerableUtils
                 currentValue = value;
             }
         }
-        return empty ? None : currentItem.AsOption();
+        return empty ? None : currentItem.ToOption();
     }
 }

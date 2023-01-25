@@ -11,6 +11,12 @@ public static partial class StaticImports
 
     public static Option<T> AsSome<T>(this T value) where T : notnull => Some(value);
 
-    public static Option<T> AsOption<T>(this T? value) where T : notnull =>
+    public static Option<T> AsOption<T>(this T? value) where T : class =>
+        value is null ? None : Some(value);
+
+    public static Option<T> AsOption<T>(this T? value) where T : struct =>
+        value is null ? None : Some(value ?? throw new InvalidOperationException());
+
+    public static Option<T> ToOption<T>(this T? value) =>
         value is null ? None : Some(value);
 }
