@@ -26,12 +26,12 @@ public class OptionFactoriesTests
     [Fact]
     public void AsOptionForNullableValueTypes_ShouldReturnAnEmptyOption_WhenNullIsPassed()
     {
-        StaticImports.AsOption<int>(null).ShouldBe(None);
+        StaticImports.AsOption<int?>(null).ShouldBe(None);
     }
 
     [Fact]
     public void AsOptionForNullableValueTypes_ShouldReturnANonEmptyOption_WhenANonNullValueIsPassed()
     {
-        StaticImports.AsOption<int>(1).ShouldBe(Some(1));
+        StaticImports.AsOption(1).ShouldBe(Some(1));
     }
 }

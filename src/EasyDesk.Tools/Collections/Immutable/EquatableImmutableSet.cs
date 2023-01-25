@@ -56,7 +56,7 @@ public class EquatableImmutableSet<T> : IImmutableSet<T>
 
     IEnumerator IEnumerable.GetEnumerator() => _set.GetEnumerator();
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return ReferenceEquals(this, obj) || (
             obj is IImmutableSet<T> other

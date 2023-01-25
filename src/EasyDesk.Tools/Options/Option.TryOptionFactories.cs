@@ -1,16 +1,18 @@
-﻿namespace EasyDesk.Tools;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace EasyDesk.Tools;
 
 public static partial class StaticImports
 {
-    public delegate bool TryOperator<T>(out T output);
+    public delegate bool TryOperator<T>([MaybeNullWhen(false)] out T output);
 
-    public delegate bool TryOperator<T1, T>(T1 arg1, out T output);
+    public delegate bool TryOperator<T1, T>(T1 arg1, [MaybeNullWhen(false)] out T output);
 
-    public delegate bool TryOperator<T1, T2, T>(T1 arg1, T2 arg2, out T output);
+    public delegate bool TryOperator<T1, T2, T>(T1 arg1, T2 arg2, [MaybeNullWhen(false)] out T output);
 
-    public delegate bool TryOperator<T1, T2, T3, T>(T1 arg1, T2 arg2, T3 arg3, out T output);
+    public delegate bool TryOperator<T1, T2, T3, T>(T1 arg1, T2 arg2, T3 arg3, [MaybeNullWhen(false)] out T output);
 
-    public delegate bool TryOperator<T1, T2, T3, T4, T>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, out T output);
+    public delegate bool TryOperator<T1, T2, T3, T4, T>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, [MaybeNullWhen(false)] out T output);
 
     public static Option<T> TryOption<T>(TryOperator<T> tryOperator) =>
         tryOperator(out var output) ? Some(output) : None;

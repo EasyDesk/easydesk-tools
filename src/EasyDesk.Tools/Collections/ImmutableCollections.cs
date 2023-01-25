@@ -35,20 +35,25 @@ public static class ImmutableCollections
         return EquatableImmutableList<T>.FromList(list);
     }
 
-    public static IImmutableDictionary<K, V> ToEquatableMap<K, V>(this IEnumerable<(K Key, V Value)> items) => Map(items);
+    public static IImmutableDictionary<K, V> ToEquatableMap<K, V>(this IEnumerable<(K Key, V Value)> items)
+        where K : notnull => Map(items);
 
-    public static IImmutableDictionary<K, V> ToEquatableMap<K, V>(this IEnumerable<KeyValuePair<K, V>> items) => Map(items);
+    public static IImmutableDictionary<K, V> ToEquatableMap<K, V>(this IEnumerable<KeyValuePair<K, V>> items)
+        where K : notnull => Map(items);
 
-    public static IImmutableDictionary<K, V> Map<K, V>(params (K Key, V Value)[] items) =>
+    public static IImmutableDictionary<K, V> Map<K, V>(params (K Key, V Value)[] items)
+        where K : notnull =>
         Map(items as IEnumerable<(K, V)>);
 
     public static IImmutableDictionary<K, V> Map<K, V>(IEnumerable<(K Key, V Value)> items)
+        where K : notnull
     {
         var pairs = items.Select(x => new KeyValuePair<K, V>(x.Key, x.Value));
         return Map(pairs);
     }
 
     public static IImmutableDictionary<K, V> Map<K, V>(IEnumerable<KeyValuePair<K, V>> pairs)
+        where K : notnull
     {
         var dictionary = ImmutableDictionary.CreateRange(pairs);
         return EquatableImmutableDictionary<K, V>.FromDictionary(dictionary);

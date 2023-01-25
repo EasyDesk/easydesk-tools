@@ -2,8 +2,8 @@
 
 public readonly record struct Result<T>
 {
-    private readonly T _value;
-    private readonly Error _error;
+    private readonly T? _value;
+    private readonly Error? _error;
 
     public Result(T value)
     {
@@ -39,9 +39,9 @@ public readonly record struct Result<T>
         success: _ => throw new InvalidOperationException("Cannot read error from a successful result"),
         failure: e => e);
 
-    public R Match<R>(Func<T, R> success, Func<Error, R> failure) => IsFailure ? failure(_error) : success(_value);
+    public R Match<R>(Func<T, R> success, Func<Error, R> failure) => IsFailure ? failure(_error!) : success(_value!);
 
-    public void Match(Action<T> success = null, Action<Error> failure = null)
+    public void Match(Action<T>? success = null, Action<Error>? failure = null)
     {
         Match(
             success: t => ReturningNothing(() => success?.Invoke(t)),
@@ -53,7 +53,7 @@ public readonly record struct Result<T>
             success: a => success(a),
             failure: e => failure(e));
 
-    public Task MatchAsync(AsyncAction<T> success = null, AsyncAction<Error> failure = null) =>
+    public Task MatchAsync(AsyncAction<T>? success = null, AsyncAction<Error>? failure = null) =>
         Match(
             success: a => success is null ? Task.CompletedTask : success(a),
             failure: e => failure is null ? Task.CompletedTask : failure(e));

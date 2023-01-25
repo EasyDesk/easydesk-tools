@@ -1,10 +1,12 @@
 ﻿using EasyDesk.Tools.Utils;
 using System.Collections;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EasyDesk.Tools.Collections.Immutable;
 
 public class EquatableImmutableDictionary<K, V> : IImmutableDictionary<K, V>
+    where K : notnull
 {
     private readonly IImmutableDictionary<K, V> _dictionary;
     private readonly IEqualityComparer<KeyValuePair<K, V>> _keyValuePairComparer;
@@ -38,8 +40,8 @@ public class EquatableImmutableDictionary<K, V> : IImmutableDictionary<K, V>
         }
         int GetHashCode(KeyValuePair<K, V> keyValuePair)
         {
-            return keyComparer.GetHashCode(keyValuePair.Key)
-                ^ valueComparer.GetHashCode(keyValuePair.Value);
+            var keyHash = keyComparer.GetHashCode(keyValuePair.Key);
+            return keyValuePair.Value is not null ? keyHash ^ valueComparer.GetHashCode(keyValuePair.Value) : keyHash;
         }
 
         return EqualityComparers.From<KeyValuePair<K, V>>(Equals, GetHashCode);
@@ -68,7 +70,7 @@ public class EquatableImmutableDictionary<K, V> : IImmutableDictionary<K, V>
 
     public bool ContainsKey(K key) => _dictionary.ContainsKey(key);
 
-    public bool TryGetValue(K key, out V value) => _dictionary.TryGetValue(key, out value);
+    public bool TryGetValue(K key, [MaybeNullWhen(false)] out V value) => _dictionary.TryGetValue(key, out value);
 
     public V this[K key] => _dictionary[key];
 
@@ -82,7 +84,7 @@ public class EquatableImmutableDictionary<K, V> : IImmutableDictionary<K, V>
 
     IEnumerator IEnumerable.GetEnumerator() => _dictionary.GetEnumerator();
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return ReferenceEquals(this, obj) || (
             obj is IImmutableDictionary<K, V> other

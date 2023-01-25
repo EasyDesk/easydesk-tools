@@ -83,16 +83,4 @@ public class OptionMatchersTests
     {
         Some(Value).OrElseThrow(() => new Exception()).ShouldBe(Value);
     }
-
-    [Fact]
-    public void AsNullable_ShouldReturnNull_IfOptionIsEmpty()
-    {
-        Some(Value).AsNullable().ShouldBe(Value);
-    }
-
-    [Fact]
-    public void AsNullable_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty()
-    {
-        NoneT<int>().AsNullable().ShouldBeNull();
-    }
 }

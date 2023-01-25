@@ -22,30 +22,30 @@ public class EquatableImmutableList<T> : IImmutableList<T>
 
     public IImmutableList<T> Clear() => Wrap(_list.Clear());
 
-    public int IndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer) =>
+    public int IndexOf(T item, int index, int count, IEqualityComparer<T>? equalityComparer) =>
         _list.IndexOf(item, index, count, equalityComparer);
 
     public IImmutableList<T> Insert(int index, T element) => Wrap(_list.Insert(index, element));
 
     public IImmutableList<T> InsertRange(int index, IEnumerable<T> items) => Wrap(_list.InsertRange(index, items));
 
-    public int LastIndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer) =>
+    public int LastIndexOf(T item, int index, int count, IEqualityComparer<T>? equalityComparer) =>
         _list.LastIndexOf(item, index, count, equalityComparer);
 
-    public IImmutableList<T> Remove(T value, IEqualityComparer<T> equalityComparer) =>
+    public IImmutableList<T> Remove(T value, IEqualityComparer<T>? equalityComparer) =>
         Wrap(_list.Remove(value, equalityComparer));
 
     public IImmutableList<T> RemoveAll(Predicate<T> match) => Wrap(_list.RemoveAll(match));
 
     public IImmutableList<T> RemoveAt(int index) => Wrap(_list.RemoveAt(index));
 
-    public IImmutableList<T> RemoveRange(IEnumerable<T> items, IEqualityComparer<T> equalityComparer) =>
+    public IImmutableList<T> RemoveRange(IEnumerable<T> items, IEqualityComparer<T>? equalityComparer) =>
         Wrap(_list.RemoveRange(items, equalityComparer));
 
     public IImmutableList<T> RemoveRange(int index, int count) =>
         Wrap(_list.RemoveRange(index, count));
 
-    public IImmutableList<T> Replace(T oldValue, T newValue, IEqualityComparer<T> equalityComparer) =>
+    public IImmutableList<T> Replace(T oldValue, T newValue, IEqualityComparer<T>? equalityComparer) =>
         Wrap(_list.Replace(oldValue, newValue, equalityComparer));
 
     public IImmutableList<T> SetItem(int index, T value) => Wrap(_list.SetItem(index, value));
@@ -58,7 +58,7 @@ public class EquatableImmutableList<T> : IImmutableList<T>
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return ReferenceEquals(this, obj) || (
             obj is IImmutableList<T> list &&

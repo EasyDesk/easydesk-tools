@@ -149,7 +149,7 @@ public static class AsyncEnumerable
     public static async Task<bool> SequenceEqualAsync<T>(
         this IAsyncEnumerable<T> sequence,
         IAsyncEnumerable<T> other,
-        IEqualityComparer<T> comparer = null)
+        IEqualityComparer<T>? comparer = null)
     {
         await using var first = sequence.GetAsyncEnumerator();
         await using var second = other.GetAsyncEnumerator();

@@ -68,7 +68,7 @@ public static class EnumerableUtils
         return sequence.Where(predicate).FirstOption();
     }
 
-    public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<Exception> exception = null)
+    public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<Exception>? exception = null)
     {
         using (var enumerator = sequence.GetEnumerator())
         {
@@ -85,7 +85,7 @@ public static class EnumerableUtils
         }
     }
 
-    public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate, Func<Exception> exception = null)
+    public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate, Func<Exception>? exception = null)
     {
         return sequence.Where(predicate).SingleOption(exception);
     }
@@ -169,7 +169,7 @@ public static class EnumerableUtils
         sequence.MatchesTwoByTwo((a, b) => comparer.Compare(a, b) > 0);
 
     public static bool AllSame<T>(this IEnumerable<T> sequence) =>
-        sequence.MatchesTwoByTwo((a, b) => a.Equals(b));
+        sequence.MatchesTwoByTwo((a, b) => ReferenceEquals(a, b) || a is not null && a.Equals(b));
 
     public static bool MatchesTwoByTwo<T>(this IEnumerable<T> sequence, Func<T, T, bool> predicate)
     {
@@ -239,8 +239,8 @@ public static class EnumerableUtils
         where U : IComparable<U>
     {
         var empty = true;
-        T currentItem = default;
-        U currentValue = default;
+        T? currentItem = default;
+        U? currentValue = default;
         foreach (var item in sequence)
         {
             if (empty)
@@ -256,6 +256,6 @@ public static class EnumerableUtils
                 currentValue = value;
             }
         }
-        return empty ? None : Some(currentItem);
+        return empty ? None : currentItem.AsOption();
     }
 }

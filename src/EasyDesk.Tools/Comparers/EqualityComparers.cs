@@ -29,7 +29,7 @@ public static class EqualityComparers
             _hashCode = hashCode;
         }
 
-        public bool Equals(T x, T y) => _equals(x, y);
+        public bool Equals(T? x, T? y) => ReferenceEquals(x, y) || (x is not null && y is not null && _equals(x, y));
 
         public int GetHashCode(T obj) => _hashCode(obj);
     }
