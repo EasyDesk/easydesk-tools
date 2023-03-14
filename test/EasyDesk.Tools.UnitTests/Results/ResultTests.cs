@@ -89,7 +89,7 @@ public class ResultTests
             failure: shouldNotBeCalled);
 
         result.ShouldBe(TestString);
-        shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default);
+        shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default!);
     }
 
     [Fact]

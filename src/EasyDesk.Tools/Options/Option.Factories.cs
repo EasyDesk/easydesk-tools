@@ -6,7 +6,7 @@ public static partial class StaticImports
 
     public static Option<T> NoneT<T>() => default;
 
-    public static Option<T> Some<T>(T? value) where T : notnull =>
+    public static Option<T> Some<T>(T? value) =>
        value is null ? throw new ArgumentNullException(nameof(value)) : new(value);
 
     public static Option<T> Some<T>(T? value) where T : struct =>

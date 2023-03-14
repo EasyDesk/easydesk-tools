@@ -1,8 +1,8 @@
 ﻿using NSubstitute;
 using Shouldly;
 using Xunit;
-using static System.Linq.Enumerable;
 using static EasyDesk.Tools.Collections.EnumerableUtils;
+using static System.Linq.Enumerable;
 
 namespace EasyDesk.Tools.UnitTests.Collections;
 
@@ -324,7 +324,7 @@ public class EnumerableUtilsTests
     [Theory]
     [MemberData(nameof(FilterNotNullData))]
     public void WhereNotNull_ShouldKeepOnlyNotNullValues(
-        IEnumerable<string> sequence, IEnumerable<string> expected)
+        IEnumerable<string?> sequence, IEnumerable<string> expected)
     {
         sequence.WhereNotNull().ShouldBe(expected);
     }
@@ -333,6 +333,6 @@ public class EnumerableUtilsTests
     {
         yield return new object[] { Items("a", null, "b", null, null), Items("a", "b") };
         yield return new object[] { Empty<string>(), Empty<string>() };
-        yield return new object[] { Items<string>(null, null, null), Empty<string>() };
+        yield return new object[] { Items<string?>(null, null, null), Empty<string>() };
     }
 }

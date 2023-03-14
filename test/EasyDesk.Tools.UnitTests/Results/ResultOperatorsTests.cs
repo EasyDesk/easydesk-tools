@@ -74,7 +74,7 @@ public class ResultOperatorsTests
 
         Success.IfFailure(shouldNotBeCalled);
 
-        shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default);
+        shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default!);
     }
 
     [Theory]
@@ -129,7 +129,7 @@ public class ResultOperatorsTests
         var output = Success.MapError(mapper);
 
         output.ShouldBe(Success);
-        mapper.DidNotReceiveWithAnyArgs()(default);
+        mapper.DidNotReceiveWithAnyArgs()(default!);
     }
 
     [Fact]
@@ -256,7 +256,7 @@ public class ResultOperatorsTests
 
         await Success.IfFailureAsync(shouldNotBeCalled);
 
-        await shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default);
+        await shouldNotBeCalled.DidNotReceiveWithAnyArgs()(default!);
     }
 
     [Theory]
