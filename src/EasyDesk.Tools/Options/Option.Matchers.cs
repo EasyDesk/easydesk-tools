@@ -14,7 +14,7 @@ public static partial class StaticImports
     public static T? OrElseDefault<T>(this Option<T> option) =>
         option.Match<T?>(some: t => t, none: () => default);
 
-    public static T? OrElseNull<T>(this Option<T> option) where T : class =>
+    public static T? OrElseNull<T>(this Option<T> option) where T : struct =>
         option.Match<T?>(some: t => t, none: () => null);
 
     public static T OrElseThrow<T>(this Option<T> option, Func<Exception> exceptionSupplier) =>
