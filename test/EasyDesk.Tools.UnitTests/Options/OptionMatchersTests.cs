@@ -63,13 +63,13 @@ public class OptionMatchersTests
     [Fact]
     public void OrElseNull_ShouldReturnNull_IfOptionIsEmpty()
     {
-        NoneT<string>().OrElse(null).ShouldBeNull();
+        NoneT<string>().OrElseNull().ShouldBeNull();
     }
 
     [Fact]
     public void OrElseNull_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty()
     {
-        Some(Reference).OrElse(null).ShouldBe(Reference);
+        Some(Reference).OrElseNull().ShouldBe(Reference);
     }
 
     [Fact]
@@ -87,13 +87,13 @@ public class OptionMatchersTests
     [Fact]
     public void OrElseNull_ShouldReturnNull_IfOptionIsEmpty_WithStruct()
     {
-        NoneT<int>().OrElseNull().ShouldBeNull();
+        NoneT<int>().OrElseNothing().ShouldBeNull();
     }
 
     [Fact]
     public void OrElseNull_ShouldReturnTheValueInsideTheOption_IfOptionIsNotEmpty_WithStruct()
     {
-        Some(5).OrElseNull().ShouldBe(5);
+        Some(5).OrElseNothing().ShouldBe(5);
     }
 
     [Fact]
