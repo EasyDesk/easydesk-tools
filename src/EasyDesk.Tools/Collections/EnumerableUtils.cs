@@ -70,6 +70,26 @@ public static class EnumerableUtils
         return sequence.Where(predicate).FirstOption();
     }
 
+    public static Option<T> LastOption<T>(this IEnumerable<T> sequence)
+        where T : notnull
+    {
+        Option<T> result = None;
+        using (var enumerator = sequence.GetEnumerator())
+        {
+            while (enumerator.MoveNext())
+            {
+                result = Some(enumerator.Current);
+            }
+            return result;
+        }
+    }
+
+    public static Option<T> LastOption<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
+        where T : notnull
+    {
+        return sequence.Where(predicate).LastOption();
+    }
+
     public static Option<T> SingleOption<T>(this IEnumerable<T> sequence, Func<Exception>? exception = null)
         where T : notnull
     {

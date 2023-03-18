@@ -92,6 +92,14 @@ public class EnumerableUtilsTests
         sequence.FirstOption(predicate).ShouldBeEmpty();
     }
 
+    [Theory]
+    [MemberData(nameof(FirstOptionEmptyData))]
+    public void LastOption_ShouldReturnNone_IfNoItemsMatchThePredicate(
+        IEnumerable<int> sequence, Func<int, bool> predicate)
+    {
+        sequence.LastOption(predicate).ShouldBeEmpty();
+    }
+
     public static IEnumerable<object[]> FirstOptionEmptyData()
     {
         yield return new object[] { Empty<int>(), new Func<int, bool>(_ => true) };
@@ -107,10 +115,24 @@ public class EnumerableUtilsTests
         sequence.FirstOption(predicate).ShouldContain(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(LastOptionNonEmptyData))]
+    public void LastOption_ShouldReturnTheLastItemMatchingThePredicate_IfAny(
+        IEnumerable<int> sequence, Func<int, bool> predicate, int expected)
+    {
+        sequence.LastOption(predicate).ShouldContain(expected);
+    }
+
     public static IEnumerable<object[]> FirstOptionNonEmptyData()
     {
         yield return new object[] { Range(5, 10), new Func<int, bool>(x => x > 3), 5 };
         yield return new object[] { Range(5, 10), new Func<int, bool>(x => x > 7), 8 };
+    }
+
+    public static IEnumerable<object[]> LastOptionNonEmptyData()
+    {
+        yield return new object[] { Range(5, 10), new Func<int, bool>(x => x <= 5), 5 };
+        yield return new object[] { Range(5, 10), new Func<int, bool>(x => x <= 8), 8 };
     }
 
     [Theory]
