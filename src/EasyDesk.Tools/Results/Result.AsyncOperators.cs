@@ -32,6 +32,9 @@ public static partial class StaticImports
     public static async Task<Result<B>> ThenMapAsync<A, B>(this Task<Result<A>> result, AsyncFunc<A, B> mapper) where A : notnull where B : notnull =>
         await (await result).MapAsync(mapper);
 
+    public static async Task<Result<Nothing>> ThenIgnoreResult<A>(this Task<Result<A>> result) where A : notnull =>
+        (await result).IgnoreResult();
+
     public static async Task<Result<A>> ThenMapError<A>(this Task<Result<A>> result, Func<Error, Error> mapper) where A : notnull =>
         (await result).MapError(mapper);
 

@@ -110,6 +110,22 @@ public class ResultOperatorsTests
     }
 
     [Fact]
+    public void IgnoreResult_ShouldReturnNothing_ForSuccessfulResults()
+    {
+        var output = Success.IgnoreResult();
+
+        output.ShouldBe(Success(Nothing.Value));
+    }
+
+    [Fact]
+    public void IgnoreResult_ShouldReturnTheSameError_ForFailedResults()
+    {
+        var output = Failure.IgnoreResult();
+
+        output.ShouldBe(Failure<string>(_error));
+    }
+
+    [Fact]
     public void MapError_ShouldMapTheWrappedError_ForFailedResults()
     {
         var mapper = Substitute.For<Func<Error, Error>>();

@@ -41,6 +41,9 @@ public static partial class StaticImports
     public static Result<B> Map<A, B>(this Result<A> result, Func<A, B> mapper) where A : notnull where B : notnull =>
         result.FlatMap(x => Success(mapper(x)));
 
+    public static Result<Nothing> IgnoreResult<A>(this Result<A> result) where A : notnull =>
+        result.Map(_ => Nothing.Value);
+
     public static Task<Result<B>> MapAsync<A, B>(this Result<A> result, AsyncFunc<A, B> mapper) where A : notnull where B : notnull =>
         result.FlatMapAsync(async x => Success(await mapper(x)));
 
